@@ -18,13 +18,34 @@ static void update_time() {
    strftime(s_buffer_hour, sizeof(s_buffer_hour),"%H", tick_time);
    int s_hour = ((s_buffer_hour[0] - '0')*10)+s_buffer_hour[1] - '0';
 
+   // The start and end frames - move the Layer 40 pixels to the right
+GRect start = GRect(30,-13-((s_hour-1)*36), 43, 1016);
+GRect finish = GRect(30,-13-(s_hour*36), 43, 1016);
+
+// Animate the Layer
+PropertyAnimation *prop_anim = property_animation_create_layer_frame(s_time_layer_h, &start, &finish);
+
+// Get the Animation
+Animation *anim = property_animation_get_animation(prop_anim);
+
+// Choose parameters
+const int delay_ms = 0;
+const int duration_ms = 500;
+
+// Configure the Animation's curve, delay, and duration
+animation_set_curve(anim, AnimationCurveEaseIn);
+animation_set_delay(anim, delay_ms);
+animation_set_duration(anim, duration_ms);
+
+// Play the animation
+animation_schedule(anim);
+
+
   static char s_buffer_m[8];
   strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
 
   // Display this time on the TextLayer
   text_layer_set_text(s_time_layer_m, s_buffer_m);
-
-  text_layer_set_text(s_time_layer_h, s_hour);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
@@ -37,7 +58,7 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect(30, 0, 43, 2016));
+  s_time_layer_h = text_layer_create(GRect(30, 0, 43, 1016));
   s_time_layer_m = text_layer_create(GRect(bounds.size.w - 57, (bounds.size.h-20)/2, 57, 20));
 
   // Improve the layout to be more like a watchface
