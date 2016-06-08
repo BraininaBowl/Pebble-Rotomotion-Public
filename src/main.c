@@ -14,16 +14,13 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 
   // Write the current hours and minutes into a buffer
- // static char s_buffer_h[8];
- // strftime(s_buffer_h, sizeof(s_buffer_h), clock_is_24h_style() ?
-                                          //"%H" : "%I", tick_time);
+   static int s_hour[8];
+   strftime(s_hour, sizeof(s_hour), clock_is_24h_style() "%H", tick_time);
 
   static char s_buffer_m[8];
-  strftime(s_buffer_m, sizeof(s_buffer_m), clock_is_24h_style() ?
-                                          "%M" : "%M", tick_time);
+  strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
 
   // Display this time on the TextLayer
-//  text_layer_set_text(s_time_layer_h, s_buffer_h+(('0' == s_buffer_h[0])?1:0));
   text_layer_set_text(s_time_layer_m, s_buffer_m);
 }
 
@@ -43,7 +40,7 @@ static void main_window_load(Window *window) {
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer_h, GColorClear);
   text_layer_set_text_color(s_time_layer_h, GColorWhite);
-  text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02");
+  text_layer_set_text(s_time_layer_h, "22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
   text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
 
  text_layer_set_background_color(s_time_layer_m, GColorClear);
