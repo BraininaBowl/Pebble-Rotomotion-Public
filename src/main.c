@@ -23,7 +23,7 @@ static void update_time() {
                                           "%M" : "%M", tick_time);
 
   // Display this time on the TextLayer
-  text_layer_set_text(s_time_layer_h, s_buffer_h+(('0' == s_buffer_h[0])?1:0));
+//  text_layer_set_text(s_time_layer_h, s_buffer_h+(('0' == s_buffer_h[0])?1:0));
   text_layer_set_text(s_time_layer_m, s_buffer_m);
 }
 
@@ -37,13 +37,13 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect(0, (bounds.size.h-44)/2, 73, 44));
+  s_time_layer_h = text_layer_create(GRect(0, 2016, 73, 44));
   s_time_layer_m = text_layer_create(GRect(bounds.size.w - 57, (bounds.size.h-20)/2, 57, 20));
 
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer_h, GColorWhite);
   text_layer_set_text_color(s_time_layer_h, GColorBlack);
-  text_layer_set_text(s_time_layer_h, "00");
+  text_layer_set_text(s_time_layer_h, "22 \n 23 \n 00 \n 01 \n 02 \n 03");
   text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentRight);
 
  text_layer_set_background_color(s_time_layer_m, GColorClear);
