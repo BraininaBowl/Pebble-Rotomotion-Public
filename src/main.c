@@ -41,9 +41,9 @@ static void main_window_load(Window *window) {
   s_time_layer_m = text_layer_create(GRect(bounds.size.w - 57, (bounds.size.h-20)/2, 57, 20));
 
   // Improve the layout to be more like a watchface
-  text_layer_set_background_color(s_time_layer_h, GColorWhite);
-  text_layer_set_text_color(s_time_layer_h, GColorBlack);
-  text_layer_set_text(s_time_layer_h, "22 \n 23 \n 00 \n 01 \n 02 \n 03 \n 04");
+  text_layer_set_background_color(s_time_layer_h, GColorClear);
+  text_layer_set_text_color(s_time_layer_h, GColorWhite);
+  text_layer_set_text(s_time_layer_h, "22\n23\n00\n01\n02\n03\n04");
   text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentRight);
 
  text_layer_set_background_color(s_time_layer_m, GColorClear);
