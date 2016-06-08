@@ -1,8 +1,6 @@
 #include <pebble.h>
 
 static Window *s_main_window;
-static TextLayer *s_time_layer_h_p1;
-static TextLayer *s_time_layer_h_m1;
 static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
 static GFont s_time_font_h;
@@ -25,8 +23,6 @@ static void update_time() {
                                           "%M" : "%M", tick_time);
 
   // Display this time on the TextLayer
-  text_layer_set_text(s_time_layer_h_p1, (s_buffer_h+(('0' == s_buffer_h[0])?1:0))+1);
-  text_layer_set_text(s_time_layer_h_m1, (s_buffer_h+(('0' == s_buffer_h[0])?1:0))-1);
   text_layer_set_text(s_time_layer_h, s_buffer_h+(('0' == s_buffer_h[0])?1:0));
   text_layer_set_text(s_time_layer_m, s_buffer_m);
 }
@@ -41,8 +37,6 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h_p1 = text_layer_create(GRect(0, ((bounds.size.h-44)/2)-60, 73, 44));
-  s_time_layer_h_m1 = text_layer_create(GRect(0, ((bounds.size.h-44)/2)+60, 73, 44));
   s_time_layer_h = text_layer_create(GRect(0, (bounds.size.h-44)/2, 73, 44));
   s_time_layer_m = text_layer_create(GRect(bounds.size.w - 57, (bounds.size.h-20)/2, 57, 20));
 
@@ -52,17 +46,7 @@ static void main_window_load(Window *window) {
   text_layer_set_text(s_time_layer_h, "00");
   text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentRight);
 
-  text_layer_set_background_color(s_time_layer_h_p1, GColorClear);
-  text_layer_set_text_color(s_time_layer_h_p1, GColorWhite);
-  text_layer_set_text(s_time_layer_h_p1, "00");
-  text_layer_set_text_alignment(s_time_layer_h_p1, GTextAlignmentRight);
-
-  text_layer_set_background_color(s_time_layer_h_m1, GColorClear);
-  text_layer_set_text_color(s_time_layer_h_m1, GColorWhite);
-  text_layer_set_text(s_time_layer_h_m1, "00");
-  text_layer_set_text_alignment(s_time_layer_h_m1, GTextAlignmentRight);
-
-  text_layer_set_background_color(s_time_layer_m, GColorClear);
+ text_layer_set_background_color(s_time_layer_m, GColorClear);
   text_layer_set_text_color(s_time_layer_m, GColorWhite);
   text_layer_set_text(s_time_layer_m, "00");
   text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentLeft);
@@ -73,14 +57,10 @@ static void main_window_load(Window *window) {
 
   // Apply to TextLayer
   text_layer_set_font(s_time_layer_h, s_time_font_h);
-  text_layer_set_font(s_time_layer_h_p1, s_time_font_h);
-  text_layer_set_font(s_time_layer_h_m1, s_time_font_h);
   text_layer_set_font(s_time_layer_m, s_time_font_m);
 
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
-  layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h_p1));
-  layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h_m1));
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 
   // Create GBitmap
@@ -100,8 +80,6 @@ static void main_window_load(Window *window) {
 static void main_window_unload(Window *window) {
   // Destroy TextLayer
   text_layer_destroy(s_time_layer_h);
-  text_layer_destroy(s_time_layer_h_p1);
-  text_layer_destroy(s_time_layer_h_m1);
   text_layer_destroy(s_time_layer_m);
 
   // Unload GFont
@@ -114,7 +92,6 @@ static void main_window_unload(Window *window) {
 
   // Destroy BitmapLayer
   bitmap_layer_destroy(s_background_layer);
-
 
 }
 
