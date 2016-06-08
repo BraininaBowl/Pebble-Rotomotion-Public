@@ -14,7 +14,7 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 
   // Write the current hours and minutes into a buffer
-   static int s_hour[8];
+   static char s_hour[8];
    strftime(s_hour, sizeof(s_hour), clock_is_24h_style() "%H", tick_time);
 
   static char s_buffer_m[8];
