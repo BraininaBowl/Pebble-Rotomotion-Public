@@ -14,14 +14,17 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 
   // Write the current hours and minutes into a buffer
-   static char s_hour[8];
-   strftime(s_hour, sizeof(s_hour),"%H", tick_time);
+   static char s_buffer_hour[8];
+   strftime(s_buffer_hour, sizeof(s_buffer_hour),"%H", tick_time);
+   static int s_hour = ((s_buffer_hour[0] - '0')*10)+s_buffer_hour[1] - '0';
 
   static char s_buffer_m[8];
   strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
 
   // Display this time on the TextLayer
   text_layer_set_text(s_time_layer_m, s_buffer_m);
+
+  text_layer_set_text(s_time_layer_h, s_hour);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
