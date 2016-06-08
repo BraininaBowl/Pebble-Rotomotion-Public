@@ -23,8 +23,8 @@ static void update_time() {
 Layer *layer_h = text_layer_get_layer(s_time_layer_h);
 
    // The start and end frames 
-GRect start = GRect(30,0-13-((s_hour-1)*36), 43, 1200);
-GRect finish = GRect(30,0-13-(s_hour*36), 43, 1200);
+GRect start = GRect(30,0-13-((s_hour-1)*38), 43, 1200);
+GRect finish = GRect(30,0-13-(s_hour*38), 43, 1200);
 
 // Animate the Layer
 PropertyAnimation *prop_anim = property_animation_create_layer_frame(layer_h, &start, &finish);
