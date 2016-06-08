@@ -37,14 +37,14 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect(0, 0, 73, 2016));
+  s_time_layer_h = text_layer_create(GRect(30, 0, 43, 2016));
   s_time_layer_m = text_layer_create(GRect(bounds.size.w - 57, (bounds.size.h-20)/2, 57, 20));
 
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer_h, GColorClear);
   text_layer_set_text_color(s_time_layer_h, GColorWhite);
-  text_layer_set_text(s_time_layer_h, "22\n23\n00\n01\n02\n03\n04");
-  text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentRight);
+  text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02");
+  text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
 
  text_layer_set_background_color(s_time_layer_m, GColorClear);
   text_layer_set_text_color(s_time_layer_m, GColorWhite);
