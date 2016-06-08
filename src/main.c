@@ -14,9 +14,9 @@ static void update_time() {
   struct tm *tick_time = localtime(&temp);
 
   // Write the current hours and minutes into a buffer
-  static char s_buffer_h[8];
-  strftime(s_buffer_h, sizeof(s_buffer_h), clock_is_24h_style() ?
-                                          "%H" : "%I", tick_time);
+ // static char s_buffer_h[8];
+ // strftime(s_buffer_h, sizeof(s_buffer_h), clock_is_24h_style() ?
+                                          //"%H" : "%I", tick_time);
 
   static char s_buffer_m[8];
   strftime(s_buffer_m, sizeof(s_buffer_m), clock_is_24h_style() ?
@@ -43,7 +43,7 @@ static void main_window_load(Window *window) {
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer_h, GColorWhite);
   text_layer_set_text_color(s_time_layer_h, GColorBlack);
-  text_layer_set_text(s_time_layer_h, '22 \n 23 \n 00 \n 01 \n 02 \n 03');
+  text_layer_set_text(s_time_layer_h, "22 \n 23 \n 00 \n 01 \n 02 \n 03 \n 04");
   text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentRight);
 
  text_layer_set_background_color(s_time_layer_m, GColorClear);
