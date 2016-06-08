@@ -23,8 +23,8 @@ static void update_time() {
 Layer *layer_h = text_layer_get_layer(s_time_layer_h);
 
    // The start and end frames 
-GRect start = GRect(30,0-13-((s_hour-1)*36), 43, 1016);
-GRect finish = GRect(30,0-13-(s_hour*36), 43, 1016);
+GRect start = GRect(30,0-11-((s_hour-1)*38), 43, 1116);
+GRect finish = GRect(30,0-11-(s_hour*38), 43, 1116);
 
 // Animate the Layer
 PropertyAnimation *prop_anim = property_animation_create_layer_frame(layer_h, &start, &finish);
@@ -62,7 +62,7 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect(30, 0, 43, 1016));
+  s_time_layer_h = text_layer_create(GRect(30, 0, 43, 1116));
   s_time_layer_m = text_layer_create(GRect(bounds.size.w - 57, (bounds.size.h-20)/2, 57, 20));
 
   // Improve the layout to be more like a watchface
@@ -77,7 +77,7 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentLeft);
 	
   // Create GFont
-  s_time_font_h = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_HOUR_36));
+  s_time_font_h = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_HOUR_38));
   s_time_font_m = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_MIN_16));
 
   // Apply to TextLayer
