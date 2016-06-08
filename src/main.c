@@ -24,7 +24,7 @@ GRect start = GRect(30,0-13-((s_hour-1)*36), 43, 1016);
 GRect finish = GRect(30,0-13-(s_hour*36), 43, 1016);
 
 // Animate the Layer
-PropertyAnimation *prop_anim = property_animation_create_layer_frame(*s_time_layer_h, &start, &finish);
+PropertyAnimation *prop_anim = property_animation_create_layer_frame(s_time_layer_h, &start, &finish);
 
 // Get the Animation
 Animation *anim = property_animation_get_animation(prop_anim);
