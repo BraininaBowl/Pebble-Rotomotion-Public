@@ -15,7 +15,7 @@ static void update_time() {
 
   // Write the current hours and minutes into a buffer
    static char s_hour[8];
-   strftime(s_hour, sizeof(s_hour), clock_is_24h_style() "%H", tick_time);
+   strftime(s_hour, sizeof(s_hour),"%H", tick_time);
 
   static char s_buffer_m[8];
   strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
