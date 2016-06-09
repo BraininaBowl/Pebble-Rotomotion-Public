@@ -2,7 +2,7 @@
     "author": "Brain in a Bowl",
     "dependencies": {},
     "keywords": [],
-    "name": "Ruler",
+    "name": "ruler",
     "pebble": {
         "capabilities": [
             ""
@@ -12,41 +12,7 @@
         "messageKeys": {},
         "projectType": "native",
         "resources": {
-            "media": [
-                {
-                    "file": "images/S_PATTERN_LARGE_FLAT",
-                    "name": "S_PATTERN_LARGE_FLAT",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/S_PATTERN_LARGE",
-                    "name": "S_PATTERN_LARGE",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/S_PATTERN",
-                    "name": "S_PATTERN",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "characterRegex": "[0-9]",
-                    "file": "fonts/MIN",
-                    "name": "MIN_16",
-                    "targetPlatforms": null,
-                    "trackingAdjust": 2,
-                    "type": "font"
-                },
-                {
-                    "characterRegex": "[0-9]",
-                    "file": "fonts/HOUR",
-                    "name": "HOUR_36",
-                    "targetPlatforms": null,
-                    "type": "font"
-                }
-            ]
+            "media": []
         },
         "sdkVersion": "3",
         "targetPlatforms": [
