@@ -4,7 +4,7 @@ static Window *s_main_window;
 static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
 
-static void update_time() {
+static void update_time(Window *window) {
   // Get a tm structure
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
@@ -30,7 +30,7 @@ static void update_time() {
 	
 
    // The start and end frames
-  Layer *window_layer = window_get_root_layer(Window);
+  Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
 	GRect start_h = GRect((bounds.size.w/2)-43,0-12-((s_hour-1)*36), 55, 1200);
@@ -137,7 +137,7 @@ static void init() {
   window_stack_push(s_main_window, true);
 
   // Make sure the time is displayed from the start
-  update_time();
+  update_time(Window *window);
 
   // Register with TickTimerService
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
