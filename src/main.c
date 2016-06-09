@@ -34,11 +34,11 @@ Layer *root_layer = window_get_root_layer(s_main_window);
 
   GRect bounds = layer_get_bounds(root_layer);
 
-	GRect start_h = GRect((bounds.size.w/2)-43,0-12-((s_hour-1)*36), 55, 1200);
+	GRect start_h = GRect((bounds.size.w/2)-55,0-12-((s_hour-1)*36), 55, 1200);
 	if(s_minute < 1) {
-	  GRect start_h = GRect((bounds.size.w/2)-43,0-12-(s_hour*36), 55, 1200);
+	  GRect start_h = GRect((bounds.size.w/2)-55,0-12-(s_hour*36), 55, 1200);
 		}
-	GRect finish_h = GRect((bounds.size.w/2)-43,0-12-(s_hour*36), 55, 1200);
+	GRect finish_h = GRect((bounds.size.w/2)-55,0-12-(s_hour*36), 55, 1200);
 	
 	GRect start_m = GRect((bounds.size.w/2),0-10-((s_minute-1)*20), 30, 1888);
 	GRect finish_m = GRect((bounds.size.w/2),0-10-(s_minute*20), 30, 1888);
@@ -88,7 +88,7 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect((bounds.size.w/2)-43, 0, 43, 1216));
+  s_time_layer_h = text_layer_create(GRect((bounds.size.w/2)-55, 0, 55, 1216));
   s_time_layer_m = text_layer_create(GRect((bounds.size.w/2), 0, 30, 1488));
 
   // Improve the layout to be more like a watchface
