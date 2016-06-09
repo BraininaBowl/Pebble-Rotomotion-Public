@@ -30,7 +30,7 @@ static void update_time() {
 	
 
    // The start and end frames
-  Layer *window_layer = window_get_root_layer(window);
+  Layer *window_layer = window_get_root_layer(Window);
   GRect bounds = layer_get_bounds(window_layer);
 
 	GRect start_h = GRect((bounds.size.w/2)-43,0-12-((s_hour-1)*36), 55, 1200);
