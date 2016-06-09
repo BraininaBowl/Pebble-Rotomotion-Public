@@ -4,7 +4,7 @@ static Window *s_main_window;
 static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
 
-static void update_time(Window *window) {
+static void update_time() {
   // Get a tm structure
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
