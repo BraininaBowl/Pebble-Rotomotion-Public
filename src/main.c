@@ -3,6 +3,8 @@
 static Window *s_main_window;
 static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
+static BitmapLayer *s_background_layer;
+static GBitmap *s_background_bitmap;
 
 static void update_time() {
   // Get a tm structure
@@ -110,6 +112,22 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 
+ // Create GBitmap
+  s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_ARROWS);
+
+  // Create BitmapLayer to display the GBitmap
+  s_background_layer = bitmap_layer_create(
+  			GRect(0, 0, bounds.size.w, bounds.size.h));
+
+  // Set the bitmap onto the layer and add to the window
+  bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+  bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
+  layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
+
+
+
+
+
 }
 
 	
@@ -117,6 +135,14 @@ static void main_window_unload(Window *window) {
   // Destroy TextLayer
   text_layer_destroy(s_time_layer_h);
   text_layer_destroy(s_time_layer_m);
+
+  // Destroy GBitmap
+  gbitmap_destroy(s_background_bitmap);
+
+  // Destroy BitmapLayer
+  bitmap_layer_destroy(s_background_layer);
+
+
 }
 
 
