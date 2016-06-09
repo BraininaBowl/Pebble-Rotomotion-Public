@@ -30,16 +30,16 @@ static void update_time() {
 	
 
    // The start and end frames
-	GRect start_h = GRect(30,0-12-(s_hour*36), 55, 1200);
+GRect bounds = layer_get_bounds(window_layer);
+
+	GRect start_h = GRect((bounds.size.w/2)-43,0-12-((s_hour-1)*36), 55, 1200);
 	if(s_minute < 1) {
-	  GRect start_h = GRect(30,0-12-(s_hour*36), 55, 1200);
-		} else {
-	  GRect start_h = GRect(30,0-12-((s_hour-1)*36), 55, 1200);
-	}
-	GRect finish_h = GRect(30,0-12-(s_hour*36), 55, 1200);
+	  GRect start_h = GRect((bounds.size.w/2)-43,0-12-(s_hour*36), 55, 1200);
+		}
+	GRect finish_h = GRect((bounds.size.w/2)-43,0-12-(s_hour*36), 55, 1200);
 	
-	GRect start_m = GRect(80,0-10-((s_minute-1)*20), 30, 1888);
-	GRect finish_m = GRect(80,0-10-(s_minute*20), 30, 1888);
+	GRect start_m = GRect((bounds.size.w/2),0-10-((s_minute-1)*20), 30, 1888);
+	GRect finish_m = GRect((bounds.size.w/2),0-10-(s_minute*20), 30, 1888);
 	
 
 	// Animate the Layer
@@ -86,8 +86,8 @@ static void main_window_load(Window *window) {
   GRect bounds = layer_get_bounds(window_layer);
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect(35, 0, 43, 1216));
-  s_time_layer_m = text_layer_create(GRect(80, 0, 30, 1488));
+  s_time_layer_h = text_layer_create(GRect((bounds.size.w/2)-43, 0, 43, 1216));
+  s_time_layer_m = text_layer_create(GRect((bounds.size.w/2), 0, 30, 1488));
 
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer_h, GColorClear);
