@@ -37,7 +37,7 @@ Layer *root_layer = window_get_root_layer(s_main_window);
 
 
 GRect start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-(s_hour*36), 47, 1200);
-	if(s_minute <1) {
+	if(s_minute == 0) {
 	  GRect start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-((s_hour-1)*36), 47, 1200);
 		} else {
 GRect start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-(s_hour*36), 47, 1200);
