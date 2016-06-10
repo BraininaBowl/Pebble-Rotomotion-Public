@@ -5,6 +5,7 @@ static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
 static BitmapLayer *s_background_layer;
 static GBitmap *s_background_bitmap;
+static int firstrun = 1;
 
 static void update_time() {
   // Get a tm structure
@@ -36,12 +37,13 @@ Layer *root_layer = window_get_root_layer(s_main_window);
   GRect bounds = layer_get_bounds(root_layer);
 
 
-GRect start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-(s_hour*36), 47, 1200);
-	if(s_minute == 0) {
-	  GRect start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-((s_hour-1)*36), 47, 1200);
-		} else {
-GRect start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-(s_hour*36), 47, 1200);
-}
+	GRect start_h;
+	if(s_minute == 00 || firstrun == 1) {
+	  	start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-((s_hour-1)*36), 47, 1200);
+		firstrun = 0;
+	} else {
+		start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-(s_hour*36), 47, 1200);
+	}
 	GRect finish_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-(s_hour*36), 47, 1200);
 	
 	GRect start_m = GRect((bounds.size.w/2)+10,(bounds.size.h/2)-94-((s_minute-1)*20), 27, 1888);

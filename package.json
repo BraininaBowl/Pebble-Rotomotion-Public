@@ -2,12 +2,12 @@
     "author": "Brain in a Bowl",
     "dependencies": {},
     "keywords": [],
-    "name": "ruler",
+    "name": "ruler-shaded",
     "pebble": {
         "capabilities": [
             ""
         ],
-        "displayName": "Ruler",
+        "displayName": "Ruler Shaded",
         "enableMultiJS": true,
         "messageKeys": {},
         "projectType": "native",
@@ -27,7 +27,7 @@
             "basalt",
             "chalk"
         ],
-        "uuid": "0e706d69-cb1e-411a-b613-093beda61a43",
+        "uuid": "298802c1-a48d-4c3a-a47e-f72a9dcc901a",
         "watchapp": {
             "watchface": true
         }
