@@ -8,7 +8,6 @@ static GBitmap *s_background_bitmap;
 static Layer *s_canvas;
 static int firstrun = 1;
 
-
 // Bitmap data manipulation
 
 void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y, int x, GColor color) {
@@ -58,7 +57,76 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
 }
 
 
+// Shader stuff goes here
+void layer_update_proc(Layer *layer, GContext *ctx) {
 
+  // Get the framebuffer
+	GBitmap *fb = graphics_capture_frame_buffer(ctx);
+	GBitmapFormat fb_format = gbitmap_get_format(fb);
+//	uint8_t *fb_data = gbitmap_get_data(fb);
+
+	// Manipulate the image data...
+	GRect bounds = layer_get_bounds(layer);
+
+	//set variables for calculations
+		int xToUse;
+		int xToGet;
+		int yToUse;
+		int yToGet;
+		GColor colorToSet;
+
+	
+// Iterate over all rows
+	for(int y = 0; y < bounds.size.h; y++) {
+	  // Get this row's range and data
+	  GBitmapDataRowInfo info = gbitmap_get_data_row_info(fb, y);
+
+		if (y < (bounds.size.h/2)) {
+			// top half
+			yToUse = y;
+			yToGet = y - (9/(yToUse))+1;
+		} else {
+			// bottom half
+			yToUse = bounds.size.h - y;
+			yToGet = y + (9/(yToUse))+1;
+		}
+		
+		
+	  // Iterate over all visible columns
+		  for(int x = 0; x <= info.max_x; x++) {
+			  
+			  // Split in left and right halves
+			  if (x < ((info.min_x + info.max_x) / 2) + 0) {
+				  // left half: Work from right to left
+				  xToUse = ((info.min_x + info.max_x) / 2) + 0 - x;
+				  xToGet = xToUse - (((x)*2)/(yToUse*0.5));
+			  } else {
+				  // right half: Work from left to right
+				  xToUse = x;
+				  xToGet = x + (((xToUse - ((info.min_x + info.max_x) / 2) + 0)*2)/(yToUse*0.5));
+			  }
+			  
+			  // is the target pixel inside the area?
+			  if (xToGet < 1 || xToGet > info.max_x || yToGet < 1 || yToGet > bounds.size.h){
+				  // No, so we'll use white
+				  colorToSet = GColorBlack;
+			  } else {
+				  // Yes, so get the target pixel color
+				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			  }
+			  
+			  
+			  // Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);
+
+			  }
+	  	}
+	
+	
+
+  // Finally, release the framebuffer
+  graphics_release_frame_buffer(ctx, fb);
+}
 
 
 
@@ -147,49 +215,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
 }
 
-// Shader stuff goes here
-void layer_update_proc(Layer *layer, GContext *ctx) {
 
-  // Get the framebuffer
-	GBitmap *fb = graphics_capture_frame_buffer(ctx);
-	GBitmapFormat fb_format = gbitmap_get_format(fb);
-//	uint8_t *fb_data = gbitmap_get_data(fb);
-
-	// Manipulate the image data...
-	GRect bounds = layer_get_bounds(layer);
-		
-// Iterate over all rows
-	for(int y = 0; y < bounds.size.h; y++) {
-	  // Get this row's range and data
-	  GBitmapDataRowInfo info = gbitmap_get_data_row_info(fb, y);
-
-	  // Iterate over all visible columns
-		  for(int x = 0; x <= info.max_x; x++) {
-			  int xToUse;
-			  int xToGet;
-			  if (x < ((info.min_x + info.max_x) / 2) + 10) {
-				  xToUse = ((info.min_x + info.max_x) / 2) + 10 - x;
-				  xToGet = xToUse - (((xToUse/(y+10))) * (73/(0.8*(y+1)))+5);
-			  } else {
-				  xToUse = x;
-				  xToGet = xToUse + (((xToUse/(y+10))) * (73/(0.8*(y+1)))+5);
-			  }
-			  
-			  
-		 		set_bitmap_pixel_color(fb, fb_format, y, xToUse, get_bitmap_pixel_color(fb, fb_format, y, xToGet));
-				  
-				  
-				  // make pixel x the color of pixel x + ((30-y)/2)
-//			  } else if (y > bounds.size.h - 30) {
-
-			  }
-	  	}
-	
-	
-
-  // Finally, release the framebuffer
-  graphics_release_frame_buffer(ctx, fb);
-}
 
 
 
@@ -206,12 +232,12 @@ static void main_window_load(Window *window) {
 
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer_h, GColorClear);
-  text_layer_set_text_color(s_time_layer_h, GColorBlack);
+  text_layer_set_text_color(s_time_layer_h, GColorWhite);
   text_layer_set_text(s_time_layer_h, "22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
   text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
 
  text_layer_set_background_color(s_time_layer_m, GColorClear);
-  text_layer_set_text_color(s_time_layer_m, GColorBlack);
+  text_layer_set_text_color(s_time_layer_m, GColorWhite);
   text_layer_set_text(s_time_layer_m, "56\n57\n58\n59\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n00\n01\n02\n03\n04");
   text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentCenter);
 	
@@ -267,7 +293,7 @@ static void init() {
   s_main_window = window_create();
 
   // Set the background color
-  window_set_background_color(s_main_window, GColorWhite);
+  window_set_background_color(s_main_window, GColorBlack);
 
   // Set handlers to manage the elements inside the Window
   window_set_window_handlers(s_main_window, (WindowHandlers) {
