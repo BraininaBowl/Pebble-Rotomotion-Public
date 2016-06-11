@@ -16,7 +16,11 @@
                 {
                     "file": "images/ARROWS",
                     "name": "ARROWS",
-                    "targetPlatforms": null,
+                    "targetPlatforms": [
+                        "aplite",
+                        "basalt",
+                        "chalk"
+                    ],
                     "type": "bitmap"
                 }
             ]

@@ -40,6 +40,14 @@ graphics_context_set_fill_color(ctx, GColorClear);
 }
 
 // Bitmap data manipulation
+// **************************************************************************
+// **************************************************************************
+//
+// The bitmap code is based on the Pebble Compass code by orviwan
+// https://github.com/orviwan/pebble-compass/blob/master/src/bitmap.c
+//
+// **************************************************************************
+// **************************************************************************
 void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y, int x, GColor color) {
   GBitmapDataRowInfo row = gbitmap_get_data_row_info(bitmap, y);
   if ((x >= row.min_x) && (x <= row.max_x)) {
@@ -62,12 +70,10 @@ void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y,
     }
   }
 }
-
 GColor get_bitmap_color_from_palette_index(GBitmap *bitmap, uint8_t index) {
   GColor *palette = gbitmap_get_palette(bitmap);
   return palette[index];
 }
-
 GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y, int x) {
   GBitmapDataRowInfo row = gbitmap_get_data_row_info(bitmap, y);
   switch(bitmap_format) {
@@ -86,19 +92,18 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
   return GColorClear;
 }
 
-
 // Shader stuff goes here
 void layer_update_proc(Layer *layer, GContext *ctx) {
 
   // Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
 	GBitmapFormat fb_format = gbitmap_get_format(fb);
-//	uint8_t *fb_data = gbitmap_get_data(fb);
 
 	// Manipulate the image data...
 	GRect bounds = layer_get_bounds(layer);
 
 	//set variables for calculations
+		int rowHalf;
 		int xToUse;
 		int xToGet;
 		int yToUse;
@@ -109,8 +114,9 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 	
 // Iterate over all rows
 	for(int y = 0; y < bounds.size.h; y++) {
-	  // Get this row's range and data
-	  GBitmapDataRowInfo info = gbitmap_get_data_row_info(fb, y);
+	  	// Get this row's range and data
+	  	GBitmapDataRowInfo info = gbitmap_get_data_row_info(fb, y);
+		rowHalf = (info.min_x + info.max_x) / 2 ;	
 
 		if (y < (bounds.size.h/2)) {
 			// top half
@@ -124,18 +130,19 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 			yToGet = yToSet + (64/(yToUse));
 		} 
 		
+		
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= info.max_x; x++) {
 			  // Split in left and right halves
-			  if (x < ((info.min_x + info.max_x) / 2) + 0) {
+			  if (x < rowHalf + 0) {
 				  // left half: Work from right to left
-				  xToUse = ((info.min_x + info.max_x) / 2) + 0 - x;
+				  xToUse = rowHalf + 0 - x;
 				  xToGet = xToUse - ((x*3)/(yToUse));
 
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x + (((xToUse - ((info.min_x + info.max_x) / 2) + 0)*3)/(yToUse));
+				  xToGet = x + (((xToUse - rowHalf + 0)*3)/(yToUse));
 			  }
 			  
 			  
