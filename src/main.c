@@ -6,10 +6,40 @@ static TextLayer *s_time_layer_m;
 static BitmapLayer *s_background_layer;
 static GBitmap *s_background_bitmap;
 static Layer *s_canvas;
+static Layer *s_canvas_line;
 static int firstrun = 1;
 
-// Bitmap data manipulation
+// Draw border to hide shader noise
+static void canvas_update_proc(Layer *layer, GContext *ctx) {
+  // Custom drawing happens here!
+// Set the line color
+graphics_context_set_stroke_color(ctx, GColorBlack);
 
+// Set the fill color
+graphics_context_set_fill_color(ctx, GColorClear);
+	
+	// Set the stroke width (must be an odd integer value)
+
+	
+	GRect bounds = layer_get_bounds(layer);
+
+	#if defined(PBL_RECT)
+	// Rectengular screen: Draw a rectangle
+	graphics_context_set_stroke_width(ctx, 14);
+	graphics_draw_rect(ctx, bounds);
+	#elif defined(PBL_ROUND)
+	// Rectengular screen: Draw a rectangle
+	graphics_context_set_stroke_width(ctx, 16);
+	GPoint center = GPoint(bounds.size.h/2, bounds.size.w/2);
+	uint16_t radius = bounds.size.h/2;
+
+	// Draw the outline of a circle
+	graphics_draw_circle(ctx, center, radius);
+	#endif
+
+}
+
+// Bitmap data manipulation
 void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y, int x, GColor color) {
   GBitmapDataRowInfo row = gbitmap_get_data_row_info(bitmap, y);
   if ((x >= row.min_x) && (x <= row.max_x)) {
@@ -73,6 +103,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 		int xToGet;
 		int yToUse;
 		int yToGet;
+		int yToSet;
 		GColor colorToSet;
 
 	
@@ -83,54 +114,46 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 
 		if (y < (bounds.size.h/2)) {
 			// top half
-			yToUse = y;
-			yToGet = y - (9/(yToUse))+1;
+			yToUse = (bounds.size.h/2) - y;
+			yToSet = (bounds.size.h/2) - y;
+			yToGet = yToSet - (64/(yToUse));
 		} else {
 			// bottom half
 			yToUse = bounds.size.h - y;
-			yToGet = y + (9/(yToUse))+1;
-		}
-		
+			yToSet = y;
+			yToGet = yToSet + (64/(yToUse));
+		} 
 		
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= info.max_x; x++) {
-			  
 			  // Split in left and right halves
 			  if (x < ((info.min_x + info.max_x) / 2) + 0) {
 				  // left half: Work from right to left
 				  xToUse = ((info.min_x + info.max_x) / 2) + 0 - x;
-				  xToGet = xToUse - (((x)*2)/(yToUse*0.5));
+				  xToGet = xToUse - ((x*3)/(yToUse));
+
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x + (((xToUse - ((info.min_x + info.max_x) / 2) + 0)*2)/(yToUse*0.5));
+				  xToGet = x + (((xToUse - ((info.min_x + info.max_x) / 2) + 0)*3)/(yToUse));
 			  }
 			  
+			  
 			  // is the target pixel inside the area?
-			  if (xToGet < 1 || xToGet > info.max_x || yToGet < 1 || yToGet > bounds.size.h){
-				  // No, so we'll use white
+			  if (xToGet < 0 || xToGet > info.max_x || yToGet < 0 || yToGet > bounds.size.h ){
+				  // No, so we'll use the background color
 				  colorToSet = GColorBlack;
 			  } else {
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			  }
-			  
-			  
 			  // Now we set the pixel to the right color
-		 		set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);
-
+		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
 	  	}
-	
-	
-
   // Finally, release the framebuffer
   graphics_release_frame_buffer(ctx, fb);
 }
-
-
-
-
 
 
 
@@ -166,15 +189,15 @@ Layer *root_layer = window_get_root_layer(s_main_window);
 
 	GRect start_h;
 	if(s_minute == 00 || firstrun == 1) {
-	  	start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-((s_hour-1)*36), 47, 1200);
+	  	start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-132-((s_hour-1)*36), 47, 1400);
 		firstrun = 0;
 	} else {
-		start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-(s_hour*36), 47, 1200);
+		start_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-132-(s_hour*36), 47, 1400);
 	}
-	GRect finish_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-96-(s_hour*36), 47, 1200);
+	GRect finish_h = GRect((bounds.size.w/2)-47+10,(bounds.size.h/2)-132-(s_hour*36), 47, 1400);
 	
-	GRect start_m = GRect((bounds.size.w/2)+10,(bounds.size.h/2)-94-((s_minute-1)*20), 27, 1888);
-	GRect finish_m = GRect((bounds.size.w/2)+10,(bounds.size.h/2)-94-(s_minute*20), 27, 1888);
+	GRect start_m = GRect((bounds.size.w/2)+10,(bounds.size.h/2)-114-((s_minute-1)*20), 27, 1888);
+	GRect finish_m = GRect((bounds.size.w/2)+10,(bounds.size.h/2)-114-(s_minute*20), 27, 1888);
 	
 
 	// Animate the Layer
@@ -215,10 +238,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
 }
 
-
-
-
-
 static void main_window_load(Window *window) {
 	
 	
@@ -233,12 +252,12 @@ static void main_window_load(Window *window) {
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer_h, GColorClear);
   text_layer_set_text_color(s_time_layer_h, GColorWhite);
-  text_layer_set_text(s_time_layer_h, "22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
+  text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
   text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
 
  text_layer_set_background_color(s_time_layer_m, GColorClear);
   text_layer_set_text_color(s_time_layer_m, GColorWhite);
-  text_layer_set_text(s_time_layer_m, "56\n57\n58\n59\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n00\n01\n02\n03\n04");
+  text_layer_set_text(s_time_layer_m, "55\n56\n57\n58\n59\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n00\n01\n02\n03\n04");
   text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentCenter);
 	
 
@@ -249,6 +268,13 @@ static void main_window_load(Window *window) {
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
+	
+	
+	// set canvas for shader
+	s_canvas = layer_create(bounds);
+  	layer_set_update_proc(s_canvas, layer_update_proc);
+  	layer_add_child(window_layer, s_canvas);
+	
 
  // Create GBitmap
   s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_ARROWS);
@@ -262,15 +288,15 @@ static void main_window_load(Window *window) {
   bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
 
-	// set canvas for shader
-	s_canvas = layer_create(bounds);
-  layer_set_update_proc(s_canvas, layer_update_proc);
-  layer_add_child(window_layer, s_canvas);
+	
+	// Create canvas line layer
+	s_canvas_line = layer_create(bounds);
+	// Assign the custom drawing procedure
+	layer_set_update_proc(s_canvas_line, canvas_update_proc);
 
-
-
+	// Add to Window
+	layer_add_child(window_get_root_layer(window), s_canvas_line);
 }
-
 	
 static void main_window_unload(Window *window) {
   // Destroy TextLayer
@@ -285,7 +311,10 @@ static void main_window_unload(Window *window) {
 
 	// Destroy Canvas
 	layer_destroy(s_canvas);
-
+	
+	// Destroy Canvas line
+	layer_destroy(s_canvas_line);
+	
 }
 
 static void init() {
