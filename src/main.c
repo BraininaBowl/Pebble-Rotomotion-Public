@@ -149,12 +149,14 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
+yToGet = yToSet - (64/(yToUse));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-		} 
 yToGet = yToSet + (64/(yToUse));
+		} 
+
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
