@@ -18,6 +18,11 @@ static const GPathInfo ARROW_RIGHT_PATH_POINTS = {
 	};
 static int firstrun = 1;
 
+// set variables for shader
+		int rowHalf;
+		int rowFull;
+		int colHalf;
+		int colFull;
 
 
 // Customizations
@@ -282,6 +287,12 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 static void main_window_load(Window *window) {
 	
+
+// set variables for shader
+		rowHalf = bounds.size.w/2;
+		rowFull = bounds.size.w;
+		colHalf = bounds.size.h/2;
+		colFull = bounds.size.h;
 	
   // Get information about the Window
   Layer *window_layer = window_get_root_layer(window);
@@ -316,11 +327,6 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 	
 
-// set variables for shader
-		int rowHalf = bounds.size.w/2;
-		int rowFull = bounds.size.w;
-		int colHalf = bounds.size.h/2;
-		int colFull = bounds.size.h;
 	
 	// set canvas for shader
 	s_canvas = layer_create(bounds);
