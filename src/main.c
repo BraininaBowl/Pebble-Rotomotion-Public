@@ -169,7 +169,7 @@ yToGet = yToSet + (64/(yToUse));
 				  xToGet = x + ((xToUse - rowHalf + 0)*3)/(yToUse);
 			  }
 			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > bounds.size.h ){
+			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
 				  colorToSet = COLORBG;
 			  } else {
@@ -287,6 +287,9 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 static void main_window_load(Window *window) {
 	
+  // Get information about the Window
+  Layer *window_layer = window_get_root_layer(window);
+  GRect bounds = layer_get_bounds(window_layer);
 
 // set variables for shader
 		rowHalf = bounds.size.w/2;
@@ -294,9 +297,6 @@ static void main_window_load(Window *window) {
 		colHalf = bounds.size.h/2;
 		colFull = bounds.size.h;
 	
-  // Get information about the Window
-  Layer *window_layer = window_get_root_layer(window);
-  GRect bounds = layer_get_bounds(window_layer);
 	
   // Create the TextLayer with specific bounds
   s_time_layer_h = text_layer_create(GRect((bounds.size.w/2)-49+xOffset, (bounds.size.h/2)-84, 47, 1216));
