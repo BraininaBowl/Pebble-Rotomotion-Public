@@ -2,12 +2,12 @@
     "author": "Brain in a Bowl",
     "dependencies": {},
     "keywords": [],
-    "name": "ruler-shaded",
+    "name": "rotomotion-black",
     "pebble": {
         "capabilities": [
             ""
         ],
-        "displayName": "Ruler Shaded",
+        "displayName": "Rotomotion Black",
         "enableMultiJS": true,
         "messageKeys": {},
         "projectType": "native",
