@@ -126,14 +126,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
 	GBitmapFormat fb_format = gbitmap_get_format(fb);
 
-	// Manipulate the image data...
-	GRect bounds = layer_get_bounds(layer);
-
 	//set variables for calculations
-		int rowHalf = bounds.size.w/2;
-		int rowFull = bounds.size.w;
-		int colHalf = bounds.size.h/2;
-		int colFull = bounds.size.h;
 		int xToUse;
 		int xToGet;
 		int yToUse;
@@ -143,24 +136,23 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 
 	
 // Iterate over all rows
-	for(int y = 0; y < bounds.size.h; y++) {
+	for(int y = 0; y < colFull; y++) {
 	  	// Get this row's range and data
 	  	GBitmapDataRowInfo info = gbitmap_get_data_row_info(fb, y);
 
-		if (y < (bounds.size.h/2)) {
+		if (y < colHalf) {
 			// top half
-			yToUse = (bounds.size.h/2) - y;
-			yToSet = (bounds.size.h/2) - y;
-			yToGet = yToSet - (64/(yToUse));
+			yToUse = colHalf - y;
+			yToSet = colHalf - y;
 		} else {
 			// bottom half
-			yToUse = bounds.size.h - y;
+			yToUse = colFull - y;
 			yToSet = y;
-			yToGet = yToSet + (64/(yToUse));
 		} 
+yToGet = yToSet + (64/(yToUse));
 
 	  // Iterate over all visible columns
-		  for(int x = 0; x <= info.max_x; x++) {
+		  for(int x = 0; x <= rowFull; x++) {
 			  // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
@@ -172,7 +164,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 				  xToGet = x + ((xToUse - rowHalf + 0)*3)/(yToUse);
 			  }
 			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet > info.max_x || yToGet < 0 || yToGet > bounds.size.h ){
+			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > bounds.size.h ){
 				  // No, so we'll use the background color
 				  colorToSet = COLORBG;
 			  } else {
@@ -323,6 +315,12 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 	
+
+// set variables for shader
+		int rowHalf = bounds.size.w/2;
+		int rowFull = bounds.size.w;
+		int colHalf = bounds.size.h/2;
+		int colFull = bounds.size.h;
 	
 	// set canvas for shader
 	s_canvas = layer_create(bounds);
