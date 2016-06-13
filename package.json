@@ -14,8 +14,8 @@
         "resources": {
             "media": [
                 {
-                    "file": "images/ARROWS",
-                    "name": "ARROWS",
+                    "file": "images/DROP",
+                    "name": "DROP",
                     "targetPlatforms": [
                         "aplite",
                         "basalt",
