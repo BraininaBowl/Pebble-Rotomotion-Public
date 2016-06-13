@@ -8,12 +8,14 @@ static GBitmap *s_background_bitmap;
 static Layer *s_canvas;
 static Layer *s_canvas_line;
 static int firstrun = 1;
+#define COLORBG GColorBlack;
+#define COLORFR GColorWhite;
 
 // Draw border to hide shader noise
 static void canvas_update_proc(Layer *layer, GContext *ctx) {
   // Custom drawing happens here!
 // Set the line color
-graphics_context_set_stroke_color(ctx, GColorBlack);
+graphics_context_set_stroke_color(ctx, COLORBG);
 
 // Set the fill color
 graphics_context_set_fill_color(ctx, GColorClear);
@@ -149,7 +151,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet > info.max_x || yToGet < 0 || yToGet > bounds.size.h ){
 				  // No, so we'll use the background color
-				  colorToSet = GColorBlack;
+				  colorToSet = COLORBG;
 			  } else {
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
@@ -258,12 +260,12 @@ static void main_window_load(Window *window) {
 
   // Improve the layout to be more like a watchface
   text_layer_set_background_color(s_time_layer_h, GColorClear);
-  text_layer_set_text_color(s_time_layer_h, GColorWhite);
+  text_layer_set_text_color(s_time_layer_h, COLORFR);
   text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
   text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
 
  text_layer_set_background_color(s_time_layer_m, GColorClear);
-  text_layer_set_text_color(s_time_layer_m, GColorWhite);
+  text_layer_set_text_color(s_time_layer_m, COLORFR);
   text_layer_set_text(s_time_layer_m, "55\n56\n57\n58\n59\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n00\n01\n02\n03\n04");
   text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentCenter);
 	
@@ -321,6 +323,10 @@ static void main_window_unload(Window *window) {
 	
 	// Destroy Canvas line
 	layer_destroy(s_canvas_line);
+
+  // Remove defines
+ #undef COLORBG;
+ #undef COLORFR;
 	
 }
 
@@ -329,7 +335,7 @@ static void init() {
   s_main_window = window_create();
 
   // Set the background color
-  window_set_background_color(s_main_window, GColorBlack);
+  window_set_background_color(s_main_window, COLORBG);
 
   // Set handlers to manage the elements inside the Window
   window_set_window_handlers(s_main_window, (WindowHandlers) {
