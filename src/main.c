@@ -26,7 +26,6 @@ static int firstrun = 1;
 		int colHalf;
 		int colFull;
 
-
 // Customizations
 #define COLORBG GColorBlack
 #define COLORHRFR GColorWhite
@@ -38,7 +37,6 @@ static int firstrun = 1;
 static int twelveHour = 0;
 static int xOffset = 15;
 static int pmSpace = 0;
-
 
 // Draw border to hide shader noise
 static void canvas_update_proc(Layer *layer, GContext *ctx) {
@@ -223,16 +221,13 @@ static void update_time() {
   	strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
    int s_minute = ((s_buffer_m[0] - '0')*10)+s_buffer_m[1] - '0';
 
-	
    // Setup animation layer
 	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
 	Layer *layer_m = text_layer_get_layer(s_time_layer_m);
-	
 
    // The start and end frames
 	Layer *root_layer = window_get_root_layer(s_main_window);
   	GRect bounds = layer_get_bounds(root_layer);
-
 
 	GRect start_h;
 	if(s_minute == 00 || firstrun == 1) {
@@ -242,7 +237,6 @@ static void update_time() {
 		start_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-(s_hour*36), 47, 1400);
 	}
 	GRect finish_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-(s_hour*36), 47, 1400);
-	
 	GRect start_m = GRect((bounds.size.w/2)+xOffset,(bounds.size.h/2)-114-((s_minute-1)*20), 27, 1888);
 	GRect finish_m = GRect((bounds.size.w/2)+xOffset,(bounds.size.h/2)-114-(s_minute*20), 27, 1888);
 	
@@ -360,19 +354,19 @@ static void update_date() {
 	
 	// Choose parameters
 	const int delay_ms_h = 0;
-	const int delay_ms_h_back = 1500;
+	const int delay_ms_h_back = 2500;
 	const int duration_ms_h = 500;
 
 	const int delay_ms_m = 0;
-	const int delay_ms_m_back = 1500;
+	const int delay_ms_m_back = 2500;
 	const int duration_ms_m = 500;
 	
 	const int delay_ms_month = 0;
-	const int delay_ms_month_back = 1500;
+	const int delay_ms_month_back = 2500;
 	const int duration_ms_month = 500;
 
 	const int delay_ms_day = 0;
-	const int delay_ms_day_back = 1500;
+	const int delay_ms_day_back = 2500;
 	const int duration_ms_day = 500;
 	
 	// Configure the Animation's curve, delay, and duration
@@ -449,8 +443,6 @@ static void main_window_load(Window *window) {
  	s_date_container_m = text_layer_create(GRect((bounds.size.w/2)-59+xOffset, -90, 57, 80));
   	s_date_container_d = text_layer_create(GRect((bounds.size.w/2)+xOffset,  -90, 37, 80));
 
-  
-	
   // TextLayer options
   text_layer_set_background_color(s_time_layer_h, COLORHRBG);
   text_layer_set_text_color(s_time_layer_h, COLORHRFR);
@@ -527,10 +519,6 @@ static void main_window_load(Window *window) {
   	layer_set_update_proc(s_arrows, s_arrows_update_proc);
   //---add the layer to the Window layer---
   	layer_add_child(window_layer, s_arrows);
-	
-	
-	
-
 }
 	
 static void main_window_unload(Window *window) {
