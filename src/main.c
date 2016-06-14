@@ -27,15 +27,13 @@ static int firstrun = 1;
 
 // Customizations
 #define COLORBG GColorBlack
-//#define COLORHRFR GColorWhite
-//#define COLORHRBG GColorClear
-#define COLORHRBG GColorWhite
-#define COLORHRFR GColorBlack
+#define COLORHRFR GColorWhite
+#define COLORHRBG GColorClear
 #define COLORMNBG GColorClear
 #define COLORMNFR GColorWhite
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
-static int twelveHour = 1;
+static int twelveHour = 0;
 static int xOffset = 15;
 static int pmSpace = 0;
 
@@ -295,7 +293,7 @@ static void main_window_load(Window *window) {
 
 // set variables for shader
 		rowHalf = bounds.size.w/2;
-		rowFull = bounds.size.w;
+		rowFull = bounds.size.w-1;
 		colHalf = bounds.size.h/2;
 		colFull = bounds.size.h;
 	
