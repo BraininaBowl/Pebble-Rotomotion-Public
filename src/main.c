@@ -3,6 +3,8 @@
 static Window *s_main_window;
 static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
+static TextLayer *s_date_container_d;
+static TextLayer *s_date_container_m;
 static BitmapLayer *s_background_layer;
 static GBitmap *s_background_bitmap;
 static Layer *s_canvas;
@@ -28,15 +30,14 @@ static int firstrun = 1;
 // Customizations
 #define COLORBG GColorBlack
 #define COLORHRFR GColorWhite
-#define COLORHRBG GColorClear
-#define COLORMNBG GColorClear
+#define COLORHRBG GColorBlack
+#define COLORMNBG GColorBlack
 #define COLORMNFR GColorWhite
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
 static int twelveHour = 0;
 static int xOffset = 15;
 static int pmSpace = 0;
-
 
 
 // Draw border to hide shader noise
@@ -140,8 +141,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 	
 // Iterate over all rows
 	for(int y = 0; y < colFull; y++) {
-	  	// Get this row's range and data
-	  	GBitmapDataRowInfo info = gbitmap_get_data_row_info(fb, y);
+	  	
 
 		if (y < colHalf) {
 			// top half
@@ -230,8 +230,8 @@ static void update_time() {
 	
 
    // The start and end frames
-Layer *root_layer = window_get_root_layer(s_main_window);
-  GRect bounds = layer_get_bounds(root_layer);
+	Layer *root_layer = window_get_root_layer(s_main_window);
+  	GRect bounds = layer_get_bounds(root_layer);
 
 
 	GRect start_h;
@@ -259,18 +259,18 @@ Layer *root_layer = window_get_root_layer(s_main_window);
 	
 	// Choose parameters
 	const int delay_ms_h = 0;
-	const int duration_ms_h = 600;
+	const int duration_ms_h = 500;
 
 	const int delay_ms_m = 0;
-	const int duration_ms_m = 400;
+	const int duration_ms_m = 250;
 
 	
 	// Configure the Animation's curve, delay, and duration
-	animation_set_curve(anim_h, AnimationCurveEaseIn);
+	animation_set_curve(anim_h, AnimationCurveLinear);
 	animation_set_delay(anim_h, delay_ms_h);
 	animation_set_duration(anim_h, duration_ms_h);
 
-	animation_set_curve(anim_m, AnimationCurveEaseIn);
+	animation_set_curve(anim_m, AnimationCurveLinear);
 	animation_set_delay(anim_m, delay_ms_m);
 	animation_set_duration(anim_m, duration_ms_m);
 	
@@ -281,8 +281,153 @@ Layer *root_layer = window_get_root_layer(s_main_window);
 
 }
 
+static void update_date() {
+		  time_t temp = time(NULL); 
+  struct tm *tick_time = localtime(&temp);
+
+	//*****************
+	//**   ANIMATE   ** 
+	//*****************
+	
+	// Write the current hours into a buffer
+   static char s_buffer_hour[8];
+   strftime(s_buffer_hour, sizeof(s_buffer_hour),"%H", tick_time);
+   int s_hour = ((s_buffer_hour[0] - '0')*10)+s_buffer_hour[1] - '0';
+	
+	// Write the current minutes into a buffer
+  	static char s_buffer_m[8];
+  	strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
+   int s_minute = ((s_buffer_m[0] - '0')*10)+s_buffer_m[1] - '0';
+
+	// Write the current month into a buffer
+  	static char s_buffer_month[8];
+  	strftime(s_buffer_month, sizeof(s_buffer_month), "%d", tick_time);
+   int s_month = ((s_buffer_month[0] - '0')*10)+s_buffer_month[1] - '0';
+	
+	// Write the current day into a buffer
+  	static char s_buffer_day[8];
+  	strftime(s_buffer_day, sizeof(s_buffer_day), "%m", tick_time);
+   int s_day = ((s_buffer_day[0] - '0')*10)+s_buffer_day[1] - '0';
+	
+   // Setup animation layer
+	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
+	Layer *layer_m = text_layer_get_layer(s_time_layer_m);
+	Layer *layer_month = text_layer_get_layer(s_date_container_m);
+	Layer *layer_day = text_layer_get_layer(s_date_container_d);
+	
+   // The start and end frames
+	Layer *root_layer = window_get_root_layer(s_main_window);
+  	GRect bounds = layer_get_bounds(root_layer);
+
+  	GRect start_container_month = GRect((bounds.size.w/2)-59+xOffset, -90, 57, 80);
+  	GRect start_container_day = GRect((bounds.size.w/2)+xOffset,  -90, 37, 80);
+	
+	#if defined(PBL_ROUND)
+  	GRect finish_container_month = GRect((bounds.size.w/2)-59+xOffset, -4, 57, 80);
+  	GRect finish_container_day = GRect((bounds.size.w/2)+xOffset,  -4, 37, 80);
+	#elif defined(PBL_RECT)
+  	GRect finish_container_month = GRect((bounds.size.w/2)-59+xOffset, -10, 57, 80);
+  	GRect finish_container_day = GRect((bounds.size.w/2)+xOffset,  -10, 37, 80);
+	#endif	
+	
+	GRect start_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-(s_hour*36), 47, 1400);
+	GRect finish_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-(s_month*36), 47, 1400);
+	GRect start_m = GRect((bounds.size.w/2)+xOffset,(bounds.size.h/2)-114-(s_minute*20), 27, 1888);
+	GRect finish_m = GRect((bounds.size.w/2)+xOffset,(bounds.size.h/2)-114-(s_day*20), 27, 1888);
+
+	// Animate the Layer
+	PropertyAnimation *prop_anim_h = property_animation_create_layer_frame(layer_h, &start_h, &finish_h);
+	PropertyAnimation *prop_anim_m = property_animation_create_layer_frame(layer_m, &start_m, &finish_m);
+	PropertyAnimation *prop_anim_month_container = property_animation_create_layer_frame(layer_month, &start_container_month, &finish_container_month);
+	PropertyAnimation *prop_anim_day_container = property_animation_create_layer_frame(layer_day, &start_container_day, &finish_container_day);
+
+	PropertyAnimation *prop_anim_h_back = property_animation_create_layer_frame(layer_h, &finish_h, &start_h);
+	PropertyAnimation *prop_anim_m_back = property_animation_create_layer_frame(layer_m, &finish_m, &start_m);
+	PropertyAnimation *prop_anim_month_container_back = property_animation_create_layer_frame(layer_month, &finish_container_month, &start_container_month);
+	PropertyAnimation *prop_anim_day_container_back = property_animation_create_layer_frame(layer_day, &finish_container_day, &start_container_day);
+
+	
+	// Get the Animation
+	Animation *anim_h = property_animation_get_animation(prop_anim_h);
+	Animation *anim_m = property_animation_get_animation(prop_anim_m);
+	Animation *anim_month_container = property_animation_get_animation(prop_anim_month_container);
+	Animation *anim_day_container = property_animation_get_animation(prop_anim_day_container);
+	
+	Animation *anim_h_back = property_animation_get_animation(prop_anim_h_back);
+	Animation *anim_m_back = property_animation_get_animation(prop_anim_m_back);
+	Animation *anim_month_container_back = property_animation_get_animation(prop_anim_month_container_back);
+	Animation *anim_day_container_back = property_animation_get_animation(prop_anim_day_container_back);
+	
+	// Choose parameters
+	const int delay_ms_h = 0;
+	const int delay_ms_h_back = 1500;
+	const int duration_ms_h = 500;
+
+	const int delay_ms_m = 0;
+	const int delay_ms_m_back = 1500;
+	const int duration_ms_m = 500;
+	
+	const int delay_ms_month = 0;
+	const int delay_ms_month_back = 1500;
+	const int duration_ms_month = 500;
+
+	const int delay_ms_day = 0;
+	const int delay_ms_day_back = 1500;
+	const int duration_ms_day = 500;
+	
+	// Configure the Animation's curve, delay, and duration
+	animation_set_curve(anim_h, AnimationCurveLinear);
+	animation_set_delay(anim_h, delay_ms_h);
+	animation_set_duration(anim_h, duration_ms_h);
+
+	animation_set_curve(anim_m, AnimationCurveLinear);
+	animation_set_delay(anim_m, delay_ms_m);
+	animation_set_duration(anim_m, duration_ms_m);
+
+	animation_set_curve(anim_month_container, AnimationCurveLinear);
+	animation_set_delay(anim_month_container, delay_ms_month);
+	animation_set_duration(anim_month_container, duration_ms_month);
+
+	animation_set_curve(anim_day_container, AnimationCurveLinear);
+	animation_set_delay(anim_day_container, delay_ms_day);
+	animation_set_duration(anim_day_container, duration_ms_day);
+	
+	animation_set_curve(anim_h_back, AnimationCurveLinear);
+	animation_set_delay(anim_h_back, delay_ms_h_back);
+	animation_set_duration(anim_h_back, duration_ms_h);
+
+	animation_set_curve(anim_m_back, AnimationCurveLinear);
+	animation_set_delay(anim_m_back, delay_ms_m_back);
+	animation_set_duration(anim_m_back, duration_ms_m);
+
+	animation_set_curve(anim_month_container_back, AnimationCurveLinear);
+	animation_set_delay(anim_month_container_back, delay_ms_month_back);
+	animation_set_duration(anim_month_container_back, duration_ms_month);
+
+	animation_set_curve(anim_day_container_back, AnimationCurveLinear);
+	animation_set_delay(anim_day_container_back, delay_ms_day_back);
+	animation_set_duration(anim_day_container_back, duration_ms_day);	
+
+	// Play the animation
+	animation_schedule(anim_h);
+	animation_schedule(anim_m);
+	animation_schedule(anim_month_container);
+	animation_schedule(anim_day_container);
+
+	animation_schedule(anim_h_back);
+	animation_schedule(anim_m_back);
+	animation_schedule(anim_month_container_back);
+	animation_schedule(anim_day_container_back);
+	}
+
+
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
+}
+
+static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
+  // A tap event occured
+	update_date();
 }
 
 static void main_window_load(Window *window) {
@@ -301,8 +446,12 @@ static void main_window_load(Window *window) {
   // Create the TextLayer with specific bounds
   s_time_layer_h = text_layer_create(GRect((bounds.size.w/2)-49+xOffset, (bounds.size.h/2)-84, 47, 1216));
   s_time_layer_m = text_layer_create(GRect((bounds.size.w/2)+xOffset, (bounds.size.h/2)-84, 27, 1488));
+ 	s_date_container_m = text_layer_create(GRect((bounds.size.w/2)-59+xOffset, -90, 57, 80));
+  	s_date_container_d = text_layer_create(GRect((bounds.size.w/2)+xOffset,  -90, 37, 80));
 
-  // Improve the layout to be more like a watchface
+  
+	
+  // TextLayer options
   text_layer_set_background_color(s_time_layer_h, COLORHRBG);
   text_layer_set_text_color(s_time_layer_h, COLORHRFR);
   if (twelveHour == 1) {
@@ -311,22 +460,34 @@ static void main_window_load(Window *window) {
 		text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
 	}
 	text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
-
+	
 	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
   	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
 	text_layer_set_text(s_time_layer_m, "55\n56\n57\n58\n59\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n00\n01\n02\n03\n04");
   	text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentCenter);
-	
+
+	text_layer_set_background_color(s_date_container_m, COLORMNBG);
+  	text_layer_set_text_color(s_date_container_m, COLORMNFR);
+	text_layer_set_text(s_date_container_m, "\n\nMONTH");
+  	text_layer_set_text_alignment(s_date_container_m, GTextAlignmentCenter);
+
+	text_layer_set_background_color(s_date_container_d, COLORMNBG);
+  	text_layer_set_text_color(s_date_container_d, COLORMNFR);
+	text_layer_set_text(s_date_container_d, "\n\nDAY");
+  	text_layer_set_text_alignment(s_date_container_d, GTextAlignmentCenter);
 
 	// add fonts
 	text_layer_set_font(s_time_layer_h, fonts_get_system_font(FONT_KEY_LECO_36_BOLD_NUMBERS));
 	text_layer_set_font(s_time_layer_m, fonts_get_system_font(FONT_KEY_LECO_20_BOLD_NUMBERS));
+	text_layer_set_font(s_date_container_d, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+	text_layer_set_font(s_date_container_m, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
   // Add it as a child layer to the Window's root layer
-  layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
-  layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
-	
+	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
+  	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 
+	layer_add_child(window_layer, text_layer_get_layer(s_date_container_d));
+	layer_add_child(window_layer, text_layer_get_layer(s_date_container_m));
 	
 	// set canvas for shader
 	s_canvas = layer_create(bounds);
@@ -341,8 +502,7 @@ static void main_window_load(Window *window) {
   s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
 
   // Create BitmapLayer to display the GBitmap
-  s_background_layer = bitmap_layer_create(
-  			GRect(0, 0, bounds.size.w, bounds.size.h));
+  s_background_layer = bitmap_layer_create(GRect(0, 0, bounds.size.w, bounds.size.h));
 
   // Set the bitmap onto the layer and add to the window
   bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
@@ -390,8 +550,15 @@ static void main_window_unload(Window *window) {
 	// Destroy Canvas line
 	layer_destroy(s_canvas_line);
 	
+	// Destroy date container
+	text_layer_destroy(s_date_container_m);
+	text_layer_destroy(s_date_container_d);
+	
 	//destroy arrows
 	layer_destroy(s_arrows);
+	
+	// Unsubscribe from tap events
+	accel_tap_service_unsubscribe();
 	
 }
 
@@ -416,6 +583,9 @@ static void init() {
 
   // Register with TickTimerService
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+	
+	// Subscribe to tap events
+	accel_tap_service_subscribe(accel_tap_handler);
 }
 
 static void deinit() {
