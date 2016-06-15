@@ -9,9 +9,9 @@
         ],
         "displayName": "Rotomotion Black",
         "enableMultiJS": true,
-        "messageKeys": {
-            "twelveHour": 0
-        },
+        "messageKeys": [
+            "twelveHour"
+        ],
         "projectType": "native",
         "resources": {
             "media": [
