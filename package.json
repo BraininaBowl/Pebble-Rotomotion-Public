@@ -5,11 +5,13 @@
     "name": "rotomotion-black",
     "pebble": {
         "capabilities": [
-            ""
+            "configurable"
         ],
         "displayName": "Rotomotion Black",
         "enableMultiJS": true,
-        "messageKeys": {},
+        "messageKeys": {
+            "twelveHour": 0
+        },
         "projectType": "native",
         "resources": {
             "media": [

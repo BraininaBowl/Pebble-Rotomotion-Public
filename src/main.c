@@ -27,16 +27,36 @@ static int firstrun = 1;
 		int colFull;
 
 // Customizations
+// colorBg;
+// colorHrBg;
+// colorHrFr;
+// colorMnBg;
+// colorMnFr;
+// colorTriCl;
+// colorTriBw;
+
 #define COLORBG GColorBlack
 #define COLORHRFR GColorWhite
-#define COLORHRBG GColorBlack
-#define COLORMNBG GColorBlack
+#define COLORHRBG GColorClear
+#define COLORMNBG GColorClear
 #define COLORMNFR GColorWhite
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
-static int twelveHour = 0;
+static int twelveHour;
 static int xOffset = 15;
 static int pmSpace = 0;
+static int dropShadow = 1;
+
+// set config
+static void inbox_received_handler(DictionaryIterator *iter, void *context) {
+	Tuple *twelveHour_t = dict_find(iter, twelveHour);
+  	int twelveHour = twelveHour_t->value->int32;
+
+   // Persist values
+   persist_write_int(twelveHour, twelveHour);
+
+}
+
 
 // Draw border to hide shader noise
 static void canvas_update_proc(Layer *layer, GContext *ctx) {
@@ -231,14 +251,14 @@ static void update_time() {
 
 	GRect start_h;
 	if(s_minute == 00 || firstrun == 1) {
-	  	start_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-((s_hour-1)*36), 47, 1400);
+	  	start_h = GRect(rowHalf-49+xOffset,colHalf-132-((s_hour-1)*36), 47, 1400);
 		firstrun = 0;
 	} else {
-		start_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-(s_hour*36), 47, 1400);
+		start_h = GRect(rowHalf-49+xOffset,colHalf-132-(s_hour*36), 47, 1400);
 	}
-	GRect finish_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-(s_hour*36), 47, 1400);
-	GRect start_m = GRect((bounds.size.w/2)+xOffset,(bounds.size.h/2)-114-((s_minute-1)*20), 27, 1888);
-	GRect finish_m = GRect((bounds.size.w/2)+xOffset,(bounds.size.h/2)-114-(s_minute*20), 27, 1888);
+	GRect finish_h = GRect(rowHalf-49+xOffset,colHalf-132-(s_hour*36), 47, 1400);
+	GRect start_m = GRect(rowHalf+xOffset,colHalf-114-((s_minute-1)*20), 27, 1888);
+	GRect finish_m = GRect(rowHalf+xOffset,colHalf-114-(s_minute*20), 27, 1888);
 	
 
 	// Animate the Layer
@@ -253,10 +273,9 @@ static void update_time() {
 	
 	// Choose parameters
 	const int delay_ms_h = 0;
-	const int duration_ms_h = 500;
-
+	const int duration_ms_h = 200;
 	const int delay_ms_m = 0;
-	const int duration_ms_m = 250;
+	const int duration_ms_m = 100;
 
 	
 	// Configure the Animation's curve, delay, and duration
@@ -295,12 +314,12 @@ static void update_date() {
 
 	// Write the current month into a buffer
   	static char s_buffer_month[8];
-  	strftime(s_buffer_month, sizeof(s_buffer_month), "%d", tick_time);
+  	strftime(s_buffer_month, sizeof(s_buffer_month), "%m", tick_time);
    int s_month = ((s_buffer_month[0] - '0')*10)+s_buffer_month[1] - '0';
 	
 	// Write the current day into a buffer
   	static char s_buffer_day[8];
-  	strftime(s_buffer_day, sizeof(s_buffer_day), "%m", tick_time);
+  	strftime(s_buffer_day, sizeof(s_buffer_day), "%d", tick_time);
    int s_day = ((s_buffer_day[0] - '0')*10)+s_buffer_day[1] - '0';
 	
    // Setup animation layer
@@ -313,21 +332,21 @@ static void update_date() {
 	Layer *root_layer = window_get_root_layer(s_main_window);
   	GRect bounds = layer_get_bounds(root_layer);
 
-  	GRect start_container_month = GRect((bounds.size.w/2)-59+xOffset, -90, 57, 80);
-  	GRect start_container_day = GRect((bounds.size.w/2)+xOffset,  -90, 37, 80);
+  	GRect start_container_month = GRect(rowHalf - 59+xOffset, -90, 57, 80);
+  	GRect start_container_day = GRect(rowHalf + xOffset,  -90, 37, 80);
 	
 	#if defined(PBL_ROUND)
-  	GRect finish_container_month = GRect((bounds.size.w/2)-59+xOffset, -4, 57, 80);
-  	GRect finish_container_day = GRect((bounds.size.w/2)+xOffset,  -4, 37, 80);
+  	GRect finish_container_month = GRect(rowHalf -59+xOffset, -4, 57, 80);
+  	GRect finish_container_day = GRect(rowHalf +xOffset,  -4, 37, 80);
 	#elif defined(PBL_RECT)
-  	GRect finish_container_month = GRect((bounds.size.w/2)-59+xOffset, -10, 57, 80);
-  	GRect finish_container_day = GRect((bounds.size.w/2)+xOffset,  -10, 37, 80);
+  	GRect finish_container_month = GRect(rowHalf -59+xOffset, -10, 57, 80);
+  	GRect finish_container_day = GRect(rowHalf +xOffset,  -10, 37, 80);
 	#endif	
 	
-	GRect start_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-(s_hour*36), 47, 1400);
-	GRect finish_h = GRect((bounds.size.w/2)-49+xOffset,(bounds.size.h/2)-132-(s_month*36), 47, 1400);
-	GRect start_m = GRect((bounds.size.w/2)+xOffset,(bounds.size.h/2)-114-(s_minute*20), 27, 1888);
-	GRect finish_m = GRect((bounds.size.w/2)+xOffset,(bounds.size.h/2)-114-(s_day*20), 27, 1888);
+	GRect start_h = GRect(rowHalf-49+xOffset,colHalf-132-(s_hour*36), 47, 1400);
+	GRect finish_h = GRect(rowHalf-49+xOffset,colHalf-132-(s_month*36), 47, 1400);
+	GRect start_m = GRect(rowHalf+xOffset,colHalf-114-(s_minute*20), 27, 1888);
+	GRect finish_m = GRect(rowHalf+xOffset,colHalf-114-(s_day*20), 27, 1888);
 
 	// Animate the Layer
 	PropertyAnimation *prop_anim_h = property_animation_create_layer_frame(layer_h, &start_h, &finish_h);
@@ -414,7 +433,6 @@ static void update_date() {
 	animation_schedule(anim_day_container_back);
 	}
 
-
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
 }
@@ -438,10 +456,10 @@ static void main_window_load(Window *window) {
 	
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect((bounds.size.w/2)-49+xOffset, (bounds.size.h/2)-84, 47, 1216));
-  s_time_layer_m = text_layer_create(GRect((bounds.size.w/2)+xOffset, (bounds.size.h/2)-84, 27, 1488));
- 	s_date_container_m = text_layer_create(GRect((bounds.size.w/2)-59+xOffset, -90, 57, 80));
-  	s_date_container_d = text_layer_create(GRect((bounds.size.w/2)+xOffset,  -90, 37, 80));
+  s_time_layer_h = text_layer_create(GRect(rowHalf-49+xOffset, colHalf-84, 47, 1216));
+  s_time_layer_m = text_layer_create(GRect(rowHalf+xOffset, colHalf-84, 27, 1488));
+ 	s_date_container_m = text_layer_create(GRect(rowHalf-59+xOffset, -90, 57, 80));
+  	s_date_container_d = text_layer_create(GRect(rowHalf+xOffset,  -90, 37, 80));
 
   // TextLayer options
   text_layer_set_background_color(s_time_layer_h, COLORHRBG);
@@ -490,6 +508,8 @@ static void main_window_load(Window *window) {
 	// ** Drop shadow
 	// ************************************************
 
+	if (dropShadow == 1){
+	
  // Create GBitmap
   s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
 
@@ -500,7 +520,7 @@ static void main_window_load(Window *window) {
   bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
   bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
-
+	}
 	
 	// Create canvas line layer
 	s_canvas_line = layer_create(bounds);
@@ -515,7 +535,7 @@ static void main_window_load(Window *window) {
 	// ** Arrows
 	// ************************************************
 	
-	s_arrows = layer_create(GRect(((bounds.size.w/2)-55)+pmSpace, ((bounds.size.h/2)-7), 110+(pmSpace*2), 14));
+	s_arrows = layer_create(GRect((rowHalf-55)+pmSpace, (colHalf-7), 110+(pmSpace*2), 14));
   	layer_set_update_proc(s_arrows, s_arrows_update_proc);
   //---add the layer to the Window layer---
   	layer_add_child(window_layer, s_arrows);
@@ -574,6 +594,10 @@ static void init() {
 	
 	// Subscribe to tap events
 	accel_tap_service_subscribe(accel_tap_handler);
+	
+	// Receive settings
+	  app_message_register_inbox_received(inbox_received_handler);
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 }
 
 static void deinit() {
