@@ -37,8 +37,8 @@ static int firstrun = 1;
 
 #define COLORBG GColorBlack
 #define COLORHRFR GColorWhite
-#define COLORHRBG GColorClear
-#define COLORMNBG GColorClear
+#define COLORHRBG GColorBlack
+#define COLORMNBG GColorBlack
 #define COLORMNFR GColorWhite
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
