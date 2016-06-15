@@ -49,7 +49,7 @@ static int dropShadow = 1;
 
 // set config
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
-	Tuple *twelveHour_t = dict_find(iter, twelveHour);
+	Tuple *twelveHour_t = dict_find(iter, KEY_twelveHour);
   	int twelveHour = twelveHour_t->value->int32;
 
    // Persist values
