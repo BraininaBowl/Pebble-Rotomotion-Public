@@ -43,13 +43,13 @@ static int8_t firstrun = 1;
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
 static int8_t twelveHour;
-static int pmSpace = 0;
+static int8_t pmSpace = 0;
 static int8_t dropShadow = 1;
 
 // set config
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *twelveHour_t = dict_find(iter, twelveHour);
-  	int twelveHour = twelveHour_t->value->int32;
+  	int twelveHour = twelveHour_t->value->int8;
 
    // Persist values
    persist_write_int(twelveHour, twelveHour);
