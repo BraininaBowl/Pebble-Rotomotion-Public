@@ -18,7 +18,7 @@ static const GPathInfo ARROW_RIGHT_PATH_POINTS = {
 	3,
 	   (GPoint []) {{8, 0}, {8, 14}, {0, 7},}
 	};
-static int firstrun = 1;
+static int8_t firstrun = 1;
 
 // set variables for shader
 		int rowHalf;
@@ -42,10 +42,9 @@ static int firstrun = 1;
 #define COLORMNFR GColorWhite
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
-static int twelveHour;
-static int xOffset = 15;
+static int8_t twelveHour;
 static int pmSpace = 0;
-static int dropShadow = 1;
+static int8_t dropShadow = 1;
 
 // set config
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
@@ -251,14 +250,14 @@ static void update_time() {
 
 	GRect start_h;
 	if(s_minute == 00 || firstrun == 1) {
-	  	start_h = GRect(rowHalf-49+xOffset,colHalf-132-((s_hour-1)*36), 47, 1400);
+	  	start_h = GRect(rowHalf-49+15,colHalf-132-((s_hour-1)*36), 47, 1400);
 		firstrun = 0;
 	} else {
-		start_h = GRect(rowHalf-49+xOffset,colHalf-132-(s_hour*36), 47, 1400);
+		start_h = GRect(rowHalf-49+15,colHalf-132-(s_hour*36), 47, 1400);
 	}
-	GRect finish_h = GRect(rowHalf-49+xOffset,colHalf-132-(s_hour*36), 47, 1400);
-	GRect start_m = GRect(rowHalf+xOffset,colHalf-114-((s_minute-1)*20), 27, 1888);
-	GRect finish_m = GRect(rowHalf+xOffset,colHalf-114-(s_minute*20), 27, 1888);
+	GRect finish_h = GRect(rowHalf-49+15,colHalf-132-(s_hour*36), 47, 1400);
+	GRect start_m = GRect(rowHalf+15,colHalf-114-((s_minute-1)*20), 27, 1888);
+	GRect finish_m = GRect(rowHalf+15,colHalf-114-(s_minute*20), 27, 1888);
 	
 
 	// Animate the Layer
@@ -332,21 +331,21 @@ static void update_date() {
 	Layer *root_layer = window_get_root_layer(s_main_window);
   	GRect bounds = layer_get_bounds(root_layer);
 
-  	GRect start_container_month = GRect(rowHalf - 59+xOffset, -90, 57, 80);
-  	GRect start_container_day = GRect(rowHalf + xOffset,  -90, 37, 80);
+  	GRect start_container_month = GRect(rowHalf - 59+15, -90, 57, 80);
+  	GRect start_container_day = GRect(rowHalf + 15,  -90, 37, 80);
 	
 	#if defined(PBL_ROUND)
-  	GRect finish_container_month = GRect(rowHalf -59+xOffset, -4, 57, 80);
-  	GRect finish_container_day = GRect(rowHalf +xOffset,  -4, 37, 80);
+  	GRect finish_container_month = GRect(rowHalf -59+15, -4, 57, 80);
+  	GRect finish_container_day = GRect(rowHalf +15,  -4, 37, 80);
 	#elif defined(PBL_RECT)
-  	GRect finish_container_month = GRect(rowHalf -59+xOffset, -10, 57, 80);
-  	GRect finish_container_day = GRect(rowHalf +xOffset,  -10, 37, 80);
+  	GRect finish_container_month = GRect(rowHalf -59+15, -10, 57, 80);
+  	GRect finish_container_day = GRect(rowHalf +15,  -10, 37, 80);
 	#endif	
 	
-	GRect start_h = GRect(rowHalf-49+xOffset,colHalf-132-(s_hour*36), 47, 1400);
-	GRect finish_h = GRect(rowHalf-49+xOffset,colHalf-132-(s_month*36), 47, 1400);
-	GRect start_m = GRect(rowHalf+xOffset,colHalf-114-(s_minute*20), 27, 1888);
-	GRect finish_m = GRect(rowHalf+xOffset,colHalf-114-(s_day*20), 27, 1888);
+	GRect start_h = GRect(rowHalf-49+15,colHalf-132-(s_hour*36), 47, 1400);
+	GRect finish_h = GRect(rowHalf-49+15,colHalf-132-(s_month*36), 47, 1400);
+	GRect start_m = GRect(rowHalf+15,colHalf-114-(s_minute*20), 27, 1888);
+	GRect finish_m = GRect(rowHalf+15,colHalf-114-(s_day*20), 27, 1888);
 
 	// Animate the Layer
 	PropertyAnimation *prop_anim_h = property_animation_create_layer_frame(layer_h, &start_h, &finish_h);
@@ -456,10 +455,10 @@ static void main_window_load(Window *window) {
 	
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect(rowHalf-49+xOffset, colHalf-84, 47, 1216));
-  s_time_layer_m = text_layer_create(GRect(rowHalf+xOffset, colHalf-84, 27, 1488));
- 	s_date_container_m = text_layer_create(GRect(rowHalf-59+xOffset, -90, 57, 80));
-  	s_date_container_d = text_layer_create(GRect(rowHalf+xOffset,  -90, 37, 80));
+  s_time_layer_h = text_layer_create(GRect(rowHalf-49+15, colHalf-84, 47, 1216));
+  s_time_layer_m = text_layer_create(GRect(rowHalf+15, colHalf-84, 27, 1488));
+ 	s_date_container_m = text_layer_create(GRect(rowHalf-59+15, -90, 57, 80));
+  	s_date_container_d = text_layer_create(GRect(rowHalf+15,  -90, 37, 80));
 
   // TextLayer options
   text_layer_set_background_color(s_time_layer_h, COLORHRBG);
