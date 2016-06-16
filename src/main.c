@@ -3,6 +3,7 @@
 static Window *s_main_window;
 static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
+static Layer *s_date_container;
 static TextLayer *s_date_container_d;
 static TextLayer *s_date_container_m;
 static BitmapLayer *s_background_layer;
@@ -21,10 +22,10 @@ static const GPathInfo ARROW_RIGHT_PATH_POINTS = {
 static int8_t firstrun = 1;
 
 // set variables for shader
-		int rowHalf;
-		int rowFull;
-		int colHalf;
-		int colFull;
+static int rowHalf;
+static int rowFull;
+static int colHalf;
+static int colFull;
 
 // Customizations
 // colorBg;
@@ -43,18 +44,17 @@ static int8_t firstrun = 1;
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
 static int8_t twelveHour;
-static int8_t pmSpace = 0;
 static int8_t dropShadow = 1;
 
 // set config
-static void inbox_received_handler(DictionaryIterator *iter, void *context) {
-	Tuple *twelveHour_t = dict_find(iter, twelveHour);
-  	int twelveHour = twelveHour_t->value->int8;
+//static void inbox_received_handler(DictionaryIterator *iter, void *context) {
+//	Tuple *twelveHour_t = dict_find(iter, twelveHour);
+//  	int twelveHour = twelveHour_t->value->int8;
 
    // Persist values
-   persist_write_int(twelveHour, twelveHour);
+//   persist_write_int(twelveHour, twelveHour);
 
-}
+//}
 
 
 // Draw border to hide shader noise
@@ -218,7 +218,7 @@ void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 
 	s_arrow_left_path = gpath_create(&ARROW_LEFT_PATH_POINTS);
 	s_arrow_right_path = gpath_create(&ARROW_RIGHT_PATH_POINTS);
-	gpath_move_to(s_arrow_right_path, GPoint(102+(pmSpace*2), 0));
+	gpath_move_to(s_arrow_right_path, GPoint(102, 0));
 }
 
 static void update_time() {
@@ -229,7 +229,7 @@ static void update_time() {
 	//*****************
 	//**   ANIMATE   ** 
 	//*****************
-	
+
 	// Write the current hours into a buffer
    static char s_buffer_hour[8];
    strftime(s_buffer_hour, sizeof(s_buffer_hour),"%H", tick_time);
@@ -243,10 +243,6 @@ static void update_time() {
    // Setup animation layer
 	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
 	Layer *layer_m = text_layer_get_layer(s_time_layer_m);
-
-   // The start and end frames
-	Layer *root_layer = window_get_root_layer(s_main_window);
-  	GRect bounds = layer_get_bounds(root_layer);
 
 	GRect start_h;
 	if(s_minute == 00 || firstrun == 1) {
@@ -272,9 +268,9 @@ static void update_time() {
 	
 	// Choose parameters
 	const int delay_ms_h = 0;
-	const int duration_ms_h = 200;
+	const int duration_ms_h = 500;
 	const int delay_ms_m = 0;
-	const int duration_ms_m = 100;
+	const int duration_ms_m = 300;
 
 	
 	// Configure the Animation's curve, delay, and duration
@@ -290,56 +286,51 @@ static void update_time() {
 	// Play the animation
 	animation_schedule(anim_h);
 	animation_schedule(anim_m);
+	
 
 }
 
+
 static void update_date() {
-		  time_t temp = time(NULL); 
+	time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
 
+	
 	//*****************
 	//**   ANIMATE   ** 
 	//*****************
 	
 	// Write the current hours into a buffer
-   static char s_buffer_hour[8];
+   char s_buffer_hour[8];
    strftime(s_buffer_hour, sizeof(s_buffer_hour),"%H", tick_time);
    int s_hour = ((s_buffer_hour[0] - '0')*10)+s_buffer_hour[1] - '0';
 	
 	// Write the current minutes into a buffer
-  	static char s_buffer_m[8];
+  	char s_buffer_m[8];
   	strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
    int s_minute = ((s_buffer_m[0] - '0')*10)+s_buffer_m[1] - '0';
 
 	// Write the current month into a buffer
-  	static char s_buffer_month[8];
+  	char s_buffer_month[8];
   	strftime(s_buffer_month, sizeof(s_buffer_month), "%m", tick_time);
    int s_month = ((s_buffer_month[0] - '0')*10)+s_buffer_month[1] - '0';
 	
 	// Write the current day into a buffer
-  	static char s_buffer_day[8];
+  	char s_buffer_day[8];
   	strftime(s_buffer_day, sizeof(s_buffer_day), "%d", tick_time);
    int s_day = ((s_buffer_day[0] - '0')*10)+s_buffer_day[1] - '0';
 	
    // Setup animation layer
 	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
 	Layer *layer_m = text_layer_get_layer(s_time_layer_m);
-	Layer *layer_month = text_layer_get_layer(s_date_container_m);
-	Layer *layer_day = text_layer_get_layer(s_date_container_d);
+	Layer *layer_container = s_date_container;
 	
    // The start and end frames
-	Layer *root_layer = window_get_root_layer(s_main_window);
-  	GRect bounds = layer_get_bounds(root_layer);
-
-  	GRect start_container_month = GRect(rowHalf - 59+15, -90, 57, 80);
-  	GRect start_container_day = GRect(rowHalf + 15,  -90, 37, 80);
-	
+  	GRect start_container = GRect(0, -90, rowFull, 80);	
 	#if defined(PBL_ROUND)
-  	GRect finish_container_month = GRect(rowHalf -59+15, -4, 57, 80);
-  	GRect finish_container_day = GRect(rowHalf +15,  -4, 37, 80);
+  	GRect finish_container = GRect(0, -4, rowFull, 80);
 	#elif defined(PBL_RECT)
-  	GRect finish_container_month = GRect(rowHalf -59+15, -10, 57, 80);
-  	GRect finish_container_day = GRect(rowHalf +15,  -10, 37, 80);
+  	GRect finish_container = GRect(0, -10, rowFull, 80);
 	#endif	
 	
 	GRect start_h = GRect(rowHalf-49+15,colHalf-132-(s_hour*36), 47, 1400);
@@ -350,86 +341,60 @@ static void update_date() {
 	// Animate the Layer
 	PropertyAnimation *prop_anim_h = property_animation_create_layer_frame(layer_h, &start_h, &finish_h);
 	PropertyAnimation *prop_anim_m = property_animation_create_layer_frame(layer_m, &start_m, &finish_m);
-	PropertyAnimation *prop_anim_month_container = property_animation_create_layer_frame(layer_month, &start_container_month, &finish_container_month);
-	PropertyAnimation *prop_anim_day_container = property_animation_create_layer_frame(layer_day, &start_container_day, &finish_container_day);
+	PropertyAnimation *prop_anim_container = property_animation_create_layer_frame(layer_container, &start_container, &finish_container);
 
 	PropertyAnimation *prop_anim_h_back = property_animation_create_layer_frame(layer_h, &finish_h, &start_h);
 	PropertyAnimation *prop_anim_m_back = property_animation_create_layer_frame(layer_m, &finish_m, &start_m);
-	PropertyAnimation *prop_anim_month_container_back = property_animation_create_layer_frame(layer_month, &finish_container_month, &start_container_month);
-	PropertyAnimation *prop_anim_day_container_back = property_animation_create_layer_frame(layer_day, &finish_container_day, &start_container_day);
-
+	PropertyAnimation *prop_anim_container_back = property_animation_create_layer_frame(layer_container, &finish_container, &start_container);
 	
 	// Get the Animation
 	Animation *anim_h = property_animation_get_animation(prop_anim_h);
 	Animation *anim_m = property_animation_get_animation(prop_anim_m);
-	Animation *anim_month_container = property_animation_get_animation(prop_anim_month_container);
-	Animation *anim_day_container = property_animation_get_animation(prop_anim_day_container);
+	Animation *anim_container = property_animation_get_animation(prop_anim_container);
 	
 	Animation *anim_h_back = property_animation_get_animation(prop_anim_h_back);
 	Animation *anim_m_back = property_animation_get_animation(prop_anim_m_back);
-	Animation *anim_month_container_back = property_animation_get_animation(prop_anim_month_container_back);
-	Animation *anim_day_container_back = property_animation_get_animation(prop_anim_day_container_back);
+	Animation *anim_container_back = property_animation_get_animation(prop_anim_container_back);
 	
 	// Choose parameters
-	const int delay_ms_h = 0;
-	const int delay_ms_h_back = 2500;
-	const int duration_ms_h = 500;
-
-	const int delay_ms_m = 0;
-	const int delay_ms_m_back = 2500;
-	const int duration_ms_m = 500;
-	
-	const int delay_ms_month = 0;
-	const int delay_ms_month_back = 2500;
-	const int duration_ms_month = 500;
-
-	const int delay_ms_day = 0;
-	const int delay_ms_day_back = 2500;
-	const int duration_ms_day = 500;
+	const int delay_ms = 0;
+	const int delay_ms_back = 2500;
+	const int duration_ms = 500;
 	
 	// Configure the Animation's curve, delay, and duration
 	animation_set_curve(anim_h, AnimationCurveLinear);
-	animation_set_delay(anim_h, delay_ms_h);
-	animation_set_duration(anim_h, duration_ms_h);
+	animation_set_delay(anim_h, delay_ms);
+	animation_set_duration(anim_h, duration_ms);
 
 	animation_set_curve(anim_m, AnimationCurveLinear);
-	animation_set_delay(anim_m, delay_ms_m);
-	animation_set_duration(anim_m, duration_ms_m);
+	animation_set_delay(anim_m, delay_ms);
+	animation_set_duration(anim_m, duration_ms);
 
-	animation_set_curve(anim_month_container, AnimationCurveLinear);
-	animation_set_delay(anim_month_container, delay_ms_month);
-	animation_set_duration(anim_month_container, duration_ms_month);
-
-	animation_set_curve(anim_day_container, AnimationCurveLinear);
-	animation_set_delay(anim_day_container, delay_ms_day);
-	animation_set_duration(anim_day_container, duration_ms_day);
+	animation_set_curve(anim_container, AnimationCurveLinear);
+	animation_set_delay(anim_container, delay_ms);
+	animation_set_duration(anim_container, duration_ms);
 	
 	animation_set_curve(anim_h_back, AnimationCurveLinear);
-	animation_set_delay(anim_h_back, delay_ms_h_back);
-	animation_set_duration(anim_h_back, duration_ms_h);
+	animation_set_delay(anim_h_back, delay_ms_back);
+	animation_set_duration(anim_h_back, duration_ms);
 
 	animation_set_curve(anim_m_back, AnimationCurveLinear);
-	animation_set_delay(anim_m_back, delay_ms_m_back);
-	animation_set_duration(anim_m_back, duration_ms_m);
+	animation_set_delay(anim_m_back, delay_ms_back);
+	animation_set_duration(anim_m_back, duration_ms);
 
-	animation_set_curve(anim_month_container_back, AnimationCurveLinear);
-	animation_set_delay(anim_month_container_back, delay_ms_month_back);
-	animation_set_duration(anim_month_container_back, duration_ms_month);
-
-	animation_set_curve(anim_day_container_back, AnimationCurveLinear);
-	animation_set_delay(anim_day_container_back, delay_ms_day_back);
-	animation_set_duration(anim_day_container_back, duration_ms_day);	
+	animation_set_curve(anim_container_back, AnimationCurveLinear);
+	animation_set_delay(anim_container_back, delay_ms_back);
+	animation_set_duration(anim_container_back, duration_ms);
 
 	// Play the animation
 	animation_schedule(anim_h);
 	animation_schedule(anim_m);
-	animation_schedule(anim_month_container);
-	animation_schedule(anim_day_container);
+	animation_schedule(anim_container);
 
 	animation_schedule(anim_h_back);
 	animation_schedule(anim_m_back);
-	animation_schedule(anim_month_container_back);
-	animation_schedule(anim_day_container_back);
+	animation_schedule(anim_container_back);
+
 	}
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
@@ -457,8 +422,9 @@ static void main_window_load(Window *window) {
   // Create the TextLayer with specific bounds
   s_time_layer_h = text_layer_create(GRect(rowHalf-49+15, colHalf-84, 47, 1216));
   s_time_layer_m = text_layer_create(GRect(rowHalf+15, colHalf-84, 27, 1488));
- 	s_date_container_m = text_layer_create(GRect(rowHalf-59+15, -90, 57, 80));
-  	s_date_container_d = text_layer_create(GRect(rowHalf+15,  -90, 37, 80));
+ 	s_date_container = layer_create(GRect(0, -90, rowFull, 80));
+ 	s_date_container_m = text_layer_create(GRect(rowHalf-59+15, 0, 57, 80));
+  	s_date_container_d = text_layer_create(GRect(rowHalf+15, 0, 37, 80));
 
   // TextLayer options
   text_layer_set_background_color(s_time_layer_h, COLORHRBG);
@@ -495,8 +461,9 @@ static void main_window_load(Window *window) {
 	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
   	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 
-	layer_add_child(window_layer, text_layer_get_layer(s_date_container_d));
-	layer_add_child(window_layer, text_layer_get_layer(s_date_container_m));
+	layer_add_child(window_layer, s_date_container);
+	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_d));
+	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
 	
 	// set canvas for shader
 	s_canvas = layer_create(bounds);
@@ -534,7 +501,7 @@ static void main_window_load(Window *window) {
 	// ** Arrows
 	// ************************************************
 	
-	s_arrows = layer_create(GRect((rowHalf-55)+pmSpace, (colHalf-7), 110+(pmSpace*2), 14));
+	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-7), 110, 14));
   	layer_set_update_proc(s_arrows, s_arrows_update_proc);
   //---add the layer to the Window layer---
   	layer_add_child(window_layer, s_arrows);
@@ -558,6 +525,7 @@ static void main_window_unload(Window *window) {
 	layer_destroy(s_canvas_line);
 	
 	// Destroy date container
+	layer_destroy(s_date_container);
 	text_layer_destroy(s_date_container_m);
 	text_layer_destroy(s_date_container_d);
 	
@@ -595,8 +563,8 @@ static void init() {
 	accel_tap_service_subscribe(accel_tap_handler);
 	
 	// Receive settings
-	  app_message_register_inbox_received(inbox_received_handler);
-  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+//	app_message_register_inbox_received(inbox_received_handler);
+//  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 }
 
 static void deinit() {
