@@ -46,6 +46,11 @@ static int colFull;
 static int8_t twelveHour;
 static int8_t dropShadow = 1;
 
+static char s_buffer_hour[8];
+static char s_buffer_m[8];
+static int s_hour;
+static int s_minute;
+
 // set config
 //static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 //	Tuple *twelveHour_t = dict_find(iter, twelveHour);
@@ -231,14 +236,12 @@ static void update_time() {
 	//*****************
 
 	// Write the current hours into a buffer
-   static char s_buffer_hour[8];
    strftime(s_buffer_hour, sizeof(s_buffer_hour),"%H", tick_time);
-   int s_hour = ((s_buffer_hour[0] - '0')*10)+s_buffer_hour[1] - '0';
+   s_hour = ((s_buffer_hour[0] - '0')*10)+s_buffer_hour[1] - '0';
 	
 	// Write the current minutes into a buffer
-  	static char s_buffer_m[8];
   	strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
-   int s_minute = ((s_buffer_m[0] - '0')*10)+s_buffer_m[1] - '0';
+   s_minute = ((s_buffer_m[0] - '0')*10)+s_buffer_m[1] - '0';
 
    // Setup animation layer
 	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
@@ -299,16 +302,6 @@ static void update_date() {
 	//*****************
 	//**   ANIMATE   ** 
 	//*****************
-	
-	// Write the current hours into a buffer
-   char s_buffer_hour[8];
-   strftime(s_buffer_hour, sizeof(s_buffer_hour),"%H", tick_time);
-   int s_hour = ((s_buffer_hour[0] - '0')*10)+s_buffer_hour[1] - '0';
-	
-	// Write the current minutes into a buffer
-  	char s_buffer_m[8];
-  	strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
-   int s_minute = ((s_buffer_m[0] - '0')*10)+s_buffer_m[1] - '0';
 
 	// Write the current month into a buffer
   	char s_buffer_month[8];
