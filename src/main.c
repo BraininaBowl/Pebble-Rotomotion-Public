@@ -46,10 +46,15 @@ static int colFull;
 static int8_t twelveHour;
 static int8_t dropShadow = 1;
 
-static char s_buffer_hour[4];
-static char s_buffer_m[4];
+static char s_buffer_hour[3];
+static char s_buffer_m[3];
+static char s_buffer_month[3];
+static char s_buffer_day[3];
 static int s_hour;
 static int s_minute;
+static int s_month;
+static int s_day;
+
 
 // set config
 //static void inbox_received_handler(DictionaryIterator *iter, void *context) {
@@ -304,14 +309,12 @@ static void update_date() {
 	//*****************
 
 	// Write the current month into a buffer
-  	char s_buffer_month[4];
   	strftime(s_buffer_month, sizeof(s_buffer_month), "%m", tick_time);
-   int s_month = ((s_buffer_month[0] - '0')*10)+s_buffer_month[1] - '0';
+   s_month = ((s_buffer_month[0] - '0')*10)+s_buffer_month[1] - '0';
 	
 	// Write the current day into a buffer
-  	char s_buffer_day[4];
   	strftime(s_buffer_day, sizeof(s_buffer_day), "%d", tick_time);
-   int s_day = ((s_buffer_day[0] - '0')*10)+s_buffer_day[1] - '0';
+   s_day = ((s_buffer_day[0] - '0')*10)+s_buffer_day[1] - '0';
 	
    // Setup animation layer
 	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
