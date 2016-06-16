@@ -57,14 +57,14 @@ static int s_day;
 
 
 // set config
-//static void inbox_received_handler(DictionaryIterator *iter, void *context) {
-//	Tuple *twelveHour_t = dict_find(iter, twelveHour);
-//  	int twelveHour = twelveHour_t->value->int8;
+static void inbox_received_handler(DictionaryIterator *iter, void *context) {
+Tuple *twelveHour_t = dict_find(iter, twelveHour);
+int twelveHour = twelveHour_t->value->int8;
 
    // Persist values
-//   persist_write_int(twelveHour, twelveHour);
+persist_write_int(twelveHour, twelveHour);
 
-//}
+}
 
 
 // Draw border to hide shader noise
@@ -559,8 +559,8 @@ static void init() {
 	accel_tap_service_subscribe(accel_tap_handler);
 	
 	// Receive settings
-//	app_message_register_inbox_received(inbox_received_handler);
-//  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
+app_message_register_inbox_received(inbox_received_handler);
+app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 }
 
 static void deinit() {
