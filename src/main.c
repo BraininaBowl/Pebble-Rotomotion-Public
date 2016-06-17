@@ -284,14 +284,14 @@ static void update_time() {
 
 	GRect start_h;
 	if(s_minute == 00 || firstrun == 1) {
-	  	start_h = GRect(rowHalf-49+15,colHalf-132-((s_hour-1)*36), 47, 1400);
+	  	start_h = GRect(rowHalf-49+10,colHalf-132-((s_hour-1)*36), 47, 1400);
 		firstrun = 0;
 	} else {
-		start_h = GRect(rowHalf-49+15,colHalf-132-(s_hour*36), 47, 1400);
+		start_h = GRect(rowHalf-49+10,colHalf-132-(s_hour*36), 47, 1400);
 	}
-	GRect finish_h = GRect(rowHalf-49+15,colHalf-132-(s_hour*36), 47, 1400);
-	GRect start_m = GRect(rowHalf+15,colHalf-114-((s_minute-1)*20), 27, 1888);
-	GRect finish_m = GRect(rowHalf+15,colHalf-114-(s_minute*20), 27, 1888);
+	GRect finish_h = GRect(rowHalf-49+10,colHalf-132-(s_hour*36), 47, 1400);
+	GRect start_m = GRect(rowHalf+10,colHalf-114-((s_minute-1)*20), 27, 1888);
+	GRect finish_m = GRect(rowHalf+10,colHalf-114-(s_minute*20), 27, 1888);
 	
 
 	// Animate the Layer
@@ -359,10 +359,10 @@ static void update_date() {
   	GRect finish_container = GRect(0, -10, rowFull, 80);
 	#endif	
 	
-	GRect start_h = GRect(rowHalf-49+15,colHalf-132-(s_hour*36), 47, 1400);
-	GRect finish_h = GRect(rowHalf-49+15,colHalf-132-(s_month*36), 47, 1400);
-	GRect start_m = GRect(rowHalf+15,colHalf-114-(s_minute*20), 27, 1888);
-	GRect finish_m = GRect(rowHalf+15,colHalf-114-(s_day*20), 27, 1888);
+	GRect start_h = GRect(rowHalf-49+10,colHalf-132-(s_hour*36), 47, 1400);
+	GRect finish_h = GRect(rowHalf-49+10,colHalf-132-(s_month*36), 47, 1400);
+	GRect start_m = GRect(rowHalf+10,colHalf-114-(s_minute*20), 27, 1888);
+	GRect finish_m = GRect(rowHalf+10,colHalf-114-(s_day*20), 27, 1888);
 
 	// Animate the Layer
 	PropertyAnimation *prop_anim_h = property_animation_create_layer_frame(layer_h, &start_h, &finish_h);
@@ -446,11 +446,11 @@ static void main_window_load(Window *window) {
 	
 	
   // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect(rowHalf-49+15, colHalf-84, 47, 1216));
-  s_time_layer_m = text_layer_create(GRect(rowHalf+15, colHalf-84, 27, 1488));
+  s_time_layer_h = text_layer_create(GRect(rowHalf-49+10, colHalf-84, 47, 1216));
+  s_time_layer_m = text_layer_create(GRect(rowHalf+10, colHalf-84, 27, 1488));
  	s_date_container = layer_create(GRect(0, -90, rowFull, 80));
- 	s_date_container_m = text_layer_create(GRect(rowHalf-59+15, 0, 57, 80));
-  	s_date_container_d = text_layer_create(GRect(rowHalf+15, 0, 37, 80));
+ 	s_date_container_m = text_layer_create(GRect(rowHalf-59+10, 0, 57, 80));
+  	s_date_container_d = text_layer_create(GRect(rowHalf+10, 0, 37, 80));
 
   // TextLayer options
   text_layer_set_background_color(s_time_layer_h, COLORHRBG);
