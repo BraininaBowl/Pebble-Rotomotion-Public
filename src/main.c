@@ -534,7 +534,7 @@ static void main_window_load(Window *window) {
 	// ** Arrows
 	// ************************************************
 	
-	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-7), 110, 14));
+	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 14));
   	layer_set_update_proc(s_arrows, s_arrows_update_proc);
   //---add the layer to the Window layer---
   	layer_add_child(window_layer, s_arrows);
