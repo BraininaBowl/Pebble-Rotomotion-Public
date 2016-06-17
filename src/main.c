@@ -206,7 +206,7 @@ yToGet = yToSet + (64/(yToUse));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
-if (yToSet < (colHalf - 24) || yToSet > (colHalf + 24)){
+if (yToSet < (colHalf - 32) || yToSet > (colHalf + 32)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
@@ -214,11 +214,11 @@ if (yToSet < (colHalf - 24) || yToSet > (colHalf + 24)){
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
 				  xToUse = rowHalf - x;
-				  xToGet = xToUse - (x*3)/(yToUse);
+				  xToGet = xToUse - ((x*3)/yToUse)+1;
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x + ((xToUse - rowHalf)*3)/(yToUse);
+				  xToGet = x + (((xToUse - rowHalf)*3)/yToUse)-1;
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
