@@ -29,13 +29,13 @@ static int colFull;
 
 
 		//Load settings
-	//if(persist_exists(twelveHour)) {
+	if(persist_exists(twelveHour)) {
   		// Read persisted value
-  		//twelveHour = persist_read_int(twelveHour);
-	//} else {
+  		twelveHour = persist_read_int(twelveHour);
+	} else {
   		// Set a default value until the user chooses their own value
-  		//persist_write_int(twelveHour,0);
-	//}
+  		persist_write_int(twelveHour,0);
+	}
 
 // Customizations
 // colorBg;
@@ -53,7 +53,8 @@ static int colFull;
 #define COLORMNFR GColorWhite
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
-static int twelveHour;
+static int8_t twelveHour;
+static int8_t flat = 1;
 static int8_t dropShadow = 1;
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
@@ -486,10 +487,12 @@ static void main_window_load(Window *window) {
 	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_d));
 	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
 	
+	
+	if (flat == 0) {
 	// set canvas for shader
-	  //s_canvas = layer_create(bounds);
-  	//layer_set_update_proc(s_canvas, layer_update_proc);
-  	//layer_add_child(window_layer, s_canvas);
+	  s_canvas = layer_create(bounds);
+  	layer_set_update_proc(s_canvas, layer_update_proc);
+  	layer_add_child(window_layer, s_canvas);
 	
 	// ************************************************
 	// ** Drop shadow
@@ -516,7 +519,7 @@ static void main_window_load(Window *window) {
 
 	// Add to Window
 	layer_add_child(window_get_root_layer(window), s_canvas_line);
-
+}
 
 	// ************************************************
 	// ** Arrows
