@@ -192,7 +192,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 // Iterate over all rows
 	for(int y = 0; y < colFull; y++) {
 	  	
-if (y < 50 || y > 90){
+
 		if (y < colHalf) {
 			// top half
 			yToUse = colHalf - y;
@@ -204,7 +204,7 @@ yToGet = yToSet - (64/(yToUse));
 			yToSet = y;
 yToGet = yToSet + (64/(yToUse));
 		} 
-
+if (yToSet < (colHalf - 30) || yToSet > (colHalf + 30)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
