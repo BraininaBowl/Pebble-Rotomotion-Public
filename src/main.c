@@ -385,7 +385,13 @@ static void drawDate(Layer *window_layer){
 	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_d));
 	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
 }
-
+// Draw arrows
+static void drawArrows(Layer *window_layer){
+	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 15));
+  	layer_set_update_proc(s_arrows, s_arrows_update_proc);
+  //---add the layer to the Window layer---
+  	layer_add_child(window_layer, s_arrows);
+}
 
 // *** ANIMATE ***
 // animate time change
@@ -590,16 +596,10 @@ static void main_window_load(Window *window) {
 	drawShadow(window_layer);
 	// create border to hide shader noise
 	drawBorder(window_layer);
-	
+	// create arrows
+	drawArrows(window_layer);
 
-	// ************************************************
-	// ** Arrows
-	// ************************************************
-	
-	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 15));
-  	layer_set_update_proc(s_arrows, s_arrows_update_proc);
-  //---add the layer to the Window layer---
-  	layer_add_child(window_layer, s_arrows);
+
 }
 	
 static void main_window_unload(Window *window) {
