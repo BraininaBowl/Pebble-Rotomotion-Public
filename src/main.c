@@ -487,9 +487,6 @@ static void main_window_load(Window *window) {
 	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
   	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 
-	layer_add_child(window_layer, s_date_container);
-	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_d));
-	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
 	
 	
 	if (flat == 0) {
@@ -498,6 +495,12 @@ static void main_window_load(Window *window) {
   	layer_set_update_proc(s_canvas, layer_update_proc);
   	layer_add_child(window_layer, s_canvas);
   	}
+	
+	
+	layer_add_child(window_layer, s_date_container);
+	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_d));
+	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
+	
 	
 	// ************************************************
 	// ** Drop shadow
