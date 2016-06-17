@@ -141,7 +141,6 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
   }
   return GColorClear;
 }
-
 // Shader stuff goes here
 void layer_update_proc(Layer *layer, GContext *ctx) {
 
@@ -259,26 +258,8 @@ if (yToSet < (colHalf - 42) || yToSet > (colHalf + 42)){
 //	gbitmap_destroy(fb);
 }
 
+
 // *** DRAW STUFF ***
-// Draw arrows
-void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
-	static GPath *s_arrow_left_path = NULL;
-	static GPath *s_arrow_right_path = NULL;
-
-	// Fill the path:
-	#if defined(PBL_COLOR)
-  	graphics_context_set_fill_color(ctx, COLORTRICL);
-	#elif defined(PBL_BW)
-  	graphics_context_set_fill_color(ctx, COLORTRIBW);
-	#endif
-	
-	gpath_draw_filled(ctx, s_arrow_left_path);
-	gpath_draw_filled(ctx, s_arrow_right_path);
-
-	s_arrow_left_path = gpath_create(&ARROW_LEFT_PATH_POINTS);
-	s_arrow_right_path = gpath_create(&ARROW_RIGHT_PATH_POINTS);
-	gpath_move_to(s_arrow_right_path, GPoint(102, 0));
-}
 // Draw border to hide shader noise
 static void canvas_update_proc(Layer *layer, GContext *ctx) {
   // Custom drawing happens here!
@@ -387,11 +368,43 @@ static void drawDate(Layer *window_layer){
 }
 // Draw arrows
 static void drawArrows(Layer *window_layer){
+// Draw arrows
+	void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
+		static GPath *s_arrow_left_path = NULL;
+		static GPath *s_arrow_right_path = NULL;
+
+		// Fill the path:
+		#if defined(PBL_COLOR)
+		graphics_context_set_fill_color(ctx, COLORTRICL);
+		#elif defined(PBL_BW)
+		graphics_context_set_fill_color(ctx, COLORTRIBW);
+		#endif
+
+		gpath_draw_filled(ctx, s_arrow_left_path);
+		gpath_draw_filled(ctx, s_arrow_right_path);
+
+		s_arrow_left_path = gpath_create(&ARROW_LEFT_PATH_POINTS);
+		s_arrow_right_path = gpath_create(&ARROW_RIGHT_PATH_POINTS);
+		gpath_move_to(s_arrow_right_path, GPoint(102, 0));
+	}
+	
 	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 15));
   	layer_set_update_proc(s_arrows, s_arrows_update_proc);
   //---add the layer to the Window layer---
-  	layer_add_child(window_layer, s_arrows);
+
+	
+	layer_add_child(window_layer, s_arrows);
 }
+// Draw shader
+static void drawShader(Layer * window_layer){
+	if (shaderMode > 0) {
+	// set canvas for shader
+	s_canvas = layer_create(GRect(0,0, rowFull, colFull));
+  	layer_set_update_proc(s_canvas, layer_update_proc);
+  	layer_add_child(window_layer, s_canvas);
+  	}
+}
+
 
 // *** ANIMATE ***
 // animate time change
@@ -579,17 +592,11 @@ static void main_window_load(Window *window) {
 	rowFull = bounds.size.w-1;
 	colHalf = bounds.size.h/2;
 	colFull = bounds.size.h;
-		
+
 	// create textlayer
 	drawText(window_layer);
-	
-	if (shaderMode > 0) {
-	// set canvas for shader
-	s_canvas = layer_create(bounds);
-  	layer_set_update_proc(s_canvas, layer_update_proc);
-  	layer_add_child(window_layer, s_canvas);
-  	}
-
+	// create shader layer
+	drawShader(window_layer);
 	// create date layer
 	drawDate(window_layer);
 	// create dropShadow
@@ -598,7 +605,6 @@ static void main_window_load(Window *window) {
 	drawBorder(window_layer);
 	// create arrows
 	drawArrows(window_layer);
-
 
 }
 	
