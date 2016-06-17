@@ -54,7 +54,7 @@ static int colFull;
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
 static int8_t twelveHour;
-static int8_t flat = 0;
+static int8_t shaderMode = 2;
 static int8_t dropShadow = 1;
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
@@ -191,8 +191,9 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 	
 // Iterate over all rows
 	for(int y = 0; y < colFull; y++) {
-	  	
-
+	  
+// draw as cylinder	  	
+if (shaderMode == 1) {
 		if (y < colHalf) {
 			// top half
 			yToUse = colHalf - y;
@@ -232,6 +233,51 @@ if (yToSet < (colHalf - 24) || yToSet > (colHalf + 24)){
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
 	  	}
+	  	} else {
+	  	// draw as ribbons
+	  	
+	  	
+	  if (y < colHalf) {
+			// top half
+			yToUse = colHalf - y;
+			yToSet = colHalf - y;
+yToGet = yToSet - ((yToUse-32)*3);
+		} else {
+			// bottom half
+			yToUse = colFull - y;
+			yToSet = y;
+yToGet = yToSet + ((yToUse-32)*3);
+		} 
+		
+	// filter only edge pixels, to improve readability and performance
+if (yToSet < (colHalf - 32) || yToSet > (colHalf + 32)){
+
+	  // Iterate over all visible columns
+		  for(int x = 0; x <= rowFull; x++) {
+			  // Split in left and right halves
+			  if (x < rowHalf) {
+				  // left half: Work from right to left
+				  xToUse = rowHalf - x;
+				  xToGet = xToUse - ((x*3)/yToUse)+1;
+			  } else {
+				  // right half: Work from left to right
+				  xToUse = x;
+				  xToGet = x + (((xToUse - rowHalf)*3)/yToUse)-1;
+			  }
+			  // is the target pixel inside the area?
+			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
+				  // No, so we'll use the background color
+				  colorToSet = COLORBG;
+			  } else {
+				  // Yes, so get the target pixel color
+				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			  }
+			  // Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
+			  }
+	  	}
+	  	} 	
+	  	
 	  	
 	 }
   // Finally, release the framebuffer
@@ -489,7 +535,7 @@ static void main_window_load(Window *window) {
 
 	
 	
-	if (flat == 0) {
+	if (shaderMode > 0) {
 	// set canvas for shader
 	  s_canvas = layer_create(bounds);
   	layer_set_update_proc(s_canvas, layer_update_proc);
@@ -520,7 +566,7 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
 	}
 	
-		if (flat == 0) {
+		if (shaderMode > 0) {
 	// Create canvas line layer
 	s_canvas_line = layer_create(bounds);
 	// Assign the custom drawing procedure
