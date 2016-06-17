@@ -192,7 +192,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 // Iterate over all rows
 	for(int y = 0; y < colFull; y++) {
 	  	
-
+if (y < colHalf - 40 || y > colHalf +40){
 		if (y < colHalf) {
 			// top half
 			yToUse = colHalf - y;
@@ -230,6 +230,8 @@ yToGet = yToSet + (64/(yToUse));
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
 	  	}
+	  	
+	 }
   // Finally, release the framebuffer
   graphics_release_frame_buffer(ctx, fb);
 
