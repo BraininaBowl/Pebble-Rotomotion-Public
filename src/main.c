@@ -493,6 +493,7 @@ static void main_window_load(Window *window) {
 	  s_canvas = layer_create(bounds);
   	layer_set_update_proc(s_canvas, layer_update_proc);
   	layer_add_child(window_layer, s_canvas);
+  	}
 	
 	// ************************************************
 	// ** Drop shadow
@@ -512,6 +513,7 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
 	}
 	
+		if (flat == 0) {
 	// Create canvas line layer
 	s_canvas_line = layer_create(bounds);
 	// Assign the custom drawing procedure
