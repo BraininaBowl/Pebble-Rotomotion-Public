@@ -8,8 +8,9 @@ module.exports = [
   "items": [
     {
       "type": "toggle",
-      "appKey": "twelveHour",
-      "label": "Twelve Hour Mode"
+      "messageKey": "twelveHour",
+      "label": "Twelve Hour Mode",
+		"defaultValue": false
     },
 	  {
 		  "type": "submit",

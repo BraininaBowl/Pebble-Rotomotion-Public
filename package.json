@@ -1,6 +1,8 @@
 {
     "author": "Brain in a Bowl",
-    "dependencies": {},
+    "dependencies": {
+        "pebble-clay": "^1.0.0"
+    },
     "keywords": [],
     "name": "rotomotion-black",
     "pebble": {

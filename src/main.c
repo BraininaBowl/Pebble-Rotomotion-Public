@@ -27,6 +27,16 @@ static int rowFull;
 static int colHalf;
 static int colFull;
 
+
+		//Load settings
+	//if(persist_exists(twelveHour)) {
+  		// Read persisted value
+  		//twelveHour = persist_read_int(twelveHour);
+	//} else {
+  		// Set a default value until the user chooses their own value
+  		//persist_write_int(twelveHour,0);
+	//}
+
 // Customizations
 // colorBg;
 // colorHrBg;
@@ -43,9 +53,8 @@ static int colFull;
 #define COLORMNFR GColorWhite
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
-static int8_t twelveHour;
+static int twelveHour;
 static int8_t dropShadow = 1;
-
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
 static char s_buffer_month[3];
@@ -55,14 +64,27 @@ static int s_minute;
 static int s_month;
 static int s_day;
 
-
 // set config
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
-Tuple *twelveHour_t = dict_find(iter, twelveHour);
-int twelveHour = twelveHour_t->value->int8;
+  Tuple *twelveHour_tuple = dict_find(iter, MESSAGE_KEY_twelveHour);
+  if(twelveHour_tuple) {
+    // This value was stored as JS Number, which is stored here as int8_t
+    twelveHour = twelveHour_tuple->value->int8;
+	  
+		  if (twelveHour == 1) {
+			text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
+		} else {
+			text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
+		}
+	  
+	 // Store the data
+	persist_write_int(twelveHour, twelveHour);
+   //APP_LOG(APP_LOG_LEVEL_DEBUG, "twelveHour_t %x", twelveHour);
 
-   // Persist values
-persist_write_int(twelveHour, twelveHour);
+  }
+
+
+
 
 }
 
@@ -209,6 +231,9 @@ yToGet = yToSet + (64/(yToUse));
 	  	}
   // Finally, release the framebuffer
   graphics_release_frame_buffer(ctx, fb);
+
+	//clean up
+//	gbitmap_destroy(fb);
 }
 
 // layer for arrows
@@ -536,7 +561,7 @@ static void main_window_unload(Window *window) {
 static void init() {
   // Create main Window element and assign to pointer
   s_main_window = window_create();
-
+	
   // Set the background color
   window_set_background_color(s_main_window, COLORBG);
 
@@ -560,7 +585,7 @@ static void init() {
 	
 	// Receive settings
 app_message_register_inbox_received(inbox_received_handler);
-app_message_open(4, 4);
+app_message_open(256, 256);
 }
 
 static void deinit() {
