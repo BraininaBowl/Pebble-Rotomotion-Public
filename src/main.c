@@ -29,13 +29,13 @@ static int colFull;
 
 
 		//Load settings
-	if(persist_exists(twelveHour)) {
+  //if(persist_exists(twelveHour)) {
   		// Read persisted value
-  		twelveHour = persist_read_int(twelveHour);
-	} else {
+  //		twelveHour = persist_read_int(twelveHour);
+//	} else {
   		// Set a default value until the user chooses their own value
-  		persist_write_int(twelveHour,0);
-	}
+ // 		persist_write_int(twelveHour,0);
+	//}
 
 // Customizations
 // colorBg;
