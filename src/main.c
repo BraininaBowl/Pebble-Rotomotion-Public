@@ -54,7 +54,7 @@ static int colFull;
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
 static int8_t twelveHour;
-static int8_t flat = 1;
+static int8_t flat = 0;
 static int8_t dropShadow = 1;
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
