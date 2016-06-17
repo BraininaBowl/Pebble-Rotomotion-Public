@@ -241,12 +241,12 @@ if (yToSet < (colHalf - 24) || yToSet > (colHalf + 24)){
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet - ((yToUse-42)*2);
+yToGet = yToSet - ((yToUse-42)*3);
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + ((yToUse-42)*2);
+yToGet = yToSet + ((yToUse-42)*3);
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
@@ -258,11 +258,11 @@ if (yToSet < (colHalf - 42) || yToSet > (colHalf + 42)){
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
 				  xToUse = rowHalf - x;
-				  xToGet = xToUse - ((x*2)-(yToUse-42));
+				  xToGet = xToUse - ((x)-(yToUse-42));
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x + (((xToUse - rowHalf)*2)-(yToUse-42));
+				  xToGet = x + (((xToUse - rowHalf))-(yToUse-42));
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
