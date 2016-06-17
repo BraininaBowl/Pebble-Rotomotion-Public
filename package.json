@@ -12,7 +12,8 @@
         "displayName": "Rotomotion Black",
         "enableMultiJS": true,
         "messageKeys": [
-            "twelveHour"
+            "twelveHour",
+            "shaderMode"
         ],
         "projectType": "native",
         "resources": {

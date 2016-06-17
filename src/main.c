@@ -21,21 +21,14 @@ static const GPathInfo ARROW_RIGHT_PATH_POINTS = {
 	};
 static int8_t firstrun = 1;
 
-// set variables for shader
+// set variables for drawing
 static int rowHalf;
 static int rowFull;
 static int colHalf;
 static int colFull;
 
 
-		//Load settings
-  //if(persist_exists(twelveHour)) {
-  		// Read persisted value
-  //		twelveHour = persist_read_int(twelveHour);
-//	} else {
-  		// Set a default value until the user chooses their own value
- // 		persist_write_int(twelveHour,0);
-	//}
+
 
 // Customizations
 // colorBg;
@@ -53,9 +46,15 @@ static int colFull;
 #define COLORMNFR GColorWhite
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
-static int8_t twelveHour;
-static int8_t shaderMode = 1;
+int p_twelveHour;
+int8_t twelveHour;
+int p_shaderMode;
+int shaderMode = 1;
+int p_dropShadow;
 static int8_t dropShadow = 1;
+
+
+
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
 static char s_buffer_month[3];
@@ -65,40 +64,23 @@ static int s_minute;
 static int s_month;
 static int s_day;
 
-// set config
-static void inbox_received_handler(DictionaryIterator *iter, void *context) {
-  Tuple *twelveHour_tuple = dict_find(iter, MESSAGE_KEY_twelveHour);
-  if(twelveHour_tuple) {
-    // This value was stored as JS Number, which is stored here as int8_t
-    twelveHour = twelveHour_tuple->value->int8;
-	  
-//		  if (twelveHour == 1) {
-//			text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
-//		} else {
-//			text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
-//		}
-	  
-	 // Store the data
-	persist_write_int(twelveHour, twelveHour);
-   //APP_LOG(APP_LOG_LEVEL_DEBUG, "twelveHour_t %x", twelveHour);
-
-  }
 
 
 
-
-}
-
-// Bitmap data manipulation
-// **************************************************************************
-// **************************************************************************
-//
-// The bitmap code is based on the Pebble Compass code by orviwan
-// https://github.com/orviwan/pebble-compass/blob/master/src/bitmap.c
-//
-// **************************************************************************
-// **************************************************************************
+// bitmap manipulation
 void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y, int x, GColor color) {
+			// Bitmap data manipulation
+	// **************************************************************************
+	// **************************************************************************
+	//
+	// All bitmap code is based on the Pebble Compass code by orviwan
+	// https://github.com/orviwan/pebble-compass/blob/master/src/bitmap.c
+	//
+	// **************************************************************************
+	// **************************************************************************
+	
+	
+	
   GBitmapDataRowInfo row = gbitmap_get_data_row_info(bitmap, y);
   if ((x >= row.min_x) && (x <= row.max_x)) {
     switch(bitmap_format) {
@@ -160,9 +142,11 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 // Iterate over all rows
 	for(int y = 0; y < colFull; y++) {
 	  
-// draw as cylinder	  	
+	
 if (shaderMode == 1) {
-		if (y < colHalf) {
+// draw as cylinder	  
+	
+	if (y < colHalf) {
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
@@ -204,24 +188,23 @@ if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 	  	
 	  	
 	  	
-	  	} else {
-	  	// draw as ribbons
-	  	
-	  	
-	  if (y < colHalf) {
+	  	} else if (shaderMode == 2) {
+// draw as inverted cylinder	  	
+	
+		if (y < colHalf) {
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet - ((yToUse-42)*2);
+yToGet = yToSet - (64/(yToUse));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + ((yToUse-42)*2);
+yToGet = yToSet + (64/(yToUse));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
-if (yToSet < (colHalf - 42) || yToSet > (colHalf + 42)){
+if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
@@ -229,11 +212,57 @@ if (yToSet < (colHalf - 42) || yToSet > (colHalf + 42)){
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
 				  xToUse = rowHalf - x;
-				  xToGet = xToUse - ((x/10)-(yToUse-42));
+				  xToGet = xToUse + ((x*3)/yToUse);
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x + (((xToUse - rowHalf)/10)-(yToUse-42));
+				  xToGet = x - (((xToUse - rowHalf)*3)/yToUse);
+			  }
+			  // is the target pixel inside the area?
+			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
+				  // No, so we'll use the background color
+				  colorToSet = COLORBG;
+			  } else {
+				  // Yes, so get the target pixel color
+				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			  }
+			  // Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
+			  }
+	  	}
+	  	
+	  	
+	  	
+	  	} else if (shaderMode == 3) {
+	  	// draw as ribbons
+	  	
+	  	
+	  if (y < colHalf) {
+			// top half
+			yToUse = colHalf - y;
+			yToSet = colHalf - y;
+yToGet = yToSet + ((yToUse-45)*3);
+		} else {
+			// bottom half
+			yToUse = colFull - y;
+			yToSet = y;
+yToGet = yToSet - ((yToUse-45)*3);
+		} 
+		
+	// filter only edge pixels, to improve readability and performance
+if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
+
+	  // Iterate over all visible columns
+		  for(int x = 0; x <= rowFull; x++) {
+			  // Split in left and right halves
+			  if (x < rowHalf) {
+				  // left half: Work from right to left
+				  xToUse = rowHalf - x;
+				  xToGet = xToUse + (yToUse-45);
+			  } else {
+				  // right half: Work from left to right
+				  xToUse = x;
+				  xToGet = x - (yToUse-45);
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
@@ -255,40 +284,9 @@ if (yToSet < (colHalf - 42) || yToSet > (colHalf + 42)){
   graphics_release_frame_buffer(ctx, fb);
 
 	//clean up
-//	gbitmap_destroy(fb);
 }
-
 
 // *** DRAW STUFF ***
-// Draw border to hide shader noise
-static void canvas_update_proc(Layer *layer, GContext *ctx) {
-  // Custom drawing happens here!
-// Set the line color
-graphics_context_set_stroke_color(ctx, COLORBG);
-
-// Set the fill color
-graphics_context_set_fill_color(ctx, GColorClear);
-	
-	// Set the stroke width (must be an odd integer value)
-
-	
-	GRect bounds = layer_get_bounds(layer);
-
-	#if defined(PBL_RECT)
-	// Rectengular screen: Draw a rectangle
-	graphics_context_set_stroke_width(ctx, 14);
-	graphics_draw_rect(ctx, bounds);
-	#elif defined(PBL_ROUND)
-	// Rectengular screen: Draw a rectangle
-	graphics_context_set_stroke_width(ctx, 16);
-	GPoint center = GPoint(bounds.size.h/2, bounds.size.w/2);
-	uint16_t radius = bounds.size.h/2;
-
-	// Draw the outline of a circle
-	graphics_draw_circle(ctx, center, radius);
-	#endif
-
-}
 // Draw text
 static void drawText(Layer *window_layer) {
 	   // Create the TextLayer with specific bounds
@@ -332,6 +330,35 @@ static void drawShadow(Layer *window_layer){
   		layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
 		}
 }
+// Draw border to hide shader noise
+static void canvas_update_proc(Layer *layer, GContext *ctx) {
+  // Custom drawing happens here!
+// Set the line color
+graphics_context_set_stroke_color(ctx, COLORBG);
+
+// Set the fill color
+graphics_context_set_fill_color(ctx, GColorClear);
+	
+	// Set the stroke width (must be an odd integer value)
+
+	
+	GRect bounds = layer_get_bounds(layer);
+
+	#if defined(PBL_RECT)
+	// Rectengular screen: Draw a rectangle
+	graphics_context_set_stroke_width(ctx, 14);
+	graphics_draw_rect(ctx, bounds);
+	#elif defined(PBL_ROUND)
+	// Rectengular screen: Draw a rectangle
+	graphics_context_set_stroke_width(ctx, 16);
+	GPoint center = GPoint(bounds.size.h/2, bounds.size.w/2);
+	uint16_t radius = bounds.size.h/2;
+
+	// Draw the outline of a circle
+	graphics_draw_circle(ctx, center, radius);
+	#endif
+
+}
 // Draw border
 static void drawBorder(Layer * window_layer){
 	if (shaderMode > 0) {
@@ -367,9 +394,7 @@ static void drawDate(Layer *window_layer){
 	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
 }
 // Draw arrows
-static void drawArrows(Layer *window_layer){
-// Draw arrows
-	void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
+void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 		static GPath *s_arrow_left_path = NULL;
 		static GPath *s_arrow_right_path = NULL;
 
@@ -387,6 +412,9 @@ static void drawArrows(Layer *window_layer){
 		s_arrow_right_path = gpath_create(&ARROW_RIGHT_PATH_POINTS);
 		gpath_move_to(s_arrow_right_path, GPoint(102, 0));
 	}
+// Draw arrows
+static void drawArrows(Layer *window_layer){
+
 	
 	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 15));
   	layer_set_update_proc(s_arrows, s_arrows_update_proc);
@@ -570,6 +598,68 @@ static void update_date() {
 	}
 
 
+// *** SETTINGS ***
+// apply settings to layers
+static void applySettings(){
+	
+	// twelve hour settings
+	  if (twelveHour == 1) {
+		text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
+	} else {
+		text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
+	}
+	
+	
+	//void layer_mark_dirty(Layer *s_canvas);
+}
+// load earlier settings
+static void loadSettings(){
+	//Load settings
+	if(persist_exists(p_twelveHour)) {
+  	// Read persisted value
+  		twelveHour = persist_read_int(p_twelveHour);
+	} else {
+  	// Set a default value until the user chooses their own value
+		twelveHour = 0;
+		persist_write_int(p_twelveHour,twelveHour);
+	}
+
+		if(persist_exists(p_shaderMode)) {
+  	// Read persisted value
+  		shaderMode = persist_read_int(p_shaderMode);
+	} else {
+  	// Set a default value until the user chooses their own value
+		shaderMode = 1;
+		persist_write_int(p_shaderMode,shaderMode);
+	}
+
+	
+	applySettings();
+}
+// receive settings from phone
+static void inbox_received_handler(DictionaryIterator *iter, void *context) {
+	Tuple *twelveHour_tuple = dict_find(iter, MESSAGE_KEY_twelveHour);
+	if(twelveHour_tuple) {
+		// This value was stored as JS Number, which is stored here as int8_t
+   	twelveHour = twelveHour_tuple->value->int8;
+	 	// Store the data
+		persist_write_int(p_twelveHour, twelveHour);
+	}
+		
+	Tuple *shaderMode_tuple = dict_find(iter, MESSAGE_KEY_shaderMode);
+	if(shaderMode_tuple) {
+		// This value was stored as JS Number, which is stored here as int8_t
+   	shaderMode = (shaderMode_tuple->value->int16)-48;
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", shaderMode);
+	 	// Store the data
+		persist_write_int(p_shaderMode, shaderMode);
+	}
+	
+	
+	applySettings();
+}
+
+
 // *** EVENTS ***
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
@@ -593,6 +683,7 @@ static void main_window_load(Window *window) {
 	colHalf = bounds.size.h/2;
 	colFull = bounds.size.h;
 
+
 	// create textlayer
 	drawText(window_layer);
 	// create shader layer
@@ -605,6 +696,8 @@ static void main_window_load(Window *window) {
 	drawBorder(window_layer);
 	// create arrows
 	drawArrows(window_layer);
+	// load settings
+	loadSettings();
 
 }
 	
@@ -662,10 +755,10 @@ static void init() {
 	
 	// Subscribe to tap events
 	accel_tap_service_subscribe(accel_tap_handler);
-	
+
 	// Receive settings
-app_message_register_inbox_received(inbox_received_handler);
-app_message_open(256, 256);
+	app_message_register_inbox_received(inbox_received_handler);
+	app_message_open(64, 64);
 }
 
 static void deinit() {
