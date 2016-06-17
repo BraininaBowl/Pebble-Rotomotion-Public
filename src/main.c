@@ -258,11 +258,11 @@ if (yToSet < (colHalf - 42) || yToSet > (colHalf + 42)){
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
 				  xToUse = rowHalf - x;
-				  xToGet = xToUse - ((x)-(yToUse-42));
+				  xToGet = xToUse - ((x/10)-(yToUse-42));
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x + (((xToUse - rowHalf))-(yToUse-42));
+				  xToGet = x + (((xToUse - rowHalf)/10)-(yToUse-42));
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
