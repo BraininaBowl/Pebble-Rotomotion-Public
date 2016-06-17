@@ -13,11 +13,11 @@ static Layer *s_canvas_line;
 static Layer *s_arrows;
 static const GPathInfo ARROW_LEFT_PATH_POINTS = {
 	3,
-	   (GPoint []) {{0, 0}, {0, 14}, {8, 7},}
+	   (GPoint []) {{0, 0}, {0, 15}, {8, 7},}
 	};
 static const GPathInfo ARROW_RIGHT_PATH_POINTS = {
 	3,
-	   (GPoint []) {{8, 0}, {8, 14}, {0, 7},}
+	   (GPoint []) {{8, 0}, {8, 15}, {0, 7},}
 	};
 static int8_t firstrun = 1;
 
@@ -534,7 +534,7 @@ static void main_window_load(Window *window) {
 	// ** Arrows
 	// ************************************************
 	
-	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 14));
+	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 15));
   	layer_set_update_proc(s_arrows, s_arrows_update_proc);
   //---add the layer to the Window layer---
   	layer_add_child(window_layer, s_arrows);
