@@ -54,7 +54,7 @@ static int colFull;
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
 static int8_t twelveHour;
-static int8_t shaderMode = 2;
+static int8_t shaderMode = 1;
 static int8_t dropShadow = 1;
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
@@ -233,6 +233,9 @@ if (yToSet < (colHalf - 24) || yToSet > (colHalf + 24)){
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
 	  	}
+	  	
+	  	
+	  	
 	  	} else {
 	  	// draw as ribbons
 	  	
