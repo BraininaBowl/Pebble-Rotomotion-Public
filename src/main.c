@@ -198,12 +198,12 @@ if (shaderMode == 1) {
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet - (128/(yToUse));
+yToGet = yToSet - (32/(yToUse));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + (128/(yToUse));
+yToGet = yToSet + (32/(yToUse));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
