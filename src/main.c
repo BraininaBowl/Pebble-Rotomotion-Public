@@ -204,7 +204,9 @@ yToGet = yToSet - (64/(yToUse));
 			yToSet = y;
 yToGet = yToSet + (64/(yToUse));
 		} 
-if (yToSet < (colHalf - 30) || yToSet > (colHalf + 30)){
+		
+	// filter only edge pixels, to improve readability and performance
+if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
