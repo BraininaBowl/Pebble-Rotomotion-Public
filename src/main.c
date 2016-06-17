@@ -241,16 +241,16 @@ if (yToSet < (colHalf - 24) || yToSet > (colHalf + 24)){
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet - (yToUse*3)-32;
+yToGet = yToSet - (yToUse-50);
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + (yToUse*3)+32;
+yToGet = yToSet + (yToUse-50);
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
-if (yToSet < (colHalf - 32) || yToSet > (colHalf + 32)){
+if (yToSet < (colHalf - 50) || yToSet > (colHalf + 50)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
