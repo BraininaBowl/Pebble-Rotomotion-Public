@@ -89,37 +89,6 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 
 }
 
-
-// Draw border to hide shader noise
-static void canvas_update_proc(Layer *layer, GContext *ctx) {
-  // Custom drawing happens here!
-// Set the line color
-graphics_context_set_stroke_color(ctx, COLORBG);
-
-// Set the fill color
-graphics_context_set_fill_color(ctx, GColorClear);
-	
-	// Set the stroke width (must be an odd integer value)
-
-	
-	GRect bounds = layer_get_bounds(layer);
-
-	#if defined(PBL_RECT)
-	// Rectengular screen: Draw a rectangle
-	graphics_context_set_stroke_width(ctx, 14);
-	graphics_draw_rect(ctx, bounds);
-	#elif defined(PBL_ROUND)
-	// Rectengular screen: Draw a rectangle
-	graphics_context_set_stroke_width(ctx, 16);
-	GPoint center = GPoint(bounds.size.h/2, bounds.size.w/2);
-	uint16_t radius = bounds.size.h/2;
-
-	// Draw the outline of a circle
-	graphics_draw_circle(ctx, center, radius);
-	#endif
-
-}
-
 // Bitmap data manipulation
 // **************************************************************************
 // **************************************************************************
@@ -290,7 +259,8 @@ if (yToSet < (colHalf - 42) || yToSet > (colHalf + 42)){
 //	gbitmap_destroy(fb);
 }
 
-// layer for arrows
+// *** DRAW STUFF ***
+// Draw arrows
 void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 	static GPath *s_arrow_left_path = NULL;
 	static GPath *s_arrow_right_path = NULL;
@@ -309,7 +279,116 @@ void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 	s_arrow_right_path = gpath_create(&ARROW_RIGHT_PATH_POINTS);
 	gpath_move_to(s_arrow_right_path, GPoint(102, 0));
 }
+// Draw border to hide shader noise
+static void canvas_update_proc(Layer *layer, GContext *ctx) {
+  // Custom drawing happens here!
+// Set the line color
+graphics_context_set_stroke_color(ctx, COLORBG);
 
+// Set the fill color
+graphics_context_set_fill_color(ctx, GColorClear);
+	
+	// Set the stroke width (must be an odd integer value)
+
+	
+	GRect bounds = layer_get_bounds(layer);
+
+	#if defined(PBL_RECT)
+	// Rectengular screen: Draw a rectangle
+	graphics_context_set_stroke_width(ctx, 14);
+	graphics_draw_rect(ctx, bounds);
+	#elif defined(PBL_ROUND)
+	// Rectengular screen: Draw a rectangle
+	graphics_context_set_stroke_width(ctx, 16);
+	GPoint center = GPoint(bounds.size.h/2, bounds.size.w/2);
+	uint16_t radius = bounds.size.h/2;
+
+	// Draw the outline of a circle
+	graphics_draw_circle(ctx, center, radius);
+	#endif
+
+}
+// Draw text
+static void drawText(Layer *window_layer) {
+	   // Create the TextLayer with specific bounds
+	s_time_layer_h = text_layer_create(GRect(rowHalf-49+12, colHalf-84, 47, 1216));
+  	s_time_layer_m = text_layer_create(GRect(rowHalf+12, colHalf-84, 27, 1488));
+
+  // TextLayer options
+  text_layer_set_background_color(s_time_layer_h, COLORHRBG);
+  text_layer_set_text_color(s_time_layer_h, COLORHRFR);
+  if (twelveHour == 1) {
+		text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
+	} else {
+		text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
+	}
+	text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
+	
+	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
+  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
+	text_layer_set_text(s_time_layer_m, "55\n56\n57\n58\n59\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n00\n01\n02\n03\n04");
+  	text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentCenter);
+
+	// add fonts
+	text_layer_set_font(s_time_layer_h, fonts_get_system_font(FONT_KEY_LECO_36_BOLD_NUMBERS));
+	text_layer_set_font(s_time_layer_m, fonts_get_system_font(FONT_KEY_LECO_20_BOLD_NUMBERS));
+
+	// Add it as a child layer to the Window's root layer
+	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
+  	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
+	
+}
+// Draw dropshadow
+static void drawShadow(Layer *window_layer){
+	if (dropShadow == 1){
+ 		// Create GBitmap
+  		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
+  		// Create BitmapLayer to display the GBitmap
+  		s_background_layer = bitmap_layer_create(GRect(0, 0, rowFull+1, colFull));
+  		// Set the bitmap onto the layer and add to the window
+  		bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+  		bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
+  		layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
+		}
+}
+// Draw border
+static void drawBorder(Layer * window_layer){
+	if (shaderMode > 0) {
+	// Create canvas line layer
+	s_canvas_line = layer_create(GRect(0,0, rowFull, colFull));
+	// Assign the custom drawing procedure
+	layer_set_update_proc(s_canvas_line, canvas_update_proc);
+	// Add to Window
+	layer_add_child(window_layer, s_canvas_line);
+	}
+}
+// Draw date container
+static void drawDate(Layer *window_layer){
+	s_date_container = layer_create(GRect(0, -90, rowFull, 80));
+ 	s_date_container_m = text_layer_create(GRect(rowHalf-59+12, 0, 57, 80));
+  	s_date_container_d = text_layer_create(GRect(rowHalf+12, 0, 37, 80));
+
+	text_layer_set_background_color(s_date_container_m, COLORMNBG);
+  	text_layer_set_text_color(s_date_container_m, COLORMNFR);
+	text_layer_set_text(s_date_container_m, "\n\nMONTH");
+  	text_layer_set_text_alignment(s_date_container_m, GTextAlignmentCenter);
+
+	text_layer_set_background_color(s_date_container_d, COLORMNBG);
+  	text_layer_set_text_color(s_date_container_d, COLORMNFR);
+	text_layer_set_text(s_date_container_d, "\n\nDAY");
+  	text_layer_set_text_alignment(s_date_container_d, GTextAlignmentCenter);
+	
+	text_layer_set_font(s_date_container_d, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+	text_layer_set_font(s_date_container_m, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+	
+	layer_add_child(window_layer, s_date_container);
+	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_d));
+	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
+}
+
+
+// *** ANIMATE ***
+// animate time change
 static void update_time() {
   // Get a tm structure
   time_t temp = time(NULL); 
@@ -376,8 +455,7 @@ static void update_time() {
 	
 
 }
-
-
+// animate date display
 static void update_date() {
 	time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
@@ -472,112 +550,47 @@ static void update_date() {
 
 	}
 
+
+// *** EVENTS ***
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
 }
-
 static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
   // A tap event occured
 	update_date();
 }
 
+
+/// *** LOAD WINDOW ***
 static void main_window_load(Window *window) {
 	
   // Get information about the Window
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
-// set variables for shader
-		rowHalf = bounds.size.w/2;
-		rowFull = bounds.size.w-1;
-		colHalf = bounds.size.h/2;
-		colFull = bounds.size.h;
-	
-	
-  // Create the TextLayer with specific bounds
-  s_time_layer_h = text_layer_create(GRect(rowHalf-49+12, colHalf-84, 47, 1216));
-  s_time_layer_m = text_layer_create(GRect(rowHalf+12, colHalf-84, 27, 1488));
- 	s_date_container = layer_create(GRect(0, -90, rowFull, 80));
- 	s_date_container_m = text_layer_create(GRect(rowHalf-59+12, 0, 57, 80));
-  	s_date_container_d = text_layer_create(GRect(rowHalf+12, 0, 37, 80));
-
-  // TextLayer options
-  text_layer_set_background_color(s_time_layer_h, COLORHRBG);
-  text_layer_set_text_color(s_time_layer_h, COLORHRFR);
-  if (twelveHour == 1) {
-		text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
-	} else {
-		text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
-	}
-	text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
-	
-	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
-  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
-	text_layer_set_text(s_time_layer_m, "55\n56\n57\n58\n59\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n00\n01\n02\n03\n04");
-  	text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentCenter);
-
-	text_layer_set_background_color(s_date_container_m, COLORMNBG);
-  	text_layer_set_text_color(s_date_container_m, COLORMNFR);
-	text_layer_set_text(s_date_container_m, "\n\nMONTH");
-  	text_layer_set_text_alignment(s_date_container_m, GTextAlignmentCenter);
-
-	text_layer_set_background_color(s_date_container_d, COLORMNBG);
-  	text_layer_set_text_color(s_date_container_d, COLORMNFR);
-	text_layer_set_text(s_date_container_d, "\n\nDAY");
-  	text_layer_set_text_alignment(s_date_container_d, GTextAlignmentCenter);
-
-	// add fonts
-	text_layer_set_font(s_time_layer_h, fonts_get_system_font(FONT_KEY_LECO_36_BOLD_NUMBERS));
-	text_layer_set_font(s_time_layer_m, fonts_get_system_font(FONT_KEY_LECO_20_BOLD_NUMBERS));
-	text_layer_set_font(s_date_container_d, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-	text_layer_set_font(s_date_container_m, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-
-  // Add it as a child layer to the Window's root layer
-	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
-  	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
-
-	
+	// set variables for drawing
+	rowHalf = bounds.size.w/2;
+	rowFull = bounds.size.w-1;
+	colHalf = bounds.size.h/2;
+	colFull = bounds.size.h;
+		
+	// create textlayer
+	drawText(window_layer);
 	
 	if (shaderMode > 0) {
 	// set canvas for shader
-	  s_canvas = layer_create(bounds);
+	s_canvas = layer_create(bounds);
   	layer_set_update_proc(s_canvas, layer_update_proc);
   	layer_add_child(window_layer, s_canvas);
   	}
-	
-	
-	layer_add_child(window_layer, s_date_container);
-	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_d));
-	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
-	
-	
-	// ************************************************
-	// ** Drop shadow
-	// ************************************************
 
-	if (dropShadow == 1){
+	// create date layer
+	drawDate(window_layer);
+	// create dropShadow
+	drawShadow(window_layer);
+	// create border to hide shader noise
+	drawBorder(window_layer);
 	
- // Create GBitmap
-  s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
-
-  // Create BitmapLayer to display the GBitmap
-  s_background_layer = bitmap_layer_create(GRect(0, 0, bounds.size.w, bounds.size.h));
-
-  // Set the bitmap onto the layer and add to the window
-  bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
-  bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
-  layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
-	}
-	
-		if (shaderMode > 0) {
-	// Create canvas line layer
-	s_canvas_line = layer_create(bounds);
-	// Assign the custom drawing procedure
-	layer_set_update_proc(s_canvas_line, canvas_update_proc);
-
-	// Add to Window
-	layer_add_child(window_get_root_layer(window), s_canvas_line);
-}
 
 	// ************************************************
 	// ** Arrows
