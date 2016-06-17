@@ -241,12 +241,12 @@ if (yToSet < (colHalf - 24) || yToSet > (colHalf + 24)){
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet - ((yToUse-32)*3);
+yToGet = (yToSet - (yToUse*3)-32;
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + ((yToUse-32)*3);
+yToGet = (yToSet + (yToUse*3)+32;
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
