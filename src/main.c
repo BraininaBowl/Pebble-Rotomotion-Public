@@ -47,7 +47,7 @@ static int colFull;
 #define COLORTRICL GColorRed
 #define COLORTRIBW GColorWhite
 int p_twelveHour;
-int8_t twelveHour;
+int8_t twelveHour = 0;
 int p_shaderMode;
 int shaderMode = 1;
 int p_dropShadow;
@@ -241,12 +241,12 @@ if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet + ((yToUse-45)*3);
+yToGet = yToSet + ((yToUse-45));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet - ((yToUse-45)*3);
+yToGet = yToSet - ((yToUse-45));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
@@ -258,11 +258,11 @@ if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
 				  xToUse = rowHalf - x;
-				  xToGet = xToUse + (yToUse-45);
+				  xToGet = x-yToUse-45;
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x - (yToUse-45);
+				  xToGet = x - yToUse-45;
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
