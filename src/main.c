@@ -27,34 +27,6 @@ static int rowFull;
 static int colHalf;
 static int colFull;
 
-
-
-
-// Customizations
-// colorBg;
-// colorHrBg;
-// colorHrFr;
-// colorMnBg;
-// colorMnFr;
-// colorTriCl;
-// colorTriBw;
-
-#define COLORBG GColorBlack
-#define COLORHRFR GColorWhite
-#define COLORHRBG GColorBlack
-#define COLORMNBG GColorBlack
-#define COLORMNFR GColorWhite
-#define COLORTRICL GColorRed
-#define COLORTRIBW GColorWhite
-int p_twelveHour;
-int8_t twelveHour = 0;
-int p_shaderMode;
-int shaderMode = 1;
-int p_dropShadow;
-static int8_t dropShadow = 1;
-
-
-
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
 static char s_buffer_month[3];
@@ -64,7 +36,30 @@ static int s_minute;
 static int s_month;
 static int s_day;
 
+// Customizations
+#define COLORBG GColorBlack
+#define COLORHRFR GColorWhite
+#define COLORHRBG GColorBlack
+#define COLORMNFR GColorWhite
+#define COLORMNBG GColorBlack
+#if defined(PBL_COLOR)
+	#define COLORTRI GColorRed
+#elif defined(PBL_BW)
+	#define COLORTRI GColorWhite
+#endif
 
+int p_darkMode;
+int p_invHours;
+int p_invMin;
+int p_twelveHour;
+int p_shaderMode;
+int p_dropShadow;
+static int s_darkMode = 1;
+static int s_invHours = 0;
+static int s_invMin = 0;
+static int s_twelveHour = 0;
+static int s_shaderMode = 1;
+static int s_dropShadow = 1;
 
 
 // bitmap manipulation
@@ -125,7 +120,6 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
 }
 // Shader stuff goes here
 void layer_update_proc(Layer *layer, GContext *ctx) {
-
   // Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
 	GBitmapFormat fb_format = gbitmap_get_format(fb);
@@ -143,7 +137,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 	for(int y = 0; y < colFull; y++) {
 	  
 	
-if (shaderMode == 1) {
+if (s_shaderMode == 1) {
 // draw as cylinder	  
 	
 	if (y < colHalf) {
@@ -159,7 +153,7 @@ yToGet = yToSet + (64/(yToUse));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
-if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
+	if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
@@ -188,7 +182,7 @@ if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 	  	
 	  	
 	  	
-	  	} else if (shaderMode == 2) {
+	  	} else if (s_shaderMode == 2) {
 // draw as inverted cylinder	  	
 	
 		if (y < colHalf) {
@@ -204,7 +198,7 @@ yToGet = yToSet + (64/(yToUse));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
-if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
+	if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
@@ -233,24 +227,24 @@ if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 	  	
 	  	
 	  	
-	  	} else if (shaderMode == 3) {
+	  	} else if (s_shaderMode == 3) {
 	  	// draw as ribbons
 	  	
 	  	
 	  if (y < colHalf) {
 			// top half
-			yToUse = colHalf - y;
+			yToUse = y;
 			yToSet = colHalf - y;
-yToGet = yToSet + ((yToUse-45));
+yToGet = yToSet + ((yToSet-43));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet - ((yToUse-45));
+yToGet = yToSet - ((yToUse-43));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
-if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
+	if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x <= rowFull; x++) {
@@ -258,11 +252,11 @@ if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
 				  xToUse = rowHalf - x;
-				  xToGet = xToUse+yToUse-45;
+				  xToGet = xToUse+yToUse-43;
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x + yToUse-45;
+				  xToGet = x + yToUse-43;
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
@@ -276,14 +270,58 @@ if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
 	  	}
-	  	} 	
+	  	} 	else if (s_shaderMode == 4) {
+	  	// draw as banner
 	  	
 	  	
+	  		
+		if (y < colHalf) {
+			// top half
+			yToUse = -1*(colHalf - y);
+			yToSet = colHalf - y;
+yToGet = yToSet - (64/(yToSet));
+		} else {
+			// bottom half
+			yToUse = colFull - y;
+			yToSet = y;
+yToGet = yToSet + (64/(yToUse));
+			
+		} 
+		
+	// filter only edge pixels, to improve readability and performance
+	if (yToSet < (colHalf - 32) || yToSet > (colHalf + 32)){
+
+	  // Iterate over all visible columns
+		  for(int x = 0; x <= rowFull; x++) {
+			  // Split in left and right halves
+			  if (x < rowHalf) {
+				  // left half: Work from right to left
+				  xToUse = rowHalf - x;
+				  xToGet = xToUse + ((x*3)/yToUse);
+			  } else {
+				  // right half: Work from left to right
+				  xToUse = x;
+				  xToGet = x - (((xToUse - rowHalf)*3)/yToUse);
+			  }
+			  // is the target pixel inside the area?
+			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
+				  // No, so we'll use the background color
+				  colorToSet = COLORBG;
+			  } else {
+				  // Yes, so get the target pixel color
+				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			  }
+			  // Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
+			  }
+	  	}
+	  	
+}
 	 }
   // Finally, release the framebuffer
   graphics_release_frame_buffer(ctx, fb);
 
-	//clean up
+
 }
 
 // *** DRAW STUFF ***
@@ -296,7 +334,7 @@ static void drawText(Layer *window_layer) {
   // TextLayer options
   text_layer_set_background_color(s_time_layer_h, COLORHRBG);
   text_layer_set_text_color(s_time_layer_h, COLORHRFR);
-  if (twelveHour == 1) {
+  if (s_twelveHour == 1) {
 		text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
 	} else {
 		text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
@@ -319,7 +357,7 @@ static void drawText(Layer *window_layer) {
 }
 // Draw dropshadow
 static void drawShadow(Layer *window_layer){
-	if (dropShadow == 1){
+	if (s_dropShadow == 1){
  		// Create GBitmap
   		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
   		// Create BitmapLayer to display the GBitmap
@@ -361,7 +399,7 @@ graphics_context_set_fill_color(ctx, GColorClear);
 }
 // Draw border
 static void drawBorder(Layer * window_layer){
-	if (shaderMode > 0) {
+	if (s_shaderMode > 0) {
 	// Create canvas line layer
 	s_canvas_line = layer_create(GRect(0,0, rowFull, colFull));
 	// Assign the custom drawing procedure
@@ -399,11 +437,7 @@ void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 		static GPath *s_arrow_right_path = NULL;
 
 		// Fill the path:
-		#if defined(PBL_COLOR)
-		graphics_context_set_fill_color(ctx, COLORTRICL);
-		#elif defined(PBL_BW)
-		graphics_context_set_fill_color(ctx, COLORTRIBW);
-		#endif
+		graphics_context_set_fill_color(ctx, COLORTRI);
 
 		gpath_draw_filled(ctx, s_arrow_left_path);
 		gpath_draw_filled(ctx, s_arrow_right_path);
@@ -414,18 +448,14 @@ void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 	}
 // Draw arrows
 static void drawArrows(Layer *window_layer){
-
-	
 	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 15));
   	layer_set_update_proc(s_arrows, s_arrows_update_proc);
   //---add the layer to the Window layer---
-
-	
 	layer_add_child(window_layer, s_arrows);
 }
 // Draw shader
 static void drawShader(Layer * window_layer){
-	if (shaderMode > 0) {
+	if (s_shaderMode > 0) {
 	// set canvas for shader
 	s_canvas = layer_create(GRect(0,0, rowFull, colFull));
   	layer_set_update_proc(s_canvas, layer_update_proc);
@@ -599,64 +629,264 @@ static void update_date() {
 
 
 // *** SETTINGS ***
-// apply settings to layers
+
 static void applySettings(){
 	
-	// twelve hour settings
-	  if (twelveHour == 1) {
-		text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
-	} else {
-		text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "applying settings");
+	
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
+	
+	
+	// Color settings
+	
+	if(s_darkMode == 1){
+		#undef COLORBG
+		#define COLORBG GColorBlack
+			if (s_invHours == 1) {
+				#undef COLORHRFR
+				#define COLORHRFR GColorBlack
+				#undef COLORHRBG
+				#define COLORHRBG GColorWhite
+			} else if (s_invHours == 0) {
+				#undef COLORHRFR
+				#define COLORHRFR GColorWhite
+				#undef COLORHRBG
+				#define COLORHRBG GColorBlack
+			}
+			if (s_invMin == 1) {
+				#undef COLORMNFR
+				#define COLORMNFR GColorBlack
+				#undef COLORMNBG
+				#define COLORMNBG GColorWhite
+			} else if (s_invMin == 0) {
+				#undef COLORMNFR
+				#define COLORMNFR GColorWhite
+				#undef COLORMNBG
+				#define COLORMNBG GColorBlack
+			}
+		#if defined(PBL_COLOR)
+			#undef COLORTRI
+			#define COLORTRI GColorRed
+		#elif defined(PBL_BW)
+			#undef COLORTRI
+			#define COLORTRI GColorWhite
+		#endif
+		
+		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
+	} else if(s_darkMode == 0) {
+		#undef COLORBG
+		#define COLORBG GColorWhite
+			if (s_invHours == 1) {
+				#undef COLORHRFR
+				#define COLORHRFR GColorWhite
+				#undef COLORHRBG
+				#define COLORHRBG GColorBlack
+			} else if (s_invHours == 0) {
+				#undef COLORHRFR
+				#define COLORHRFR GColorBlack
+				#undef COLORHRBG
+				#define COLORHRBG GColorWhite
+			}
+			if (s_invMin == 1) {
+				#undef COLORMNFR
+				#define COLORMNFR GColorWhite
+				#undef COLORMNBG
+				#define COLORMNBG GColorBlack
+			} else if (s_invMin == 0) {
+				#undef COLORMNFR
+				#define COLORMNFR GColorBlack
+				#undef COLORMNBG
+				#define COLORMNBG GColorWhite
+			}
+		#if defined(PBL_COLOR)
+			#undef COLORTRI
+			#define COLORTRI GColorRed
+		#elif defined(PBL_BW)
+			#undef COLORTRI
+			#define COLORTRI GColorBlack
+		#endif
+		
+		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP_WHITE);
 	}
+	
+
+	
+	// twelve hour settings
+	  	if (s_twelveHour == 1) {
+			text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
+		} else {
+			text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
+		}
+
+	// Background color
+	  window_set_background_color(s_main_window, COLORBG);
+	
+	// Text colors
+		text_layer_set_background_color(s_time_layer_m, COLORMNBG);
+  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
+	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
+  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
+	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
+  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
+	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
+  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
+
+
 	
 	
 	//void layer_mark_dirty(Layer *s_canvas);
+	
 }
 // load earlier settings
 static void loadSettings(){
+	
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "loading settings");
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
+	
+	
 	//Load settings
 	if(persist_exists(p_twelveHour)) {
   	// Read persisted value
-  		twelveHour = persist_read_int(p_twelveHour);
-	} else {
+  		s_twelveHour = persist_read_int(p_twelveHour);
+	}  
+//	else {
   	// Set a default value until the user chooses their own value
-		twelveHour = 0;
-		persist_write_int(p_twelveHour,twelveHour);
-	}
+//		s_twelveHour = 0;
+//		persist_write_int(p_twelveHour,s_twelveHour);
+//	}
 
-		if(persist_exists(p_shaderMode)) {
+	if(persist_exists(p_shaderMode)) {
   	// Read persisted value
-  		shaderMode = persist_read_int(p_shaderMode);
-	} else {
-  	// Set a default value until the user chooses their own value
-		shaderMode = 1;
-		persist_write_int(p_shaderMode,shaderMode);
+  		s_shaderMode = persist_read_int(p_shaderMode);
 	}
+//	else {
+  	// Set a default value until the user chooses their own value
+//		s_shaderMode = 1;
+//		persist_write_int(p_shaderMode,s_shaderMode);
+//	}
+	
+	if(persist_exists(p_darkMode)) {
+  	// Read persisted value
+  		s_darkMode = persist_read_int(p_darkMode);
+	}
+//	else {
+  	// Set a default value until the user chooses their own value
+//		s_darkMode = 1;
+//		persist_write_int(p_darkMode,s_darkMode);
+//	}
+	
+	if(persist_exists(p_invHours)) {
+  	// Read persisted value
+  		s_invHours = persist_read_int(p_invHours);
+	} 
+//	else {
+  	// Set a default value until the user chooses their own value
+//		s_invHours = 0;
+//		persist_write_int(p_invHours,s_invHours);
+//	}
+	
+	if(persist_exists(p_invMin)) {
+  	// Read persisted value
+  		s_invMin = persist_read_int(p_invMin);
+	}
+//	else {
+  	// Set a default value until the user chooses their own value
+//		s_invMin = 0;
+//		persist_write_int(p_invMin,s_invMin);
+//	}	
+	
+	if(persist_exists(p_dropShadow)) {
+  	// Read persisted value
+  		s_dropShadow = persist_read_int(p_dropShadow);
+	}
+//	else {
+  	// Set a default value until the user chooses their own value
+//		s_dropShadow = 1;
+//		persist_write_int(p_dropShadow,s_dropShadow);
+//	}		
 
 	
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "loaded settings");
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
+	
+	
 	applySettings();
+
+	
+
 }
 // receive settings from phone
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *twelveHour_tuple = dict_find(iter, MESSAGE_KEY_twelveHour);
 	if(twelveHour_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
-   	twelveHour = twelveHour_tuple->value->int8;
+   	s_twelveHour = twelveHour_tuple->value->int8;
 	 	// Store the data
-		persist_write_int(p_twelveHour, twelveHour);
+		persist_write_int(p_twelveHour, s_twelveHour);
 	}
 		
 	Tuple *shaderMode_tuple = dict_find(iter, MESSAGE_KEY_shaderMode);
 	if(shaderMode_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
-   	shaderMode = (shaderMode_tuple->value->int16)-48;
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", shaderMode);
+   	s_shaderMode = (shaderMode_tuple->value->int8)-48;
 	 	// Store the data
-		persist_write_int(p_shaderMode, shaderMode);
+		persist_write_int(p_shaderMode, s_shaderMode);
 	}
 	
+	Tuple *darkMode_tuple = dict_find(iter, MESSAGE_KEY_darkMode);
+	if(darkMode_tuple) {
+		// This value was stored as JS Number, which is stored here as int8_t
+   	s_darkMode = (darkMode_tuple->value->int8);
+	 	// Store the data
+		persist_write_int(p_darkMode, s_darkMode);
+	}
+	
+	Tuple *invHours_tuple = dict_find(iter, MESSAGE_KEY_invHours);
+	if(invHours_tuple) {
+		// This value was stored as JS Number, which is stored here as int8_t
+   	s_invHours = (invHours_tuple->value->int8);
+	 	// Store the data
+		persist_write_int(p_invHours, s_invHours);
+	}
+	
+	Tuple *invMin_tuple = dict_find(iter, MESSAGE_KEY_invMin);
+	if(invMin_tuple) {
+		// This value was stored as JS Number, which is stored here as int8_t
+   	s_invMin = (invMin_tuple->value->int8);
+	 	// Store the data
+		persist_write_int(p_invMin, s_invMin);
+	}
+	
+	Tuple *dropShadow_tuple = dict_find(iter, MESSAGE_KEY_dropShadow);
+	if(dropShadow_tuple) {
+		// This value was stored as JS Number, which is stored here as int8_t
+   	s_dropShadow = (dropShadow_tuple->value->int8);
+	 	// Store the data
+		persist_write_int(p_dropShadow, s_dropShadow);
+	}
+
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
 	
 	applySettings();
+	
+	
+	
 }
 
 
@@ -683,7 +913,6 @@ static void main_window_load(Window *window) {
 	colHalf = bounds.size.h/2;
 	colFull = bounds.size.h;
 
-
 	// create textlayer
 	drawText(window_layer);
 	// create shader layer
@@ -696,9 +925,9 @@ static void main_window_load(Window *window) {
 	drawBorder(window_layer);
 	// create arrows
 	drawArrows(window_layer);
+		
 	// load settings
 	loadSettings();
-
 }
 	
 static void main_window_unload(Window *window) {
@@ -758,7 +987,7 @@ static void init() {
 
 	// Receive settings
 	app_message_register_inbox_received(inbox_received_handler);
-	app_message_open(64, 64);
+	app_message_open(32, 0);
 }
 
 static void deinit() {

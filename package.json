@@ -13,11 +13,25 @@
         "enableMultiJS": true,
         "messageKeys": [
             "twelveHour",
-            "shaderMode"
+            "shaderMode",
+            "darkMode",
+            "invHours",
+            "invMin",
+            "dropShadow"
         ],
         "projectType": "native",
         "resources": {
             "media": [
+                {
+                    "file": "images/DROP_WHITE",
+                    "name": "DROP_WHITE",
+                    "targetPlatforms": [
+                        "aplite",
+                        "basalt",
+                        "chalk"
+                    ],
+                    "type": "bitmap"
+                },
                 {
                     "file": "images/DROP",
                     "name": "DROP",
