@@ -738,12 +738,12 @@ static void loadSettings(){
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
 	
-int p_darkMode;
-int p_invHours;
-int p_invMin;
-int p_twelveHour;
-int p_shaderMode;
-int p_dropShadow;
+//int p_darkMode;
+//int p_invHours;
+//int p_invMin;
+//int p_twelveHour;
+//int p_shaderMode;
+//int p_dropShadow;
 
 	//Load settings
 	if(persist_exists(p_twelveHour)) {
