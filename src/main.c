@@ -62,91 +62,6 @@ static int s_shaderMode = 1;
 static int s_dropShadow = 1;
 
 
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "loading settings");
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
-	
-int p_darkMode;
-int p_invHours;
-int p_invMin;
-int p_twelveHour;
-int p_shaderMode;
-int p_dropShadow;
-
-	//Load settings
-	if(persist_exists(p_twelveHour)) {
-  	// Read persisted value
-  		s_twelveHour = persist_read_int(p_twelveHour);
-	}  
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_twelveHour = 0;
-		persist_write_int(p_twelveHour,s_twelveHour);
-	}
-
-	if(persist_exists(p_shaderMode)) {
-  	// Read persisted value
-  		s_shaderMode = persist_read_int(p_shaderMode);
-	}
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_shaderMode = 1;
-		persist_write_int(p_shaderMode,s_shaderMode);
-	}
-	
-	if(persist_exists(p_darkMode)) {
-  	// Read persisted value
-  		s_darkMode = persist_read_int(p_darkMode);
-	}
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_darkMode = 1;
-		persist_write_int(p_darkMode,s_darkMode);
-	}
-	
-	if(persist_exists(p_invHours)) {
-  	// Read persisted value
-  		s_invHours = persist_read_int(p_invHours);
-	} 
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_invHours = 0;
-		persist_write_int(p_invHours,s_invHours);
-	}
-	
-	if(persist_exists(p_invMin)) {
-  	// Read persisted value
-  		s_invMin = persist_read_int(p_invMin);
-	}
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_invMin = 0;
-		persist_write_int(p_invMin,s_invMin);
-	}	
-	
-	if(persist_exists(p_dropShadow)) {
-  	// Read persisted value
-  		s_dropShadow = persist_read_int(p_dropShadow);
-	}
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_dropShadow = 1;
-persist_write_int(p_dropShadow,s_dropShadow);
-	}		
-	
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "loaded settings");
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
-
-
-
-
 // bitmap manipulation
 void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y, int x, GColor color) {
 			// Bitmap data manipulation
@@ -816,11 +731,87 @@ static void applySettings(){
 // load earlier settings
 static void loadSettings(){
 	
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "loading settings");
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
+	
+int p_darkMode;
+int p_invHours;
+int p_invMin;
+int p_twelveHour;
+int p_shaderMode;
+int p_dropShadow;
 
+	//Load settings
+	if(persist_exists(p_twelveHour)) {
+  	// Read persisted value
+  		s_twelveHour = persist_read_int(p_twelveHour);
+	}  
+	else {
+  	// Set a default value until the user chooses their own value
+//		s_twelveHour = 0;
+		persist_write_int(p_twelveHour,s_twelveHour);
+	}
 
-
-
-
+	if(persist_exists(p_shaderMode)) {
+  	// Read persisted value
+  		s_shaderMode = persist_read_int(p_shaderMode);
+	}
+	else {
+  	// Set a default value until the user chooses their own value
+//		s_shaderMode = 1;
+		persist_write_int(p_shaderMode,s_shaderMode);
+	}
+	
+	if(persist_exists(p_darkMode)) {
+  	// Read persisted value
+  		s_darkMode = persist_read_int(p_darkMode);
+	}
+	else {
+  	// Set a default value until the user chooses their own value
+//		s_darkMode = 1;
+		persist_write_int(p_darkMode,s_darkMode);
+	}
+	
+	if(persist_exists(p_invHours)) {
+  	// Read persisted value
+  		s_invHours = persist_read_int(p_invHours);
+	} 
+	else {
+  	// Set a default value until the user chooses their own value
+//		s_invHours = 0;
+		persist_write_int(p_invHours,s_invHours);
+	}
+	
+	if(persist_exists(p_invMin)) {
+  	// Read persisted value
+  		s_invMin = persist_read_int(p_invMin);
+	}
+	else {
+  	// Set a default value until the user chooses their own value
+//		s_invMin = 0;
+		persist_write_int(p_invMin,s_invMin);
+	}	
+	
+	if(persist_exists(p_dropShadow)) {
+  	// Read persisted value
+  		s_dropShadow = persist_read_int(p_dropShadow);
+	}
+	else {
+  	// Set a default value until the user chooses their own value
+//		s_dropShadow = 1;
+		persist_write_int(p_dropShadow,s_dropShadow);
+	}		
+	
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "loaded settings");
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
 	
 //	applySettings();
 }
@@ -909,6 +900,11 @@ static void main_window_load(Window *window) {
 	colHalf = bounds.size.h/2;
 	colFull = bounds.size.h;
 
+		
+	// load settings
+	loadSettings();
+
+
 	// create textlayer
 	drawText(window_layer);
 	// create shader layer
@@ -921,9 +917,7 @@ static void main_window_load(Window *window) {
 	drawBorder(window_layer);
 	// create arrows
 	drawArrows(window_layer);
-		
-	// load settings
-	loadSettings();
+
 }
 	
 static void main_window_unload(Window *window) {
