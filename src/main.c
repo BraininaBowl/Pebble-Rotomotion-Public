@@ -131,7 +131,6 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 		int yToGet;
 		int yToSet;
 		GColor colorToSet;
-
 	
 // Iterate over all rows
 	for(int y = 0; y < colFull; y++) {
@@ -324,6 +323,7 @@ yToGet = yToSet + (64/(yToUse));
 
 }
 
+
 // *** DRAW STUFF ***
 // Draw text
 static void drawText(Layer *window_layer) {
@@ -414,13 +414,9 @@ static void drawDate(Layer *window_layer){
  	s_date_container_m = text_layer_create(GRect(rowHalf-59+12, 0, 57, 80));
   	s_date_container_d = text_layer_create(GRect(rowHalf+12, 0, 37, 80));
 
-	text_layer_set_background_color(s_date_container_m, COLORMNBG);
-  	text_layer_set_text_color(s_date_container_m, COLORMNFR);
 	text_layer_set_text(s_date_container_m, "\n\nMONTH");
   	text_layer_set_text_alignment(s_date_container_m, GTextAlignmentCenter);
 
-	text_layer_set_background_color(s_date_container_d, COLORMNBG);
-  	text_layer_set_text_color(s_date_container_d, COLORMNFR);
 	text_layer_set_text(s_date_container_d, "\n\nDAY");
   	text_layer_set_text_alignment(s_date_container_d, GTextAlignmentCenter);
 	
@@ -633,7 +629,6 @@ static void update_date() {
 static void applySettings(){
 	
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "applying settings");
-	
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
@@ -642,42 +637,7 @@ static void applySettings(){
 	
 	
 	// Color settings
-	
-	if(s_darkMode == 1){
-		#undef COLORBG
-		#define COLORBG GColorBlack
-			if (s_invHours == 1) {
-				#undef COLORHRFR
-				#define COLORHRFR GColorBlack
-				#undef COLORHRBG
-				#define COLORHRBG GColorWhite
-			} else if (s_invHours == 0) {
-				#undef COLORHRFR
-				#define COLORHRFR GColorWhite
-				#undef COLORHRBG
-				#define COLORHRBG GColorBlack
-			}
-			if (s_invMin == 1) {
-				#undef COLORMNFR
-				#define COLORMNFR GColorBlack
-				#undef COLORMNBG
-				#define COLORMNBG GColorWhite
-			} else if (s_invMin == 0) {
-				#undef COLORMNFR
-				#define COLORMNFR GColorWhite
-				#undef COLORMNBG
-				#define COLORMNBG GColorBlack
-			}
-		#if defined(PBL_COLOR)
-			#undef COLORTRI
-			#define COLORTRI GColorRed
-		#elif defined(PBL_BW)
-			#undef COLORTRI
-			#define COLORTRI GColorWhite
-		#endif
-		
-		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
-	} else if(s_darkMode == 0) {
+	if(s_darkMode == 0) {
 		#undef COLORBG
 		#define COLORBG GColorWhite
 			if (s_invHours == 1) {
@@ -702,18 +662,50 @@ static void applySettings(){
 				#undef COLORMNBG
 				#define COLORMNBG GColorWhite
 			}
-		#if defined(PBL_COLOR)
-			#undef COLORTRI
-			#define COLORTRI GColorRed
-		#elif defined(PBL_BW)
-			#undef COLORTRI
-			#define COLORTRI GColorBlack
-		#endif
+			#if defined(PBL_COLOR)
+				#undef COLORTRI
+				#define COLORTRI GColorRed
+			#elif defined(PBL_BW)
+				#undef COLORTRI
+				#define COLORTRI GColorBlack
+			#endif
 		
 		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP_WHITE);
+	} else {
+		#undef COLORBG
+		#define COLORBG GColorBlack
+			if (s_invHours == 1) {
+				#undef COLORHRFR
+				#define COLORHRFR GColorBlack
+				#undef COLORHRBG
+				#define COLORHRBG GColorWhite
+			} else if (s_invHours == 0) {
+				#undef COLORHRFR
+				#define COLORHRFR GColorWhite
+				#undef COLORHRBG
+				#define COLORHRBG GColorBlack
+			}
+			if (s_invMin == 1) {
+				#undef COLORMNFR
+				#define COLORMNFR GColorBlack
+				#undef COLORMNBG
+				#define COLORMNBG GColorWhite
+			} else if (s_invMin == 0) {
+				#undef COLORMNFR
+				#define COLORMNFR GColorWhite
+				#undef COLORMNBG
+				#define COLORMNBG GColorBlack
+			}
+			#if defined(PBL_COLOR)
+				#undef COLORTRI
+				#define COLORTRI GColorRed
+			#elif defined(PBL_BW)
+				#undef COLORTRI
+				#define COLORTRI GColorWhite
+			#endif
+		
+		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
 	}
-	
-
 	
 	// twelve hour settings
 	  	if (s_twelveHour == 1) {
@@ -723,23 +715,18 @@ static void applySettings(){
 		}
 
 	// Background color
-	  window_set_background_color(s_main_window, COLORBG);
+		window_set_background_color(s_main_window, COLORBG);
+	
 	
 	// Text colors
+		text_layer_set_background_color(s_time_layer_h, COLORHRBG);
+		text_layer_set_text_color(s_time_layer_h, COLORHRFR);
 		text_layer_set_background_color(s_time_layer_m, COLORMNBG);
-  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
-	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
-  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
-	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
-  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
-	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
-  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
-
-
-	
-	
-	//void layer_mark_dirty(Layer *s_canvas);
-	
+		text_layer_set_text_color(s_time_layer_m, COLORMNFR);
+		text_layer_set_background_color(s_date_container_m, COLORMNBG);
+  		text_layer_set_text_color(s_date_container_m, COLORMNFR);
+		text_layer_set_background_color(s_date_container_d, COLORMNBG);
+  		text_layer_set_text_color(s_date_container_d, COLORMNFR);
 }
 // load earlier settings
 static void loadSettings(){
@@ -757,82 +744,77 @@ static void loadSettings(){
   	// Read persisted value
   		s_twelveHour = persist_read_int(p_twelveHour);
 	}  
-//	else {
+	else {
   	// Set a default value until the user chooses their own value
 //		s_twelveHour = 0;
-//		persist_write_int(p_twelveHour,s_twelveHour);
-//	}
+		persist_write_int(p_twelveHour,s_twelveHour);
+	}
 
 	if(persist_exists(p_shaderMode)) {
   	// Read persisted value
   		s_shaderMode = persist_read_int(p_shaderMode);
 	}
-//	else {
+	else {
   	// Set a default value until the user chooses their own value
 //		s_shaderMode = 1;
-//		persist_write_int(p_shaderMode,s_shaderMode);
-//	}
+		persist_write_int(p_shaderMode,s_shaderMode);
+	}
 	
 	if(persist_exists(p_darkMode)) {
   	// Read persisted value
   		s_darkMode = persist_read_int(p_darkMode);
 	}
-//	else {
+	else {
   	// Set a default value until the user chooses their own value
 //		s_darkMode = 1;
-//		persist_write_int(p_darkMode,s_darkMode);
-//	}
+		persist_write_int(p_darkMode,s_darkMode);
+	}
 	
 	if(persist_exists(p_invHours)) {
   	// Read persisted value
   		s_invHours = persist_read_int(p_invHours);
 	} 
-//	else {
+	else {
   	// Set a default value until the user chooses their own value
 //		s_invHours = 0;
-//		persist_write_int(p_invHours,s_invHours);
-//	}
+		persist_write_int(p_invHours,s_invHours);
+	}
 	
 	if(persist_exists(p_invMin)) {
   	// Read persisted value
   		s_invMin = persist_read_int(p_invMin);
 	}
-//	else {
+	else {
   	// Set a default value until the user chooses their own value
 //		s_invMin = 0;
-//		persist_write_int(p_invMin,s_invMin);
-//	}	
+		persist_write_int(p_invMin,s_invMin);
+	}	
 	
 	if(persist_exists(p_dropShadow)) {
   	// Read persisted value
   		s_dropShadow = persist_read_int(p_dropShadow);
 	}
-//	else {
+	else {
   	// Set a default value until the user chooses their own value
 //		s_dropShadow = 1;
-//		persist_write_int(p_dropShadow,s_dropShadow);
-//	}		
-
+		persist_write_int(p_dropShadow,s_dropShadow);
+	}		
 	
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "loaded settings");
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
-	
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "loaded settings");
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
 	
 	applySettings();
-
-	
-
 }
 // receive settings from phone
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *twelveHour_tuple = dict_find(iter, MESSAGE_KEY_twelveHour);
 	if(twelveHour_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
-   	s_twelveHour = twelveHour_tuple->value->int8;
+   	s_twelveHour = twelveHour_tuple->value->int32;
 	 	// Store the data
 		persist_write_int(p_twelveHour, s_twelveHour);
 	}
@@ -840,7 +822,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *shaderMode_tuple = dict_find(iter, MESSAGE_KEY_shaderMode);
 	if(shaderMode_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
-   	s_shaderMode = (shaderMode_tuple->value->int8)-48;
+   	s_shaderMode = (shaderMode_tuple->value->int32)-655622192;
 	 	// Store the data
 		persist_write_int(p_shaderMode, s_shaderMode);
 	}
@@ -848,7 +830,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *darkMode_tuple = dict_find(iter, MESSAGE_KEY_darkMode);
 	if(darkMode_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
-   	s_darkMode = (darkMode_tuple->value->int8);
+   	s_darkMode = (darkMode_tuple->value->int32);
 	 	// Store the data
 		persist_write_int(p_darkMode, s_darkMode);
 	}
@@ -856,7 +838,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *invHours_tuple = dict_find(iter, MESSAGE_KEY_invHours);
 	if(invHours_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
-   	s_invHours = (invHours_tuple->value->int8);
+   	s_invHours = (invHours_tuple->value->int32);
 	 	// Store the data
 		persist_write_int(p_invHours, s_invHours);
 	}
@@ -864,7 +846,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *invMin_tuple = dict_find(iter, MESSAGE_KEY_invMin);
 	if(invMin_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
-   	s_invMin = (invMin_tuple->value->int8);
+   	s_invMin = (invMin_tuple->value->int32);
 	 	// Store the data
 		persist_write_int(p_invMin, s_invMin);
 	}
@@ -872,7 +854,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 	Tuple *dropShadow_tuple = dict_find(iter, MESSAGE_KEY_dropShadow);
 	if(dropShadow_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
-   	s_dropShadow = (dropShadow_tuple->value->int8);
+   	s_dropShadow = (dropShadow_tuple->value->int32);
 	 	// Store the data
 		persist_write_int(p_dropShadow, s_dropShadow);
 	}
@@ -883,10 +865,8 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
 	
+	//Apply settings
 	applySettings();
-	
-	
-	
 }
 
 
@@ -965,7 +945,8 @@ static void init() {
   s_main_window = window_create();
 	
   // Set the background color
-  window_set_background_color(s_main_window, COLORBG);
+	// MOVED TO SETTINGS
+//  window_set_background_color(s_main_window, COLORBG);
 
   // Set handlers to manage the elements inside the Window
   window_set_window_handlers(s_main_window, (WindowHandlers) {
