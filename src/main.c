@@ -48,12 +48,12 @@ static int s_day;
 	#define COLORTRI GColorWhite
 #endif
 
-int p_darkMode;
-int p_invHours;
-int p_invMin;
-int p_twelveHour;
-int p_shaderMode;
-int p_dropShadow;
+//int p_darkMode;
+//int p_invHours;
+//int p_invMin;
+//int p_twelveHour;
+//int p_shaderMode;
+//int p_dropShadow;
 static int s_darkMode = 1;
 static int s_invHours = 0;
 static int s_invMin = 0;
