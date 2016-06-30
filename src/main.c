@@ -738,7 +738,13 @@ static void loadSettings(){
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
 	
-	
+int p_darkMode;
+int p_invHours;
+int p_invMin;
+int p_twelveHour;
+int p_shaderMode;
+int p_dropShadow;
+
 	//Load settings
 	if(persist_exists(p_twelveHour)) {
   	// Read persisted value
@@ -811,6 +817,14 @@ static void loadSettings(){
 }
 // receive settings from phone
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
+	
+int p_darkMode;
+int p_invHours;
+int p_invMin;
+int p_twelveHour;
+int p_shaderMode;
+int p_dropShadow;
+	
 	Tuple *twelveHour_tuple = dict_find(iter, MESSAGE_KEY_twelveHour);
 	if(twelveHour_tuple) {
 		// This value was stored as JS Number, which is stored here as int8_t
