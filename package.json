@@ -23,8 +23,8 @@
         "resources": {
             "media": [
                 {
-                    "file": "images/DROP_WHITE",
-                    "name": "DROP_WHITE",
+                    "file": "images/DROP",
+                    "name": "DROP",
                     "targetPlatforms": [
                         "aplite",
                         "basalt",
@@ -33,8 +33,8 @@
                     "type": "bitmap"
                 },
                 {
-                    "file": "images/DROP",
-                    "name": "DROP",
+                    "file": "images/DROP_WHITE",
+                    "name": "DROP_WHITE",
                     "targetPlatforms": [
                         "aplite",
                         "basalt",

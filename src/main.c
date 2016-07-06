@@ -645,7 +645,7 @@ static void applySettings(){
 				#define COLORHRFR GColorWhite
 				#undef COLORHRBG
 				#define COLORHRBG GColorBlack
-			} else if (s_invHours == 0) {
+			} else {
 				#undef COLORHRFR
 				#define COLORHRFR GColorBlack
 				#undef COLORHRBG
@@ -656,7 +656,7 @@ static void applySettings(){
 				#define COLORMNFR GColorWhite
 				#undef COLORMNBG
 				#define COLORMNBG GColorBlack
-			} else if (s_invMin == 0) {
+			} else {
 				#undef COLORMNFR
 				#define COLORMNFR GColorBlack
 				#undef COLORMNBG
@@ -679,7 +679,7 @@ static void applySettings(){
 				#define COLORHRFR GColorBlack
 				#undef COLORHRBG
 				#define COLORHRBG GColorWhite
-			} else if (s_invHours == 0) {
+			} else {
 				#undef COLORHRFR
 				#define COLORHRFR GColorWhite
 				#undef COLORHRBG
@@ -690,7 +690,7 @@ static void applySettings(){
 				#define COLORMNFR GColorBlack
 				#undef COLORMNBG
 				#define COLORMNBG GColorWhite
-			} else if (s_invMin == 0) {
+			} else {
 				#undef COLORMNFR
 				#define COLORMNFR GColorWhite
 				#undef COLORMNBG
@@ -903,6 +903,7 @@ static void main_window_load(Window *window) {
 		
 	// load settings
 	loadSettings();
+	//applySettings();
 
 
 	// create textlayer
