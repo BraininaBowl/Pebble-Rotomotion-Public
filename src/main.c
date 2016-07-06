@@ -37,23 +37,23 @@ static int s_month;
 static int s_day;
 
 // Customizations
-#define COLORBG GColorBlack
-#define COLORHRFR GColorWhite
-#define COLORHRBG GColorBlack
-#define COLORMNFR GColorWhite
-#define COLORMNBG GColorBlack
-#if defined(PBL_COLOR)
-	#define COLORTRI GColorRed
-#elif defined(PBL_BW)
-	#define COLORTRI GColorWhite
-#endif
+// #define COLORBG GColorBlack
+// #define COLORHRFR GColorWhite
+// #define COLORHRBG GColorBlack
+// #define COLORMNFR GColorWhite
+// #define COLORMNBG GColorBlack
+// #if defined(PBL_COLOR)
+// 	#define COLORTRI GColorRed
+// #elif defined(PBL_BW)
+// 	#define COLORTRI GColorWhite
+// #endif
 
-int p_darkMode;
-int p_invHours;
-int p_invMin;
-int p_twelveHour;
-int p_shaderMode;
-int p_dropShadow;
+// int p_darkMode;
+// int p_invHours;
+// int p_invMin;
+// int p_twelveHour;
+// int p_shaderMode;
+// int p_dropShadow;
 static int s_darkMode = 1;
 static int s_invHours = 0;
 static int s_invMin = 0;
