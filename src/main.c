@@ -167,7 +167,7 @@ yToGet = yToSet + (64/(yToUse));
 				  xToGet = x + (((xToUse - rowHalf)*3)/yToUse);
 			  }
 			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
+			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
 				  colorToSet = COLORBG;
 			  } else {
@@ -212,7 +212,7 @@ yToGet = yToSet + (64/(yToUse));
 				  xToGet = x - (((xToUse - rowHalf)*3)/yToUse);
 			  }
 			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
+			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
 				  colorToSet = COLORBG;
 			  } else {
@@ -258,7 +258,7 @@ yToGet = yToSet - ((yToUse-43));
 				  xToGet = x + yToUse-43;
 			  }
 			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
+			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
 				  colorToSet = COLORBG;
 			  } else {
@@ -303,7 +303,7 @@ yToGet = yToSet + (64/(yToUse));
 				  xToGet = x - (((xToUse - rowHalf)*3)/yToUse);
 			  }
 			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
+			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
 				  colorToSet = COLORBG;
 			  } else {
