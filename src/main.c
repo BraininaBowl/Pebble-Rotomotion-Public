@@ -810,7 +810,7 @@ static void loadSettings(){
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
 	
-	applySettings();
+//	applySettings();
 }
 // receive settings from phone
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
@@ -915,6 +915,9 @@ static void main_window_load(Window *window) {
 	drawBorder(window_layer);
 	// create arrows
 	drawArrows(window_layer);
+	
+	// applySettings
+	applySettings();
 
 }
 	
