@@ -52,7 +52,7 @@ int p_darkMode=1;
 int p_invHours=0;
 int p_invMin=0;
 int p_twelveHour=0;
-//int p_shaderMode=1;
+int p_shaderMode=1;
 int p_dropShadow=1;
 static int s_darkMode = 1;
 static int s_invHours = 0;
@@ -761,7 +761,7 @@ static void loadSettings(){
 	}
 	else {
   	// Set a default value until the user chooses their own value
-		int p_shaderMode = 1;	persist_write_int(p_shaderMode,s_shaderMode);
+	//	int s_shaderMode = 1;	persist_write_int(p_shaderMode,s_shaderMode);
 	}
 	
 	if(persist_exists(p_darkMode)) {
@@ -825,7 +825,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 		
 	Tuple *shaderMode_tuple = dict_find(iter, MESSAGE_KEY_shaderMode);
 	if(shaderMode_tuple) {
-		// This value was stored as JS Number, which is stored here as int8_t
+		// This value was stored as JS Number, which is stored here as int32
    	s_shaderMode = (shaderMode_tuple->value->int32)-655622192;
 	 	// Store the data
 		persist_write_int(p_shaderMode, s_shaderMode);
