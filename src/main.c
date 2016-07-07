@@ -52,7 +52,7 @@ int p_darkMode=1;
 int p_invHours=0;
 int p_invMin=0;
 int p_twelveHour=0;
-int p_shaderMode=1;
+//int p_shaderMode=1;
 int p_dropShadow=1;
 static int s_darkMode = 1;
 static int s_invHours = 0;
@@ -761,7 +761,7 @@ static void loadSettings(){
 	}
 	else {
   	// Set a default value until the user chooses their own value
-//		s_shaderMode = 1;	persist_write_int(p_shaderMode,s_shaderMode);
+		int p_shaderMode = 1;	persist_write_int(p_shaderMode,s_shaderMode);
 	}
 	
 	if(persist_exists(p_darkMode)) {
