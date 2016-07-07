@@ -155,7 +155,7 @@ yToGet = yToSet + (64/(yToUse));
 	if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 
 	  // Iterate over all visible columns
-		  for(int x = 0; x <= rowFull; x++) {
+		  for(int x = 0; x < rowFull; x++) {
 			  // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
@@ -200,7 +200,7 @@ yToGet = yToSet + (64/(yToUse));
 	if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 
 	  // Iterate over all visible columns
-		  for(int x = 0; x <= rowFull; x++) {
+		  for(int x = 0; x < rowFull; x++) {
 			  // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
@@ -246,7 +246,7 @@ yToGet = yToSet - ((yToUse-43));
 	if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
 
 	  // Iterate over all visible columns
-		  for(int x = 0; x <= rowFull; x++) {
+		  for(int x = 0; x < rowFull; x++) {
 			  // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
@@ -291,7 +291,7 @@ yToGet = yToSet + (64/(yToUse));
 	if (yToSet < (colHalf - 32) || yToSet > (colHalf + 32)){
 
 	  // Iterate over all visible columns
-		  for(int x = 0; x <= rowFull; x++) {
+		  for(int x = 0; x < rowFull; x++) {
 			  // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
