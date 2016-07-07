@@ -48,12 +48,6 @@ static int s_day;
 	#define COLORTRI GColorWhite
 #endif
 
-int p_darkMode=1;
-int p_invHours=0;
-int p_invMin=0;
-int p_twelveHour=0;
-int p_shaderMode=1;
-int p_dropShadow=1;
 static int s_darkMode = 1;
 static int s_invHours = 0;
 static int s_invMin = 0;
@@ -627,14 +621,7 @@ static void update_date() {
 // *** SETTINGS ***
 
 static void applySettings(){
-	
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "applying settings");
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
-	
+		
 	
 	// Color settings
 	if(s_darkMode == 0) {
@@ -727,88 +714,77 @@ static void applySettings(){
   		text_layer_set_text_color(s_date_container_m, COLORMNFR);
 		text_layer_set_background_color(s_date_container_d, COLORMNBG);
   		text_layer_set_text_color(s_date_container_d, COLORMNFR);
+
 }
+
+
 // load earlier settings
 static void loadSettings(){
 	
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "loading settings");
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
-	
-// int p_darkMode;
-// int p_invHours;
-// int p_invMin;
-// int p_twelveHour;
-// int p_shaderMode;
-// int p_dropShadow;
+
 
 	//Load settings
-	if(persist_exists(p_twelveHour)) {
+	if(persist_exists(0)) {
   	// Read persisted value
-  		s_twelveHour = persist_read_int(p_twelveHour);
+  		s_twelveHour = persist_read_int(0);
 	}  
 	else {
   	// Set a default value until the user chooses their own value
-//		s_twelveHour = 0;	persist_write_int(p_twelveHour,s_twelveHour);
+//		s_twelveHour = 0;	
+		persist_write_int(0,s_twelveHour);
 	}
 
-	if(persist_exists(p_shaderMode)) {
+	if(persist_exists(1)) {
   	// Read persisted value
-  		s_shaderMode = persist_read_int(p_shaderMode);
+  		s_shaderMode = persist_read_int(1);
 	}
 	else {
   	// Set a default value until the user chooses their own value
-	//	int s_shaderMode = 1;	persist_write_int(p_shaderMode,s_shaderMode);
+	//	int s_shaderMode = 1;	
+		persist_write_int(1,s_shaderMode);
 	}
 	
-	if(persist_exists(p_darkMode)) {
+	if(persist_exists(2)) {
   	// Read persisted value
-  		s_darkMode = persist_read_int(p_darkMode);
+  		s_darkMode = persist_read_int(2);
 	}
 	else {
   	// Set a default value until the user chooses their own value
 //		s_darkMode = 1;
-		persist_write_int(p_darkMode,s_darkMode);
+		persist_write_int(2,s_darkMode);
 	}
 	
-	if(persist_exists(p_invHours)) {
+	if(persist_exists(3)) {
   	// Read persisted value
-  		s_invHours = persist_read_int(p_invHours);
+  		s_invHours = persist_read_int(3);
 	} 
 	else {
   	// Set a default value until the user chooses their own value
 //		s_invHours = 0;
-		persist_write_int(p_invHours,s_invHours);
+		persist_write_int(3,s_invHours);
 	}
 	
-	if(persist_exists(p_invMin)) {
+	if(persist_exists(4)) {
   	// Read persisted value
-  		s_invMin = persist_read_int(p_invMin);
+  		s_invMin = persist_read_int(4);
 	}
 	else {
   	// Set a default value until the user chooses their own value
 //		s_invMin = 0;
-		persist_write_int(p_invMin,s_invMin);
+		persist_write_int(4,s_invMin);
 	}	
 	
-	if(persist_exists(p_dropShadow)) {
+	if(persist_exists(5)) {
   	// Read persisted value
-  		s_dropShadow = persist_read_int(p_dropShadow);
+  		s_dropShadow = persist_read_int(5);
 	}
 	else {
   	// Set a default value until the user chooses their own value
-//		s_dropShadow = 1;	persist_write_int(p_dropShadow,s_dropShadow);
+//		s_dropShadow = 1;	
+		persist_write_int(5,s_dropShadow);
 	}		
-	
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "loaded settings");
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
+
 	
 //	applySettings();
 }
@@ -820,7 +796,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 		// This value was stored as JS Number, which is stored here as int8_t
    	s_twelveHour = twelveHour_tuple->value->int32;
 	 	// Store the data
-		persist_write_int(p_twelveHour, s_twelveHour);
+		persist_write_int(0, s_twelveHour);
 	}
 		
 	Tuple *shaderMode_tuple = dict_find(iter, MESSAGE_KEY_shaderMode);
@@ -828,7 +804,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 		// This value was stored as JS Number, which is stored here as int32
    	s_shaderMode = (shaderMode_tuple->value->int32)-655622192;
 	 	// Store the data
-		persist_write_int(p_shaderMode, s_shaderMode);
+		persist_write_int(1, s_shaderMode);
 	}
 	
 	Tuple *darkMode_tuple = dict_find(iter, MESSAGE_KEY_darkMode);
@@ -836,7 +812,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 		// This value was stored as JS Number, which is stored here as int8_t
    	s_darkMode = (darkMode_tuple->value->int32);
 	 	// Store the data
-		persist_write_int(p_darkMode, s_darkMode);
+		persist_write_int(2, s_darkMode);
 	}
 	
 	Tuple *invHours_tuple = dict_find(iter, MESSAGE_KEY_invHours);
@@ -844,7 +820,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 		// This value was stored as JS Number, which is stored here as int8_t
    	s_invHours = (invHours_tuple->value->int32);
 	 	// Store the data
-		persist_write_int(p_invHours, s_invHours);
+		persist_write_int(3, s_invHours);
 	}
 	
 	Tuple *invMin_tuple = dict_find(iter, MESSAGE_KEY_invMin);
@@ -852,7 +828,7 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 		// This value was stored as JS Number, which is stored here as int8_t
    	s_invMin = (invMin_tuple->value->int32);
 	 	// Store the data
-		persist_write_int(p_invMin, s_invMin);
+		persist_write_int(4, s_invMin);
 	}
 	
 	Tuple *dropShadow_tuple = dict_find(iter, MESSAGE_KEY_dropShadow);
@@ -860,15 +836,9 @@ static void inbox_received_handler(DictionaryIterator *iter, void *context) {
 		// This value was stored as JS Number, which is stored here as int8_t
    	s_dropShadow = (dropShadow_tuple->value->int32);
 	 	// Store the data
-		persist_write_int(p_dropShadow, s_dropShadow);
+		persist_write_int(5, s_dropShadow);
 	}
 
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "shaderMode now %d", s_shaderMode);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "darkMode now %d", s_darkMode);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "invHours now %d", s_invHours);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
-	
 	//Apply settings
 	applySettings();
 }
