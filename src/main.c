@@ -893,7 +893,8 @@ static void main_window_load(Window *window) {
 
 	// set variables for drawing
 	rowHalf = bounds.size.w/2;
-	rowFull = bounds.size.w-1;
+	//rowFull = bounds.size.w-1;
+	rowFull = bounds.size.w;
 	colHalf = bounds.size.h/2;
 	colFull = bounds.size.h;
 
