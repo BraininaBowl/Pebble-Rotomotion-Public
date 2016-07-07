@@ -752,7 +752,7 @@ static void loadSettings(){
 	}  
 	else {
   	// Set a default value until the user chooses their own value
-//		s_twelveHour = 0;
+		s_twelveHour = 0;
 		persist_write_int(p_twelveHour,s_twelveHour);
 	}
 
@@ -762,7 +762,7 @@ static void loadSettings(){
 	}
 	else {
   	// Set a default value until the user chooses their own value
-//		s_shaderMode = 1;
+		s_shaderMode = 1;
 		persist_write_int(p_shaderMode,s_shaderMode);
 	}
 	
@@ -772,7 +772,7 @@ static void loadSettings(){
 	}
 	else {
   	// Set a default value until the user chooses their own value
-//		s_darkMode = 1;
+		s_darkMode = 1;
 		persist_write_int(p_darkMode,s_darkMode);
 	}
 	
@@ -782,7 +782,7 @@ static void loadSettings(){
 	} 
 	else {
   	// Set a default value until the user chooses their own value
-//		s_invHours = 0;
+		s_invHours = 0;
 		persist_write_int(p_invHours,s_invHours);
 	}
 	
@@ -792,7 +792,7 @@ static void loadSettings(){
 	}
 	else {
   	// Set a default value until the user chooses their own value
-//		s_invMin = 0;
+		s_invMin = 0;
 		persist_write_int(p_invMin,s_invMin);
 	}	
 	
@@ -802,8 +802,7 @@ static void loadSettings(){
 	}
 	else {
   	// Set a default value until the user chooses their own value
-//		s_dropShadow = 1;
-		persist_write_int(p_dropShadow,s_dropShadow);
+		s_dropShadow = 1;	persist_write_int(p_dropShadow,s_dropShadow);
 	}		
 	
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "loaded settings");
@@ -813,7 +812,7 @@ static void loadSettings(){
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "invMin now %d", s_invMin);
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropShadow now %d", s_dropShadow);
 	
-//	applySettings();
+	applySettings();
 }
 // receive settings from phone
 static void inbox_received_handler(DictionaryIterator *iter, void *context) {
