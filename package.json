@@ -1,20 +1,22 @@
 {
     "author": "Brain in a Bowl",
     "dependencies": {
-        "pebble-clay": "^1.0.0"
+        "pebble-clay": "^1.0.2"
     },
     "keywords": [],
-    "name": "rotomotion-black",
+    "name": "rotomotion",
     "pebble": {
         "capabilities": [
             "configurable"
         ],
-        "displayName": "Rotomotion Black",
+        "displayName": "Rotomotion",
         "enableMultiJS": true,
         "messageKeys": [
+            "BackgroundColor",
+            "ForegroundColor",
+            "ArrowColor",
             "twelveHour",
             "shaderMode",
-            "darkMode",
             "invHours",
             "invMin",
             "dropShadow"
@@ -28,7 +30,8 @@
                     "targetPlatforms": [
                         "aplite",
                         "basalt",
-                        "chalk"
+                        "chalk",
+                        "diorite"
                     ],
                     "type": "bitmap"
                 },
@@ -38,7 +41,8 @@
                     "targetPlatforms": [
                         "aplite",
                         "basalt",
-                        "chalk"
+                        "chalk",
+                        "diorite"
                     ],
                     "type": "bitmap"
                 }
@@ -48,7 +52,8 @@
         "targetPlatforms": [
             "aplite",
             "basalt",
-            "chalk"
+            "chalk",
+            "diorite"
         ],
         "uuid": "298802c1-a48d-4c3a-a47e-f72a9dcc901a",
         "watchapp": {

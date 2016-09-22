@@ -80,10 +80,22 @@ module.exports = [
       "defaultValue": "Colors"
     },
     {
-      "type": "toggle",
-      "messageKey": "darkMode",
-      "label": "Dark mode",
-		"defaultValue": true
+      "type": "color",
+      "messageKey": "BackgroundColor",
+      "defaultValue": "0x000000",
+      "label": "Background Color"
+    },
+    {
+      "type": "color",
+      "messageKey": "ForegroundColor",
+      "defaultValue": "0xFFFFFF",
+      "label": "Text Color"
+    },
+	  {
+      "type": "color",
+      "messageKey": "ArrowColor",
+      "defaultValue": "0xFF0000",
+      "label": "Arrows Color"
     },
     {
       "type": "toggle",

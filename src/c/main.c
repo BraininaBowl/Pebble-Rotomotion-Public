@@ -1,6 +1,7 @@
 #include <pebble.h>
+#include "main.h"
 
-static Window *s_main_window;
+static Window *s_window;
 static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
 static Layer *s_date_container;
@@ -11,15 +12,8 @@ static GBitmap *s_background_bitmap;
 static Layer *s_canvas;
 static Layer *s_canvas_line;
 static Layer *s_arrows;
-static const GPathInfo ARROW_LEFT_PATH_POINTS = {
-	3,
-	   (GPoint []) {{0, 0}, {0, 15}, {8, 7},}
-	};
-static const GPathInfo ARROW_RIGHT_PATH_POINTS = {
-	3,
-	   (GPoint []) {{8, 0}, {8, 15}, {0, 7},}
-	};
-static int8_t firstrun = 1;
+//static const GPathInfo ARROW_LEFT_PATH_POINTS;
+//static const GPathInfo ARROW_RIGHT_PATH_POINTS;
 
 // set variables for drawing
 static int rowHalf;
@@ -35,26 +29,23 @@ static int s_hour;
 static int s_minute;
 static int s_month;
 static int s_day;
+static int firstrun;
 
-// Customizations
-#define COLORBG GColorBlack
-#define COLORHRFR GColorWhite
-#define COLORHRBG GColorBlack
-#define COLORMNFR GColorWhite
-#define COLORMNBG GColorBlack
-#if defined(PBL_COLOR)
-	#define COLORTRI GColorRed
-#elif defined(PBL_BW)
-	#define COLORTRI GColorWhite
-#endif
 
-static int s_darkMode = 1;
-static int s_invHours = 0;
-static int s_invMin = 0;
-static int s_twelveHour = 0;
-static int s_shaderMode = 1;
-static int s_dropShadow = 1;
+// A struct for our specific settings (see main.h)
+ClaySettings settings;
 
+// Initialize the default settings
+static void prv_default_settings() {
+  settings.BackgroundColor = GColorBlack;
+  settings.ForegroundColor = GColorWhite;
+  settings.ArrowColor = GColorRed;
+  settings.twelveHour = false;
+  settings.shaderMode = 1;
+  settings.invHours = false;
+  settings.invMin = false;
+  settings.dropShadow = true;
+}
 
 // bitmap manipulation
 void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y, int x, GColor color) {
@@ -130,7 +121,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 	for(int y = 0; y < colFull; y++) {
 	  
 	
-if (s_shaderMode == 1) {
+if (settings.shaderMode == 1) {
 // draw as cylinder	  
 	
 	if (y < colHalf) {
@@ -163,7 +154,7 @@ yToGet = yToSet + (64/(yToUse));
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
-				  colorToSet = COLORBG;
+				  colorToSet = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
@@ -175,7 +166,7 @@ yToGet = yToSet + (64/(yToUse));
 	  	
 	  	
 	  	
-	  	} else if (s_shaderMode == 2) {
+	  	} else if (settings.shaderMode == 2) {
 // draw as inverted cylinder	  	
 	
 		if (y < colHalf) {
@@ -208,7 +199,7 @@ yToGet = yToSet + (64/(yToUse));
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
-				  colorToSet = COLORBG;
+				  colorToSet = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
@@ -220,7 +211,7 @@ yToGet = yToSet + (64/(yToUse));
 	  	
 	  	
 	  	
-	  	} else if (s_shaderMode == 3) {
+	  	} else if (settings.shaderMode == 3) {
 	  	// draw as ribbons
 	  	
 	  	
@@ -254,7 +245,7 @@ yToGet = yToSet - ((yToUse-43));
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
-				  colorToSet = COLORBG;
+				  colorToSet = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
@@ -263,7 +254,7 @@ yToGet = yToSet - ((yToUse-43));
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
 	  	}
-	  	} 	else if (s_shaderMode == 4) {
+	  	} 	else if (settings.shaderMode == 4) {
 	  	// draw as banner
 	  	
 	  	
@@ -299,7 +290,7 @@ yToGet = yToSet + (64/(yToUse));
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
 				  // No, so we'll use the background color
-				  colorToSet = COLORBG;
+				  colorToSet = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
@@ -318,6 +309,121 @@ yToGet = yToSet + (64/(yToUse));
 }
 
 
+// Read settings from persistent storage
+static void prv_load_settings() {
+  // Load the default settings
+  prv_default_settings();
+  // Read settings from persistent storage, if they exist
+  persist_read_data(SETTINGS_KEY, &settings, sizeof(settings));
+}
+
+// Save the settings to persistent storage
+static void prv_save_settings() {
+  persist_write_data(SETTINGS_KEY, &settings, sizeof(settings));
+  // Update the display based on new settings
+  prv_update_display();
+}
+
+// Update the display elements
+static void prv_update_display() {
+  // Background color
+  window_set_background_color(s_window, settings.BackgroundColor);
+
+  // Foreground Colors
+  if (settings.invHours)
+	  {
+	  	text_layer_set_background_color(s_time_layer_h, settings.ForegroundColor);
+  		text_layer_set_text_color(s_time_layer_h, settings.BackgroundColor);
+  } else {
+	  	text_layer_set_background_color(s_time_layer_h, settings.BackgroundColor);
+  		text_layer_set_text_color(s_time_layer_h, settings.ForegroundColor);
+  }
+	
+  if (settings.invMin)
+	  {
+	  	text_layer_set_background_color(s_time_layer_m, settings.ForegroundColor);
+  		text_layer_set_text_color(s_time_layer_m, settings.BackgroundColor);
+  } else {
+	  	text_layer_set_background_color(s_time_layer_m, settings.BackgroundColor);
+  		text_layer_set_text_color(s_time_layer_m, settings.ForegroundColor);
+  }
+	
+		text_layer_set_background_color(s_date_container_m, settings.BackgroundColor);
+  		text_layer_set_text_color(s_date_container_m, settings.ForegroundColor);
+		text_layer_set_background_color(s_date_container_d, settings.BackgroundColor);
+  		text_layer_set_text_color(s_date_container_d, settings.ForegroundColor);
+	
+	
+  
+  if (settings.twelveHour)
+  		{
+			text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
+		} else {
+			text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
+		}
+	
+
+  //settings.dropShadow = true;
+	
+}
+
+// Handle the response from AppMessage
+static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) {
+  // Background Color
+	Tuple *bg_color_t = dict_find(iter, MESSAGE_KEY_BackgroundColor);
+  if (bg_color_t) {
+    settings.BackgroundColor = GColorFromHEX(bg_color_t->value->int32);
+  }
+
+  // Foreground Color  
+	Tuple *fg_color_t = dict_find(iter, MESSAGE_KEY_ForegroundColor);
+  if (fg_color_t) {
+    settings.ForegroundColor = GColorFromHEX(fg_color_t->value->int32);
+  }
+	
+	// Arrow Color
+  Tuple *ar_color_t = dict_find(iter, MESSAGE_KEY_ArrowColor);
+  if (ar_color_t) {
+    settings.ArrowColor = GColorFromHEX(ar_color_t->value->int32);
+  }
+	
+	// Invert Hours
+  Tuple *invHours_t = dict_find(iter, MESSAGE_KEY_invHours);
+  if (invHours_t) {
+    settings.invHours = true;
+  } else {
+    settings.invHours = false;
+  }
+		
+	// Invert Minutes
+  Tuple *invMin_t = dict_find(iter, MESSAGE_KEY_invMin);
+  if (invMin_t) {
+    settings.invMin = true;
+  } else {
+    settings.invMin = false;
+  }
+	
+	// Twelve Hour Mode
+  Tuple *twelveHour_t = dict_find(iter, MESSAGE_KEY_twelveHour);
+  if (twelveHour_t) {
+    settings.twelveHour = true;
+  } else {
+    settings.twelveHour = false;
+  }
+	
+	// Shader Mode
+  Tuple *shaderMode_t = dict_find(iter, MESSAGE_KEY_shaderMode);
+  if (shaderMode_t) {
+    settings.shaderMode = shaderMode_t->value->uint32;
+  } 
+	
+  // Save the new settings to persistent storage
+  prv_save_settings();
+}
+
+
+
+
 // *** DRAW STUFF ***
 // Draw text
 static void drawText(Layer *window_layer) {
@@ -326,17 +432,7 @@ static void drawText(Layer *window_layer) {
   	s_time_layer_m = text_layer_create(GRect(rowHalf+12, colHalf-84, 27, 1488));
 
   // TextLayer options
-  text_layer_set_background_color(s_time_layer_h, COLORHRBG);
-  text_layer_set_text_color(s_time_layer_h, COLORHRFR);
-  if (s_twelveHour == 1) {
-		text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
-	} else {
-		text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
-	}
 	text_layer_set_text_alignment(s_time_layer_h, GTextAlignmentCenter);
-	
-	text_layer_set_background_color(s_time_layer_m, COLORMNBG);
-  	text_layer_set_text_color(s_time_layer_m, COLORMNFR);
 	text_layer_set_text(s_time_layer_m, "55\n56\n57\n58\n59\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\n27\n28\n29\n30\n31\n32\n33\n34\n35\n36\n37\n38\n39\n40\n41\n42\n43\n44\n45\n46\n47\n48\n49\n50\n51\n52\n53\n54\n55\n56\n57\n58\n59\n00\n01\n02\n03\n04");
   	text_layer_set_text_alignment(s_time_layer_m, GTextAlignmentCenter);
 
@@ -351,7 +447,7 @@ static void drawText(Layer *window_layer) {
 }
 // Draw dropshadow
 static void drawShadow(Layer *window_layer){
-	if (s_dropShadow == 1){
+	if (settings.dropShadow){
  		// Create GBitmap
   		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
   		// Create BitmapLayer to display the GBitmap
@@ -366,8 +462,8 @@ static void drawShadow(Layer *window_layer){
 static void canvas_update_proc(Layer *layer, GContext *ctx) {
   // Custom drawing happens here!
 // Set the line color
-graphics_context_set_stroke_color(ctx, COLORBG);
-
+graphics_context_set_stroke_color(ctx, settings.BackgroundColor);
+	
 // Set the fill color
 graphics_context_set_fill_color(ctx, GColorClear);
 	
@@ -393,7 +489,7 @@ graphics_context_set_fill_color(ctx, GColorClear);
 }
 // Draw border
 static void drawBorder(Layer * window_layer){
-	if (s_shaderMode > 0) {
+	if (settings.shaderMode > 0) {
 	// Create canvas line layer
 	s_canvas_line = layer_create(GRect(0,0, rowFull, colFull));
 	// Assign the custom drawing procedure
@@ -423,11 +519,23 @@ static void drawDate(Layer *window_layer){
 }
 // Draw arrows
 void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
+	GPathInfo ARROW_LEFT_PATH_POINTS = {
+	3,
+	   (GPoint []) {{0, 0}, {0, 15}, {8, 7},}
+	};
+	
+	GPathInfo ARROW_RIGHT_PATH_POINTS = {
+	3,
+	   (GPoint []) {{8, 0}, {8, 15}, {0, 7},}
+	};
+	
+	
+	
 		static GPath *s_arrow_left_path = NULL;
 		static GPath *s_arrow_right_path = NULL;
 
 		// Fill the path:
-		graphics_context_set_fill_color(ctx, COLORTRI);
+		graphics_context_set_fill_color(ctx, settings.ArrowColor);
 
 		gpath_draw_filled(ctx, s_arrow_left_path);
 		gpath_draw_filled(ctx, s_arrow_right_path);
@@ -445,13 +553,14 @@ static void drawArrows(Layer *window_layer){
 }
 // Draw shader
 static void drawShader(Layer * window_layer){
-	if (s_shaderMode > 0) {
+	if (settings.shaderMode > 0) {
 	// set canvas for shader
 	s_canvas = layer_create(GRect(0,0, rowFull, colFull));
   	layer_set_update_proc(s_canvas, layer_update_proc);
   	layer_add_child(window_layer, s_canvas);
   	}
 }
+
 
 
 // *** ANIMATE ***
@@ -618,232 +727,6 @@ static void update_date() {
 	}
 
 
-// *** SETTINGS ***
-
-static void applySettings(){
-		
-	
-	// Color settings
-	if(s_darkMode == 0) {
-		#undef COLORBG
-		#define COLORBG GColorWhite
-			if (s_invHours == 1) {
-				#undef COLORHRFR
-				#define COLORHRFR GColorWhite
-				#undef COLORHRBG
-				#define COLORHRBG GColorBlack
-			} else {
-				#undef COLORHRFR
-				#define COLORHRFR GColorBlack
-				#undef COLORHRBG
-				#define COLORHRBG GColorWhite
-			}
-			if (s_invMin == 1) {
-				#undef COLORMNFR
-				#define COLORMNFR GColorWhite
-				#undef COLORMNBG
-				#define COLORMNBG GColorBlack
-			} else {
-				#undef COLORMNFR
-				#define COLORMNFR GColorBlack
-				#undef COLORMNBG
-				#define COLORMNBG GColorWhite
-			}
-			#if defined(PBL_COLOR)
-				#undef COLORTRI
-				#define COLORTRI GColorRed
-			#elif defined(PBL_BW)
-				#undef COLORTRI
-				#define COLORTRI GColorBlack
-			#endif
-		
-		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP_WHITE);
-	} else {
-		#undef COLORBG
-		#define COLORBG GColorBlack
-			if (s_invHours == 1) {
-				#undef COLORHRFR
-				#define COLORHRFR GColorBlack
-				#undef COLORHRBG
-				#define COLORHRBG GColorWhite
-			} else {
-				#undef COLORHRFR
-				#define COLORHRFR GColorWhite
-				#undef COLORHRBG
-				#define COLORHRBG GColorBlack
-			}
-			if (s_invMin == 1) {
-				#undef COLORMNFR
-				#define COLORMNFR GColorBlack
-				#undef COLORMNBG
-				#define COLORMNBG GColorWhite
-			} else {
-				#undef COLORMNFR
-				#define COLORMNFR GColorWhite
-				#undef COLORMNBG
-				#define COLORMNBG GColorBlack
-			}
-			#if defined(PBL_COLOR)
-				#undef COLORTRI
-				#define COLORTRI GColorRed
-			#elif defined(PBL_BW)
-				#undef COLORTRI
-				#define COLORTRI GColorWhite
-			#endif
-		
-		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
-	}
-	
-	// twelve hour settings
-	  	if (s_twelveHour == 1) {
-			text_layer_set_text(s_time_layer_h, "09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n01\n02\n03\n04");
-		} else {
-			text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
-		}
-
-	// Background color
-		window_set_background_color(s_main_window, COLORBG);
-	
-	
-	// Text colors
-		text_layer_set_background_color(s_time_layer_h, COLORHRBG);
-		text_layer_set_text_color(s_time_layer_h, COLORHRFR);
-		text_layer_set_background_color(s_time_layer_m, COLORMNBG);
-		text_layer_set_text_color(s_time_layer_m, COLORMNFR);
-		text_layer_set_background_color(s_date_container_m, COLORMNBG);
-  		text_layer_set_text_color(s_date_container_m, COLORMNFR);
-		text_layer_set_background_color(s_date_container_d, COLORMNBG);
-  		text_layer_set_text_color(s_date_container_d, COLORMNFR);
-
-}
-
-
-// load earlier settings
-static void loadSettings(){
-	
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "loading settings");
-
-
-	//Load settings
-	if(persist_exists(0)) {
-  	// Read persisted value
-  		s_twelveHour = persist_read_int(0);
-	}  
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_twelveHour = 0;	
-		persist_write_int(0,s_twelveHour);
-	}
-
-	if(persist_exists(1)) {
-  	// Read persisted value
-  		s_shaderMode = persist_read_int(1);
-	}
-	else {
-  	// Set a default value until the user chooses their own value
-	//	int s_shaderMode = 1;	
-		persist_write_int(1,s_shaderMode);
-	}
-	
-	if(persist_exists(2)) {
-  	// Read persisted value
-  		s_darkMode = persist_read_int(2);
-	}
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_darkMode = 1;
-		persist_write_int(2,s_darkMode);
-	}
-	
-	if(persist_exists(3)) {
-  	// Read persisted value
-  		s_invHours = persist_read_int(3);
-	} 
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_invHours = 0;
-		persist_write_int(3,s_invHours);
-	}
-	
-	if(persist_exists(4)) {
-  	// Read persisted value
-  		s_invMin = persist_read_int(4);
-	}
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_invMin = 0;
-		persist_write_int(4,s_invMin);
-	}	
-	
-	if(persist_exists(5)) {
-  	// Read persisted value
-  		s_dropShadow = persist_read_int(5);
-	}
-	else {
-  	// Set a default value until the user chooses their own value
-//		s_dropShadow = 1;	
-		persist_write_int(5,s_dropShadow);
-	}		
-
-	
-//	applySettings();
-}
-// receive settings from phone
-static void inbox_received_handler(DictionaryIterator *iter, void *context) {
-	
-	Tuple *twelveHour_tuple = dict_find(iter, MESSAGE_KEY_twelveHour);
-	if(twelveHour_tuple) {
-		// This value was stored as JS Number, which is stored here as int8_t
-   	s_twelveHour = twelveHour_tuple->value->int32;
-	 	// Store the data
-		persist_write_int(0, s_twelveHour);
-	}
-		
-	Tuple *shaderMode_tuple = dict_find(iter, MESSAGE_KEY_shaderMode);
-	if(shaderMode_tuple) {
-		// This value was stored as JS Number, which is stored here as int32
-   	s_shaderMode = (shaderMode_tuple->value->int32)-655622192;
-	 	// Store the data
-		persist_write_int(1, s_shaderMode);
-	}
-	
-	Tuple *darkMode_tuple = dict_find(iter, MESSAGE_KEY_darkMode);
-	if(darkMode_tuple) {
-		// This value was stored as JS Number, which is stored here as int8_t
-   	s_darkMode = (darkMode_tuple->value->int32);
-	 	// Store the data
-		persist_write_int(2, s_darkMode);
-	}
-	
-	Tuple *invHours_tuple = dict_find(iter, MESSAGE_KEY_invHours);
-	if(invHours_tuple) {
-		// This value was stored as JS Number, which is stored here as int8_t
-   	s_invHours = (invHours_tuple->value->int32);
-	 	// Store the data
-		persist_write_int(3, s_invHours);
-	}
-	
-	Tuple *invMin_tuple = dict_find(iter, MESSAGE_KEY_invMin);
-	if(invMin_tuple) {
-		// This value was stored as JS Number, which is stored here as int8_t
-   	s_invMin = (invMin_tuple->value->int32);
-	 	// Store the data
-		persist_write_int(4, s_invMin);
-	}
-	
-	Tuple *dropShadow_tuple = dict_find(iter, MESSAGE_KEY_dropShadow);
-	if(dropShadow_tuple) {
-		// This value was stored as JS Number, which is stored here as int8_t
-   	s_dropShadow = (dropShadow_tuple->value->int32);
-	 	// Store the data
-		persist_write_int(5, s_dropShadow);
-	}
-
-	//Apply settings
-	applySettings();
-}
-
-
 // *** EVENTS ***
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
@@ -854,25 +737,23 @@ static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
 }
 
 
-/// *** LOAD WINDOW ***
-static void main_window_load(Window *window) {
+
+
+// Window Load event
+static void prv_window_load(Window *window) {
 	
-  // Get information about the Window
+	firstrun = 1;
+	
+	
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
-	// set variables for drawing
+		// set variables for drawing
 	rowHalf = bounds.size.w/2;
 	//rowFull = bounds.size.w-1;
 	rowFull = bounds.size.w;
 	colHalf = bounds.size.h/2;
 	colFull = bounds.size.h;
-
-		
-	// load settings
-	loadSettings();
-	//applySettings();
-
 
 	// create textlayer
 	drawText(window_layer);
@@ -886,13 +767,12 @@ static void main_window_load(Window *window) {
 	drawBorder(window_layer);
 	// create arrows
 	drawArrows(window_layer);
-	
-	// applySettings
-	applySettings();
 
+	prv_update_display();
 }
-	
-static void main_window_unload(Window *window) {
+
+// Window Unload event
+static void prv_window_unload(Window *window) {
   // Destroy TextLayer
   text_layer_destroy(s_time_layer_h);
   text_layer_destroy(s_time_layer_m);
@@ -919,27 +799,25 @@ static void main_window_unload(Window *window) {
 	
 	// Unsubscribe from tap events
 	accel_tap_service_unsubscribe();
-	
 }
 
-static void init() {
-  // Create main Window element and assign to pointer
-  s_main_window = window_create();
-	
-  // Set the background color
-	// MOVED TO SETTINGS
-//  window_set_background_color(s_main_window, COLORBG);
+static void prv_init(void) {
+  prv_load_settings();
 
-  // Set handlers to manage the elements inside the Window
-  window_set_window_handlers(s_main_window, (WindowHandlers) {
-    .load = main_window_load,
-    .unload = main_window_unload
+  // Listen for AppMessages
+  app_message_register_inbox_received(prv_inbox_received_handler);
+  app_message_open(128, 128);
+
+  s_window = window_create();
+  window_set_window_handlers(s_window, (WindowHandlers) {
+    .load = prv_window_load,
+    .unload = prv_window_unload,
   });
 
-  // Show the Window on the watch, with animated=true
-  window_stack_push(s_main_window, true);
-
-  // Make sure the time is displayed from the start
+  window_stack_push(s_window, true);
+	
+	
+	 // Make sure the time is displayed from the start
   update_time();
 
   // Register with TickTimerService
@@ -947,19 +825,18 @@ static void init() {
 	
 	// Subscribe to tap events
 	accel_tap_service_subscribe(accel_tap_handler);
-
-	// Receive settings
-	app_message_register_inbox_received(inbox_received_handler);
-	app_message_open(32, 0);
+	
+	
 }
 
-static void deinit() {
-  // Destroy Window
-  window_destroy(s_main_window);
+static void prv_deinit(void) {
+  if (s_window) {
+    window_destroy(s_window);
+  }
 }
 
 int main(void) {
-  init();
+  prv_init();
   app_event_loop();
-  deinit();
+  prv_deinit();
 }
