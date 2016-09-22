@@ -12,8 +12,6 @@ static GBitmap *s_background_bitmap;
 static Layer *s_canvas;
 static Layer *s_canvas_line;
 static Layer *s_arrows;
-//static const GPathInfo ARROW_LEFT_PATH_POINTS;
-//static const GPathInfo ARROW_RIGHT_PATH_POINTS;
 
 // set variables for drawing
 static int rowHalf;
@@ -39,11 +37,11 @@ ClaySettings settings;
 static void prv_default_settings() {
   settings.BackgroundColor = GColorBlack;
   settings.ForegroundColor = GColorWhite;
+  settings.GradColor1 = GColorFromRGB(170,170,170);
+  settings.GradColor2 = GColorFromRGB(85,85,85);
   settings.ArrowColor = GColorRed;
   settings.twelveHour = false;
   settings.shaderMode = 1;
-  settings.invHours = false;
-  settings.invMin = false;
   settings.dropShadow = true;
 }
 
@@ -215,45 +213,52 @@ yToGet = yToSet + (64/(yToUse));
 	  	// draw as ribbons
 	  	
 	  	
-	  if (y < colHalf) {
-			// top half
-			yToUse = y;
-			yToSet = colHalf - y;
-yToGet = yToSet + ((yToSet-43));
-		} else {
-			// bottom half
-			yToUse = colFull - y;
-			yToSet = y;
-yToGet = yToSet - ((yToUse-43));
-		} 
-		
-	// filter only edge pixels, to improve readability and performance
-	if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
+	  
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
-			  // Split in left and right halves
-			  if (x < rowHalf) {
-				  // left half: Work from right to left
-				  xToUse = rowHalf - x;
-				  xToGet = xToUse+yToUse-43;
+			  if (y < colHalf) {
+				  // top half
+
+					if (x < rowHalf) {
+				  		// left half: Work from right to left
+				  		xToUse = rowHalf - x;
+				  		xToGet = xToUse * (y + xToUse);
+			 		} else {
+				  		// right half: Work from left to right
+				  		xToUse = x;
+				  		xToGet = xToUse * (y + xToUse);
+			  		}
+
+			  
 			  } else {
-				  // right half: Work from left to right
-				  xToUse = x;
-				  xToGet = x + yToUse-43;
+				  // bottom half
+
+				  	if (x < rowHalf) {
+				  		// left half: Work from right to left
+				  		xToUse = rowHalf - x;
+				  		xToGet = xToUse - (y/colHalf);
+			 		} else {
+				  		// right half: Work from left to right
+				  		xToUse = x;
+				  		xToGet = xToUse + (y/colHalf);
+			  		}
+			  
 			  }
+			  
+	
 			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
+			  if (xToGet < 0 || xToGet >= rowFull || y < 0 || y > colFull ){
 				  // No, so we'll use the background color
 				  colorToSet = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
-				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+				  colorToSet = get_bitmap_pixel_color(fb, fb_format, y, xToGet);
 			  }
 			  // Now we set the pixel to the right color
-		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
+		 		set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);
 			  }
-	  	}
+	  	
 	  	} 	else if (settings.shaderMode == 4) {
 	  	// draw as banner
 	  	
@@ -330,29 +335,17 @@ static void prv_update_display() {
   window_set_background_color(s_window, settings.BackgroundColor);
 
   // Foreground Colors
-  if (settings.invHours)
-	  {
-	  	text_layer_set_background_color(s_time_layer_h, settings.ForegroundColor);
-  		text_layer_set_text_color(s_time_layer_h, settings.BackgroundColor);
-  } else {
+
 	  	text_layer_set_background_color(s_time_layer_h, settings.BackgroundColor);
   		text_layer_set_text_color(s_time_layer_h, settings.ForegroundColor);
-  }
-	
-  if (settings.invMin)
-	  {
-	  	text_layer_set_background_color(s_time_layer_m, settings.ForegroundColor);
-  		text_layer_set_text_color(s_time_layer_m, settings.BackgroundColor);
-  } else {
+
 	  	text_layer_set_background_color(s_time_layer_m, settings.BackgroundColor);
   		text_layer_set_text_color(s_time_layer_m, settings.ForegroundColor);
-  }
 	
 		text_layer_set_background_color(s_date_container_m, settings.BackgroundColor);
   		text_layer_set_text_color(s_date_container_m, settings.ForegroundColor);
 		text_layer_set_background_color(s_date_container_d, settings.BackgroundColor);
   		text_layer_set_text_color(s_date_container_d, settings.ForegroundColor);
-	
 	
   
   if (settings.twelveHour)
@@ -381,40 +374,24 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
     settings.ForegroundColor = GColorFromHEX(fg_color_t->value->int32);
   }
 	
+	
+	
 	// Arrow Color
   Tuple *ar_color_t = dict_find(iter, MESSAGE_KEY_ArrowColor);
   if (ar_color_t) {
     settings.ArrowColor = GColorFromHEX(ar_color_t->value->int32);
   }
 	
-	// Invert Hours
-  Tuple *invHours_t = dict_find(iter, MESSAGE_KEY_invHours);
-  if (invHours_t) {
-    settings.invHours = true;
-  } else {
-    settings.invHours = false;
-  }
-		
-	// Invert Minutes
-  Tuple *invMin_t = dict_find(iter, MESSAGE_KEY_invMin);
-  if (invMin_t) {
-    settings.invMin = true;
-  } else {
-    settings.invMin = false;
-  }
-	
 	// Twelve Hour Mode
   Tuple *twelveHour_t = dict_find(iter, MESSAGE_KEY_twelveHour);
   if (twelveHour_t) {
-    settings.twelveHour = true;
-  } else {
-    settings.twelveHour = false;
-  }
+    settings.twelveHour = twelveHour_t->value->int32 == 1;
+  } 
 	
 	// Shader Mode
   Tuple *shaderMode_t = dict_find(iter, MESSAGE_KEY_shaderMode);
   if (shaderMode_t) {
-    settings.shaderMode = shaderMode_t->value->uint32;
+    settings.shaderMode = (shaderMode_t->value->uint16)-48;
   } 
 	
   // Save the new settings to persistent storage

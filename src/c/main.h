@@ -7,11 +7,11 @@
 typedef struct ClaySettings {
   GColor BackgroundColor;
   GColor ForegroundColor;
+  GColor GradColor1;
+  GColor GradColor2;
   GColor ArrowColor;
   bool twelveHour;
   int shaderMode;
-  bool invHours;
-  bool invMin;
   bool dropShadow;
 } __attribute__((__packed__)) ClaySettings;
 

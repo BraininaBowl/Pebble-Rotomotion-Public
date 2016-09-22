@@ -99,18 +99,6 @@ module.exports = [
     },
     {
       "type": "toggle",
-      "messageKey": "invHours",
-      "label": "Inverted hours",
-		"defaultValue": false
-    },
-    {
-      "type": "toggle",
-      "messageKey": "invMin",
-      "label": "Inverted minutes",
-		"defaultValue": false
-    },
-    {
-      "type": "toggle",
       "messageKey": "dropShadow",
       "label": "Edge shadows",
 		"defaultValue": true,
