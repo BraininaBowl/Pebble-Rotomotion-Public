@@ -223,11 +223,11 @@ yToGet = yToSet + (64/(yToUse));
 					if (x < rowHalf) {
 				  		// left half: Work from right to left
 				  		xToUse = rowHalf - x;
-				  		xToGet = xToUse + (y * xToUse);
+				  		xToGet = xToUse + (y + xToUse);
 			 		} else {
 				  		// right half: Work from left to right
 				  		xToUse = x;
-				  		xToGet = xToUse - (y * xToUse);
+				  		xToGet = xToUse - (y + xToUse);
 			  		}
 
 			  
