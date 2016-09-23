@@ -37,7 +37,7 @@ module.exports = [
       "label": "Flat", 
       "value": "0" 
     }
-  ]
+  ]}
 },
 {
   "type": "section",
