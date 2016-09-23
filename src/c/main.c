@@ -255,6 +255,52 @@ yToGet = yToSet + (64/(yToUse));
 			  }
 	  	}
 	  	
+}   else if (settings.shaderMode == 4) {
+	  	// draw as steps
+	  	
+	  	
+	  		
+		if (y < colHalf) {
+			// top half
+			yToUse = -1*(colHalf - y);
+			yToSet = colHalf - y;
+yToGet = yToSet - (64/(yToSet));
+		} else {
+			// bottom half
+			yToUse = colFull - y;
+			yToSet = y;
+yToGet = yToSet + (64/(yToUse));
+			
+		} 
+		
+	// filter only edge pixels, to improve readability and performance
+	if (yToSet < (colHalf - 16) || yToSet > (colHalf + 16)){
+
+	  // Iterate over all visible columns
+		  for(int x = 0; x < rowFull; x++) {
+			  // Split in left and right halves
+			  if (x < rowHalf) {
+				  // left half: Work from right to left
+				  xToUse = rowHalf - x;
+				  xToGet = xToUse / 2;
+			  } else {
+				  // right half: Work from left to right
+				  xToUse = x;
+				  xToGet = x - (xToUse/2);
+			  }
+			  // is the target pixel inside the area?
+			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
+				  // No, so we'll use the background color
+				  colorToSet = settings.BackgroundColor;
+			  } else {
+				  // Yes, so get the target pixel color
+				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			  }
+			  // Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
+			  }
+	  	}
+	  	
 }
 	 }
   // Finally, release the framebuffer

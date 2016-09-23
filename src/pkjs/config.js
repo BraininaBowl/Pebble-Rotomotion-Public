@@ -35,6 +35,10 @@ module.exports = [
             "value": 3
           },
           { 
+            "label": "Steps", 
+            "value": 4
+          },
+          { 
             "label": "Flat", 
             "value": 0
           }
