@@ -209,57 +209,7 @@ yToGet = yToSet + (64/(yToUse));
 	  	
 	  	
 	  	
-	  	} else if (settings.shaderMode == 3) {
-	  	// draw as ribbons
-	  	
-	  	
-	  
-
-	  // Iterate over all visible columns
-		  for(int x = 0; x < rowFull; x++) {
-			  if (y < colHalf) {
-				  // top half
-
-					if (x < rowHalf) {
-				  		// left half: Work from right to left
-				  		xToUse = rowHalf - x;
-				  		xToGet = xToUse + ((xToUse)/y);
-			 		} else {
-				  		// right half: Work from left to right
-				  		xToUse = x;
-				  		xToGet = xToUse - ((xToUse)/y);
-			  		}
-
-			  
-			  } else {
-				  // bottom half
-
-				  	if (x < rowHalf) {
-				  		// left half: Work from right to left
-				  		xToUse = rowHalf - x;
-				  		xToGet = xToUse - (y/colHalf);
-			 		} else {
-				  		// right half: Work from left to right
-				  		xToUse = x;
-				  		xToGet = xToUse + (y/colHalf);
-			  		}
-			  
-			  }
-			  
-	
-			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet >= rowFull || y < 0 || y > colFull ){
-				  // No, so we'll use the background color
-				  colorToSet = settings.BackgroundColor;
-			  } else {
-				  // Yes, so get the target pixel color
-				  colorToSet = get_bitmap_pixel_color(fb, fb_format, y, xToGet);
-			  }
-			  // Now we set the pixel to the right color
-		 		set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);
-			  }
-	  	
-	  	} 	else if (settings.shaderMode == 4) {
+	  	} 	else if (settings.shaderMode == 3) {
 	  	// draw as banner
 	  	
 	  	

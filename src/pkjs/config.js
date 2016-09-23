@@ -20,7 +20,6 @@ module.exports = [
   "type": "radiogroup",
   "messageKey": "shaderMode",
   "label": "3D effect",
-	"capabilities": ["RECT"],
   "options": [
     { 
       "label": "Cylinder", 
@@ -32,44 +31,13 @@ module.exports = [
       "value": "2" 
     },
     { 
-      "label": "Ribbon", 
+      "label": "Banner", 
       "value": "3", 
-    },
-    { 
-      "label": "Banner", 
-      "value": "4"
     },	  
 	 { 
       "label": "Flat", 
       "value": "0" 
     }
-  ]
-},
-	  {
-  "type": "radiogroup",
-  "messageKey": "shaderMode",
-  "label": "3D effect",
-	"capabilities": ["ROUND"],
-  "options": [
-    { 
-      "label": "Cylinder", 
-      "value": "1",
-		"defaultValue": true
-    },
-    { 
-      "label": "Inverted cylinder", 
-      "value": "2" 
-    },
-    { 
-      "label": "Banner", 
-      "value": "4"
-    },	  
-	 { 
-      "label": "Flat", 
-      "value": "0" 
-    }
-  ]
-}
   ]
 },
 {
