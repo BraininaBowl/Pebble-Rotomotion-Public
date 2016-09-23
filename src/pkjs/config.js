@@ -35,7 +35,7 @@ module.exports = [
             "value": 3
           },
           { 
-            "label": "Steps", 
+            "label": "Zoom", 
             "value": 4
           },
           { 

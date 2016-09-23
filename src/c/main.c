@@ -256,7 +256,7 @@ yToGet = yToSet + (64/(yToUse));
 	  	}
 	  	
 }   else if (settings.shaderMode == 4) {
-	  	// draw as steps
+	  	// draw as Zoom
 	  	
 	  	
 	  		
