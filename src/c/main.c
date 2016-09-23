@@ -37,8 +37,8 @@ ClaySettings settings;
 static void prv_default_settings() {
   settings.BackgroundColor = GColorBlack;
   settings.ForegroundColor = GColorWhite;
-  settings.GradColor1 = GColorFromRGB(170,170,170);
-  settings.GradColor2 = GColorFromRGB(85,85,85);
+  //settings.GradColor1 = GColorFromRGB(170,170,170);
+  //settings.GradColor2 = GColorFromRGB(85,85,85);
   settings.ArrowColor = GColorRed;
   settings.twelveHour = false;
   settings.shaderMode = 1;
