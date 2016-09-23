@@ -1,43 +1,45 @@
 module.exports = [
-	{ 
-    "type": "heading", 
-    "defaultValue": "ROTOMOTION" 
-  }, 
+{ 
+ "type": "heading", 
+ "defaultValue": "ROTOMOTION" 
+}, 
 {
-  "type": "section",
-  "items": [
-	    {
+ "type": "section",
+ "items": [
+   {
       "type": "heading",
       "defaultValue": "Layout"
-    },
-    {
+   },
+   {
       "type": "toggle",
       "messageKey": "twelveHour",
       "label": "Twelve hour mode",
 		    "defaultValue": false
-    },
+   },
 	  {
-  "type": "radiogroup",
-  "messageKey": "shaderMode",
-  "label": "3D effect",
-  "options": [
-    { 
-      "label": "Cylinder", 
-      "value": "1"
-    },
-    { 
-      "label": "Inverted cylinder", 
-      "value": "2" 
-    },
-    { 
-      "label": "Banner", 
-      "value": "3"
-    },
-    { 
-      "label": "Flat", 
-      "value": "0" 
-    }
-  ]}
+      "type": "radiogroup",
+      "messageKey": "shaderMode",
+      "label": "3D effect",
+      "options": 
+        [
+          { 
+            "label": "Cylinder", 
+            "value": "1"
+          },
+          { 
+            "label": "Inverted cylinder", 
+            "value": "2" 
+          },
+          { 
+            "label": "Banner", 
+            "value": "3"
+          },
+          { 
+            "label": "Flat", 
+            "value": "0" 
+          }
+        ]
+   }
 },
 {
   "type": "section",
