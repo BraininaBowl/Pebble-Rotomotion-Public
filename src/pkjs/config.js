@@ -14,7 +14,7 @@ module.exports = [
       "type": "toggle",
       "messageKey": "twelveHour",
       "label": "Twelve hour mode",
-		"defaultValue": false
+		    "defaultValue": false
     },
 	  {
   "type": "radiogroup",
@@ -24,7 +24,7 @@ module.exports = [
     { 
       "label": "Cylinder", 
       "value": "1",
-		"defaultValue": true
+		    "defaultValue": true
     },
     { 
       "label": "Inverted cylinder", 
@@ -34,7 +34,7 @@ module.exports = [
       "label": "Banner", 
       "value": "3"
     },	  
-	 { 
+	   { 
       "label": "Flat", 
       "value": "0" 
     }

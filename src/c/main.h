@@ -7,8 +7,8 @@
 typedef struct ClaySettings {
   GColor BackgroundColor;
   GColor ForegroundColor;
-  GColor GradColor1;
-  GColor GradColor2;
+  //GColor GradColor1;
+  //GColor GradColor2;
   GColor ArrowColor;
   bool twelveHour;
   int shaderMode;
