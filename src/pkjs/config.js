@@ -32,7 +32,7 @@ module.exports = [
     },
     { 
       "label": "Banner", 
-      "value": "3", 
+      "value": "3"
     },	  
 	 { 
       "label": "Flat", 
