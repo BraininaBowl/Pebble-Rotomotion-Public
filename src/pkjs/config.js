@@ -24,19 +24,19 @@ module.exports = [
         [
           { 
             "label": "Cylinder", 
-            "value": "1"
+            "value": 1
           },
           { 
             "label": "Inverted cylinder", 
-            "value": "2" 
+            "value": 2
           },
           { 
             "label": "Banner", 
-            "value": "3"
+            "value": 3
           },
           { 
             "label": "Flat", 
-            "value": "0" 
+            "value": 0
           }
         ]
    }
