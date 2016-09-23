@@ -40,6 +40,7 @@ module.exports = [
           }
         ]
    }
+}
 ,
 {
   "type": "section",
