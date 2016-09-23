@@ -126,12 +126,12 @@ if (settings.shaderMode == 1) {
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet - (64/(yToUse));
+yToGet = yToSet - (colHalf/(yToUse));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + (64/(yToUse));
+yToGet = yToSet + (colHalf/(yToUse));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
@@ -171,12 +171,12 @@ yToGet = yToSet + (64/(yToUse));
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet - (64/(yToUse));
+yToGet = yToSet - (colHalf/(yToUse));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + (64/(yToUse));
+yToGet = yToSet + (colHalf/(yToUse));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
@@ -218,12 +218,12 @@ yToGet = yToSet + (64/(yToUse));
 			// top half
 			yToUse = -1*(colHalf - y);
 			yToSet = colHalf - y;
-yToGet = yToSet - (64/(yToSet));
+yToGet = yToSet - (colHalf/(yToSet));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + (64/(yToUse));
+yToGet = yToSet + (colHalf/(yToUse));
 			
 		} 
 		
@@ -264,12 +264,12 @@ yToGet = yToSet + (64/(yToUse));
 			// top half
 			yToUse = -1*(colHalf - y);
 			yToSet = colHalf - y;
-yToGet = yToSet - (64/(yToSet));
+yToGet = yToSet - (colHalf/(yToSet));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + (64/(yToUse));
+yToGet = yToSet + (colHalf/(yToUse));
 			
 		} 
 		
