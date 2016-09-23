@@ -32,8 +32,8 @@ module.exports = [
     { 
       "label": "Banner", 
       "value": "3"
-    },	  
-	   { 
+    },
+    { 
       "label": "Flat", 
       "value": "0" 
     }
@@ -63,13 +63,6 @@ module.exports = [
       "messageKey": "ArrowColor",
       "defaultValue": "0xFF0000",
       "label": "Arrows Color"
-    },
-    {
-      "type": "toggle",
-      "messageKey": "dropShadow",
-      "label": "Edge shadows",
-		"defaultValue": true,
-		"capabilities": ["COLOR"]
     }
   ]
   
