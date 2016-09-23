@@ -684,10 +684,10 @@ static void prv_window_load(Window *window) {
 
 	// create textlayer
 	drawText(window_layer);
+		// create date layer
+	drawDate(window_layer);
 	// create shader layer
 	drawShader(window_layer);
-	// create date layer
-	drawDate(window_layer);
 	// create dropShadow
 	drawShadow(window_layer);
 	// create border to hide shader noise
