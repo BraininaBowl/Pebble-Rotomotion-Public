@@ -400,7 +400,12 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
 // *** DRAW STUFF ***
 // Draw text
 static void drawText(Layer *window_layer) {
+	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start drawText. Mem %d", size_t heap_bytes_used(void));
+	 
+	 
+	 
 	   // Create the TextLayer with specific bounds
+	   
 	s_time_layer_h = text_layer_create(GRect(rowHalf-49+12, colHalf-84, 47, 1216));
   	s_time_layer_m = text_layer_create(GRect(rowHalf+12, colHalf-84, 27, 1488));
 
