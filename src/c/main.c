@@ -400,7 +400,7 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
 // *** DRAW STUFF ***
 // Draw text
 static void drawText(Layer *window_layer) {
-	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start drawText. Mem %d", heap_bytes_used(void));
+	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start drawText. Mem %d", heap_bytes_used());
 	 
 	 
 	 
