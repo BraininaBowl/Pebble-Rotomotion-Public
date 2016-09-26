@@ -102,6 +102,9 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
   return GColorClear;
 }
 // Shader stuff goes here
+
+	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start Shader. Mem %d", heap_bytes_used());
+
 void layer_update_proc(Layer *layer, GContext *ctx) {
   // Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
@@ -306,7 +309,7 @@ yToGet = yToSet + (colHalf/(yToUse));
   // Finally, release the framebuffer
   graphics_release_frame_buffer(ctx, fb);
 
-
+	 APP_LOG(APP_LOG_LEVEL_DEBUG, "End Shader. Mem %d", heap_bytes_used());
 }
 
 
@@ -400,7 +403,7 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
 // *** DRAW STUFF ***
 // Draw text
 static void drawText(Layer *window_layer) {
-	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start drawText. Mem %d", heap_bytes_used());
+//	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start drawText. Mem %d", heap_bytes_used());
 	 
 	 
 	 
