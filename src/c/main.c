@@ -354,6 +354,14 @@ for(int y = 0; y < colFull; y++) {
 			     }
 			    
 			     //Process colors
+			     
+			     if(x=60 || y=60){
+			      APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc R %d", aaColR);
+			      APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc G %d", aaColG);
+			      APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc B %d", aaColB);
+			      }			      
+			      
+			      			     
 			     aaColR = aaColR/9;
 			     aaColG = aaColG/9;
 			     aaColB = aaColB/9;
@@ -367,7 +375,7 @@ for(int y = 0; y < colFull; y++) {
 			  
 			  
 			  // Now we set the pixel to the right color
-		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
+//		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 			  }
 	  	
 }
