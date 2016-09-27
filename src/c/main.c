@@ -331,12 +331,15 @@ if (settings.shaderMode > 0) {
 for(int y = 0; y < colFull; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
+		  
+		     GColor colorToSet;
+		     GColor colorToGet;
 	
-	      for(int yToGet = y-1; yToGet < y+2; yToGet++) {
+	      for(int yToGet = y-2; yToGet < y+1; yToGet++) {
         
-        for(int xToGet = x-1; xToGet < x+2; xToGet++) {
+        for(int xToGet = x-2; xToGet < x+1; xToGet++) {
             // is the target pixel inside the area?
-            if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
+            if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet >= colFull ){
                 // No, so we'll use the background color
                 colorToSet = settings.BackgroundColor;
 			         } else {
