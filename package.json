@@ -25,19 +25,7 @@
         ],
         "projectType": "native",
         "resources": {
-            "media": [
-                {
-                    "file": "images/DROP",
-                    "name": "DROP",
-                    "targetPlatforms": [
-                        "aplite",
-                        "basalt",
-                        "chalk",
-                        "diorite"
-                    ],
-                    "type": "bitmap"
-                }
-            ]
+            "media": []
         },
         "sdkVersion": "3",
         "targetPlatforms": [

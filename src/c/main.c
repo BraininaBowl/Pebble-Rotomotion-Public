@@ -39,9 +39,11 @@ static void prv_default_settings() {
   settings.MinColor = GColorWhite;
   settings.HourBgColor = GColorBlack;
   settings.MinBgColor = GColorBlack; 
-  //settings.GradColor1 = GColorFromRGB(170,170,170);
-  //settings.GradColor2 = GColorFromRGB(85,85,85);
-  settings.ArrowColor = GColorRed;
+#if defined(PBL_COLOR)
+	settings.ArrowColor = GColorRed;
+#else
+	settings.ArrowColor = GColorWhite;
+#endif
   settings.twelveHour = false;
   settings.shaderMode = 1;
   settings.dropShadow = true;
@@ -304,61 +306,35 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	}
 	  	
 }
-	 }
-  // Finally, release the framebuffer
-  graphics_release_frame_buffer(ctx, fb);
-
-
-
-
-
-
-
-
-// ANTIALIAS
-
-if (settings.shaderMode > 0) {
-
-// Get the framebuffer
-	GBitmap *fb = graphics_capture_frame_buffer(ctx);
-	GBitmapFormat fb_format = gbitmap_get_format(fb);
-
-GColor currentColor;	
-GColor nextColor;	
-GColor colorToSet;
-
-// Iterate over all rows
-
-	  	
-for(int y = 0; y < colFull; y++) {	  	
-	  // Iterate over all visible columns
-		  for(int x = 0; x < rowFull; x++) {
+		
+		// ANTIALIAS
+		#if defined(PBL_COLOR)
+		for(int x = 0; x < rowFull; x++) {
 		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
 		     
-		     int tempR = (currentColor.r + nextColor.r)*85/2;
-		     int tempG = (currentColor.g + nextColor.g)*85/2;
-		     int tempB = (currentColor.b + nextColor.b)*85/2;
-		     GColor colorToSet = GColorFromRGB(tempR, tempG, tempB);     
-  
+		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);     
+			  if(settings.dropShadow) {
+					if( y < 10 || y > rowFull - 0 ) {
+						int rTemp = (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3;
+						int gTemp = (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3;
+						int bTemp = (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3;
+						colorToSet = GColorFromRGB(rTemp, gTemp, bTemp);
+					} else if( y < 20 || y > rowFull - 10 ) {
+						int rTemp = (colorToSet.r + colorToSet.r + settings.BackgroundColor.r)*85/3;
+						int gTemp = (colorToSet.g + colorToSet.g + settings.BackgroundColor.g)*85/3;
+						int bTemp = (colorToSet.b + colorToSet.b + settings.BackgroundColor.b)*85/3;
+						colorToSet = GColorFromRGB(rTemp, gTemp, bTemp);
+					}				
+				}  				
+			
 			  // Now we set the pixel to the right color
-		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet); 
-			  }	
-  }
+		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet); 
+			  }
+		#endif
+	 }
 
-
-
-
-  // Finally, release the framebuffer
-  graphics_release_frame_buffer(ctx, fb);
-
-}
-
-
-
-
-
-
+	graphics_release_frame_buffer(ctx, fb);
 	 //APP_LOG(APP_LOG_LEVEL_DEBUG, "End Shader. Mem %d", heap_bytes_used());
 }
 
@@ -384,17 +360,14 @@ static void prv_update_display() {
   window_set_background_color(s_window, settings.BackgroundColor);
 
   // Foreground Colors
-
-	  	text_layer_set_background_color(s_time_layer_h, settings.HourBgColor);
-  		text_layer_set_text_color(s_time_layer_h, settings.HourColor);
-
-	  	text_layer_set_background_color(s_time_layer_m, settings.MinBgColor);
-  		text_layer_set_text_color(s_time_layer_m, settings.MinColor);
-	
-		text_layer_set_background_color(s_date_container_m, settings.HourBgColor);
-  		text_layer_set_text_color(s_date_container_m, settings.HourColor);
-		text_layer_set_background_color(s_date_container_d, settings.HourBgColor);
-  		text_layer_set_text_color(s_date_container_d, settings.HourColor);
+	text_layer_set_background_color(s_time_layer_h, settings.HourBgColor);
+	text_layer_set_text_color(s_time_layer_h, settings.HourColor);
+	text_layer_set_background_color(s_time_layer_m, settings.MinBgColor);
+	text_layer_set_text_color(s_time_layer_m, settings.MinColor);
+	text_layer_set_background_color(s_date_container_m, settings.HourBgColor);
+  	text_layer_set_text_color(s_date_container_m, settings.HourColor);
+	text_layer_set_background_color(s_date_container_d, settings.HourBgColor);
+  	text_layer_set_text_color(s_date_container_d, settings.HourColor);
 	
   
   if (settings.twelveHour)
@@ -403,9 +376,6 @@ static void prv_update_display() {
 		} else {
 			text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
 		}
-	
-  //settings.dropShadow = true;
-	
 }
 
 // Handle the response from AppMessage
@@ -427,7 +397,6 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
   if (MinColor_t) {
     settings.MinColor = GColorFromHEX(MinColor_t->value->int32);
   }
-	
 	
   // Hours Bg Color  
 	Tuple *HourBgColor_t = dict_find(iter, MESSAGE_KEY_HourBgColor);
@@ -453,21 +422,21 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
     settings.twelveHour = twelveHour_t->value->int32 == 1;
   } 
 	
+	// Drop shadow
+  Tuple *dropShadow_t = dict_find(iter, MESSAGE_KEY_dropShadow);
+  if (dropShadow_t) {
+    settings.dropShadow = dropShadow_t->value->int32 == 1;
+  } 
+	
 	// Shader Mode
   Tuple *shaderMode_t = dict_find(iter, MESSAGE_KEY_shaderMode);
   if (shaderMode_t) {
     settings.shaderMode = (shaderMode_t->value->uint16)-48;
   } 
   
-  
-//  APP_LOG(APP_LOG_LEVEL_DEBUG, "Shader %d", settings.shaderMode);
-	
   // Save the new settings to persistent storage
   prv_save_settings();
 }
-
-
-
 
 // *** DRAW STUFF ***
 // Draw text
@@ -494,59 +463,6 @@ static void drawText(Layer *window_layer) {
 	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
   	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 	
-}
-// Draw dropshadow
-static void drawShadow(Layer *window_layer){
-	if (settings.dropShadow){
- 		// Create GBitmap
-  		s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_DROP);
-  		// Create BitmapLayer to display the GBitmap
-  		s_background_layer = bitmap_layer_create(GRect(0, 0, rowFull+1, colFull));
-  		// Set the bitmap onto the layer and add to the window
-  		bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
-  		bitmap_layer_set_compositing_mode(s_background_layer, GCompOpSet);
-  		layer_add_child(window_layer, bitmap_layer_get_layer(s_background_layer));
-		}
-}
-// Draw border to hide shader noise
-static void canvas_update_proc(Layer *layer, GContext *ctx) {
-  // Custom drawing happens here!
-// Set the line color
-graphics_context_set_stroke_color(ctx, settings.BackgroundColor);
-	
-// Set the fill color
-graphics_context_set_fill_color(ctx, GColorClear);
-	
-	// Set the stroke width (must be an odd integer value)
-
-	
-	GRect bounds = layer_get_bounds(layer);
-
-	#if defined(PBL_RECT)
-	// Rectengular screen: Draw a rectangle
-	graphics_context_set_stroke_width(ctx, 14);
-	graphics_draw_rect(ctx, bounds);
-	#elif defined(PBL_ROUND)
-	// Rectengular screen: Draw a rectangle
-	graphics_context_set_stroke_width(ctx, 16);
-	GPoint center = GPoint(bounds.size.h/2, bounds.size.w/2);
-	uint16_t radius = bounds.size.h/2;
-
-	// Draw the outline of a circle
-	graphics_draw_circle(ctx, center, radius);
-	#endif
-
-}
-// Draw border
-static void drawBorder(Layer * window_layer){
-	if (settings.shaderMode > 0) {
-	// Create canvas line layer
-	s_canvas_line = layer_create(GRect(0,0, rowFull, colFull));
-	// Assign the custom drawing procedure
-	layer_set_update_proc(s_canvas_line, canvas_update_proc);
-	// Add to Window
-	layer_add_child(window_layer, s_canvas_line);
-	}
 }
 // Draw date container
 static void drawDate(Layer *window_layer){
@@ -580,7 +496,6 @@ void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 	};
 	
 	
-	
 		static GPath *s_arrow_left_path = NULL;
 		static GPath *s_arrow_right_path = NULL;
 
@@ -610,8 +525,6 @@ static void drawShader(Layer * window_layer){
   	layer_add_child(window_layer, s_canvas);
   	}
 }
-
-
 
 // *** ANIMATE ***
 // animate time change
@@ -776,7 +689,6 @@ static void update_date() {
 
 	}
 
-
 // *** EVENTS ***
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
@@ -785,9 +697,6 @@ static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
   // A tap event occured
 	update_date();
 }
-
-
-
 
 // Window Load event
 static void prv_window_load(Window *window) {
@@ -798,23 +707,18 @@ static void prv_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
-		// set variables for drawing
+	// set variables for drawing
 	rowHalf = bounds.size.w/2;
-	//rowFull = bounds.size.w-1;
 	rowFull = bounds.size.w;
 	colHalf = bounds.size.h/2;
 	colFull = bounds.size.h;
 
 	// create textlayer
 	drawText(window_layer);
-		// create date layer
+	// create date layer
 	drawDate(window_layer);
 	// create shader layer
 	drawShader(window_layer);
-	// create dropShadow
-//	drawShadow(window_layer);
-	// create border to hide shader noise
-//	drawBorder(window_layer);
 	// create arrows
 	drawArrows(window_layer);
 

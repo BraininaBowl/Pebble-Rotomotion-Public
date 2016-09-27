@@ -14,7 +14,7 @@ module.exports = [
       "type": "toggle",
       "messageKey": "twelveHour",
       "label": "Twelve hour mode",
-		    "defaultValue": false
+		"defaultValue": false
    },
 	  {
       "type": "radiogroup",
@@ -44,8 +44,7 @@ module.exports = [
           }
         ]
    }
-]}
-,
+]},
 {
   "type": "section",
   "items": [
@@ -88,7 +87,13 @@ module.exports = [
       "messageKey": "ArrowColor",
       "defaultValue": "0xFF0000",
       "label": "Arrows"
-    }
+    },
+	  {
+      "type": "toggle",
+      "messageKey": "dropShadow",
+      "label": "Edge shadows",
+		"defaultValue": true
+   }
   ]
   
 },
