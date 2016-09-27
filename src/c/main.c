@@ -338,6 +338,10 @@ for(int y = 0; y < colFull; y++) {
 
 	      
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
+	      
+	      
+	      APP_LOG(APP_LOG_LEVEL_DEBUG, "yToGet %d", yToGet);
+	      
         
         for(int xToGet = x-1; xToGet < x+1; xToGet++) {
             // is the target pixel inside the area?
