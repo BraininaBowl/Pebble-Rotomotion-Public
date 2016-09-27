@@ -330,27 +330,39 @@ GColor colorToSet;
 // Iterate over all rows
 
 	  	
-for(int y = 1; y < colFull; y++) {	  	
+for(int y = 0; y < colFull; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
-		    GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
-		
+		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
 		     
 		     int tempR = (currentColor.r + nextColor.r)*85/2;
 		     int tempG = (currentColor.g + nextColor.g)*85/2;
 		     int tempB = (currentColor.b + nextColor.b)*85/2;
-		     GColor colorToSet = GColorFromRGB(tempR, tempG, tempB);
-			     
+		     GColor colorToSet = GColorFromRGB(tempR, tempG, tempB);     
   
 			  // Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet); 
-		    
+			  }	
+  }
 
-	
-			  }
-	  	
-}
+
+for(int y = 0; y < colFull; y++) {	  	
+	  // Iterate over all visible columns
+		  for(int x = 0; x < rowFull; x++) {
+		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
+		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y+1, x);
+		     
+		     int tempR = (currentColor.r + nextColor.r)*85/2;
+		     int tempG = (currentColor.g + nextColor.g)*85/2;
+		     int tempB = (currentColor.b + nextColor.b)*85/2;
+		     GColor colorToSet = GColorFromRGB(tempR, tempG, tempB);     
+  
+			  // Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet); 
+			  }	
+  }
+
 
   // Finally, release the framebuffer
   graphics_release_frame_buffer(ctx, fb);
