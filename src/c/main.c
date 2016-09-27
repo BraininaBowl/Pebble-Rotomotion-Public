@@ -336,9 +336,9 @@ for(int y = 1; y < colFull; y++) {
 		    GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		    if(x > rowHalf){
 		         // Left half
-		         GColor sideColor = get_bitmap_pixel_color(fb, fb_format, y, x-1);
+		         GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x-1);
 		     } else {
-		         GColor sideColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
+		         GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
 		     }
 		         
 		     if (currentColor == sideColor) {
