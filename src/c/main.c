@@ -29,12 +29,6 @@ static int s_month;
 static int s_day;
 static int firstrun;
 
-static int aaColR = 0;
-static int aaColG = 0;
-static int aaColB = 0;
-GColor colorToSet;
-GColor colorToGet;
-
 // A struct for our specific settings (see main.h)
 ClaySettings settings;
 
@@ -312,7 +306,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 }
 	 }
   // Finally, release the framebuffer
- // graphics_release_frame_buffer(ctx, fb);
+  graphics_release_frame_buffer(ctx, fb);
 
 
 
@@ -326,8 +320,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 if (settings.shaderMode > 0) {
 
 // Get the framebuffer
-//	GBitmap *fb = graphics_capture_frame_buffer(ctx);
-//	GBitmapFormat fb_format = gbitmap_get_format(fb);
+	GBitmap *fb = graphics_capture_frame_buffer(ctx);
+	GBitmapFormat fb_format = gbitmap_get_format(fb);
 
 	
 	
@@ -338,7 +332,13 @@ for(int y = 0; y < colFull; y++) {
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
 		     
-	
+	      int aaColR = 0;
+       int aaColG = 0;
+       int aaColB = 0;
+       GColor colorToSet;
+       GColor colorToGet;
+
+	      
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
         
         for(int xToGet = x-1; xToGet < x+1; xToGet++) {
@@ -368,9 +368,6 @@ for(int y = 0; y < colFull; y++) {
 			     
 			     GColor colorToSet = GColorFromRGB(aaColR, aaColG, aaColB);
 			     
-			     aaColR = 0;
-		      aaColG = 0;
-		      aaColB = 0;
   
 			  // Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
@@ -379,12 +376,9 @@ for(int y = 0; y < colFull; y++) {
 }
 
   // Finally, release the framebuffer
- // graphics_release_frame_buffer(ctx, fb);
+  graphics_release_frame_buffer(ctx, fb);
 
 }
-
-
-graphics_release_frame_buffer(ctx, fb);
 
 
 
