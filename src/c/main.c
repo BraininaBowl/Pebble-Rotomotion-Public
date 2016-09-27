@@ -320,10 +320,6 @@ yToGet = yToSet + (colHalf/(yToUse));
 
 if (settings.shaderMode > 0) {
 
-int AAcolR;
-int AAcolG;
-int AAcolB;
-
 // Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
 	GBitmapFormat fb_format = gbitmap_get_format(fb);
@@ -336,9 +332,9 @@ int AAcolB;
 for(int y = 0; y < colFull; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
-		      AAcolR ="";
-		      AAcolG ="";
-		      AAcolB ="";
+		      int AAcolR ="";
+		      int AAcolG ="";
+		      int AAcolB ="";
 	
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
         
@@ -352,9 +348,9 @@ for(int y = 0; y < colFull; y++) {
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }
 			         
-			         AAcolR += colorToSet.color.r;
-			         AAcolG += colorToSet.color.g;
-			         AAcolB += colorToSet.color.b;			         
+			         AAcolR += colorToSet.r;
+			         AAcolG += colorToSet.g;
+			         AAcolB += colorToSet.b;			         
 			     }
 			    
 			     //Process colors
@@ -362,9 +358,9 @@ for(int y = 0; y < colFull; y++) {
 			     AAcolG = AAcolG/9;
 			     AAcolB = AAcolB/9;
 			     
-			     colorToSet.color.r = AAcolR;
-			     colorToSet.color.g = AAcolg;
-			     colorToSet.color.b = AAcolB;
+			     colorToSet.r = AAcolR;
+			     colorToSet.g = AAcolg;
+			     colorToSet.b = AAcolB;
 			    
 			    }
 			  
