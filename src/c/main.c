@@ -29,6 +29,9 @@ static int s_month;
 static int s_day;
 static int firstrun;
 
+static int aaColR;
+static int aaColG;
+static int aaColB;
 
 // A struct for our specific settings (see main.h)
 ClaySettings settings;
@@ -332,9 +335,9 @@ if (settings.shaderMode > 0) {
 for(int y = 0; y < colFull; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
-		      int aaColR = "";
-		      int aaColG = "";
-		      int aaColB = "";
+		      aaColR = "";
+		      aaColG = "";
+		      aaColB = "";
 	
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
         
