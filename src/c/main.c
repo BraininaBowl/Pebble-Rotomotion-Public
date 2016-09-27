@@ -332,9 +332,9 @@ if (settings.shaderMode > 0) {
 for(int y = 0; y < colFull; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
-		      int AAcolR ="";
-		      int AAcolG ="";
-		      int AAcolB ="";
+		      int AAcolR = "";
+		      int AAcolG = "";
+		      int AAcolB = "";
 	
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
         
