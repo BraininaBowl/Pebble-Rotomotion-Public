@@ -345,7 +345,7 @@ for(int y = 0; y < colFull; y++) {
         
         for(int xToGet = x-1; xToGet < x+2; xToGet++) {
             // is the target pixel inside the area?
-            if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet >= colFull ){
+            if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
                 // No, so we'll use the background color
                 GColor colorToSet = settings.BackgroundColor;
 			         } else {
@@ -360,7 +360,7 @@ for(int y = 0; y < colFull; y++) {
 			    
 			     //Process colors
 			     
-			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc R %d", aaColR);
+			     APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc R %d", aaColR);
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc G %d", aaColG);
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc B %d", aaColB);
 			      			     
