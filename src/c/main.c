@@ -332,9 +332,9 @@ for(int y = 0; y < colFull; y++) {
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
 	
-	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
+	      for(int yToGet = y-1; yToGet < y+2; yToGet++) {
         
-        for(int xToGet = x-1; xToGet < x+1; xToGet++) {
+        for(int xToGet = x-1; xToGet < x+2; xToGet++) {
             // is the target pixel inside the area?
             if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
                 // No, so we'll use the background color
@@ -344,9 +344,9 @@ for(int y = 0; y < colFull; y++) {
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }
 			         
-			         int tempR = colorToSet.r *85;
-			         int tempG = colorToSet.g *85;
-			         int tempB = colorToSet.b *85;
+			         int tempR = colorToSet.r * 85;
+			         int tempG = colorToSet.g * 85;
+			         int tempB = colorToSet.b * 85;
 			         
 			         int aaColR = aaColR + tempR;
 			         int aaColG = aaColG + tempG;
