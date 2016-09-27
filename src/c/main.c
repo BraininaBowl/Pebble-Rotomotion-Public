@@ -369,9 +369,9 @@ for(int y = 0; y < colFull; y++) {
 			     
 			     colorToSet = GColorFromRGB(aaColR, aaColG, aaColB);
 			     
-			     int aaColR = 0;
-		      int aaColG = 0;
-		      int aaColB = 0;
+			     aaColR = 0;
+		      aaColG = 0;
+		      aaColB = 0;
 			    
 			    }
 			  
