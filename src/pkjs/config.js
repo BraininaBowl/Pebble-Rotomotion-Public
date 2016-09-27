@@ -70,7 +70,19 @@ module.exports = [
       "messageKey": "ArrowColor",
       "defaultValue": "0xFF0000",
       "label": "Arrows Color"
-    }
+    },
+    { 
+      "type": "toggle",
+      "messageKey": "invHour", 
+      "label": "Invert Hours", 
+   		 "defaultValue": false 
+   		 },
+     { 
+      "type": "toggle",
+      "messageKey": "invMin", 
+      "label": "Invert Minutes", 
+   		 "defaultValue": false 
+   		 }
   ]
   
 },
