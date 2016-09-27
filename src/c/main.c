@@ -331,41 +331,29 @@ if (settings.shaderMode > 0) {
 for(int y = 1; y < colFull-1; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
-		     
-	      int aaColR = 0;
-       int aaColG = 0;
-       int aaColB = 0;
-	      
-        
-        for(int yToGet = y-1; yToGet < y+2; yToGet++) {
-
-			         GColor colorToGet = get_bitmap_pixel_color(fb, fb_format, yToGet, x);
-			                  
-			         aaColR = aaColR + colorToGet.r;
-			         aaColG = aaColG + colorToGet.g;
-			         aaColB = aaColB + colorToGet.b;
-			         }
-			     
-			    
-			     //Process colors
-			     
-		//	     if(aaColR > 0){
-			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "X %d", x);
-			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "Y %d", y);			     
-			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc R %d", aaColR);
-			  //   }
-			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc G %d", aaColG);
-			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc B %d", aaColB);
-			      			     
-			     aaColR = aaColR/3*85;
-			     aaColG = aaColG/3*85;
-			     aaColB = aaColB/3*85;
-			     
-			     GColor colorToSet = GColorFromRGB(aaColR, aaColG, aaColB);
+		    GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
+		    if(x > rowHalf){
+		         // Left half
+		         GColor sideColor = get_bitmap_pixel_color(fb, fb_format, y, x-1);
+		     } else {
+		         GColor sideColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
+		     }
+		         
+		     if (currentColor == sideColor) {
+		     } else {
+		         GColor colorToSet = GColorFromRGB(
+		         (currentColor.r + nextColor.r)*85/2,
+		         (currentColor.g + nextColor.g)*85/2,
+		         (currentColor.b + nextColor.b)*85/2
+		         );
+		     }
 			     
   
 			  // Now we set the pixel to the right color
-		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
+		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet); 
+		    
+
+	
 			  }
 	  	
 }
