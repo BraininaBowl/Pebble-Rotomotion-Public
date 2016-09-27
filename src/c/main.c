@@ -334,6 +334,10 @@ for(int y = 0; y < colFull; y++) {
 		  
 		     GColor colorToSet;
 		     GColor colorToGet;
+		     int aaColR;
+		     int aaColG;
+		     int aaColB;
+		     
 	
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
         
@@ -345,40 +349,29 @@ for(int y = 0; y < colFull; y++) {
 			         } else {
 			             // Yes, so get the target pixel color
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			         }         
+			         aaColR = aaColR + colorToSet.r;
+			         aaColG = aaColG + colorToSet.g;
+			         aaColB = aaColB + colorToSet.b;
 			         }
-			         
-			         int tempR = colorToSet.r * 85;
-			         int tempG = colorToSet.g * 85;
-			         int tempB = colorToSet.b * 85;
-			         
-			         int aaColR = aaColR + tempR;
-			         int aaColG = aaColG + tempG;
-			         int aaColB = aaColB + tempB;
-			         }
-
 			     }
 			    
 			     //Process colors
 			     
-			     
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc R %d", aaColR);
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc G %d", aaColG);
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc B %d", aaColB);
-			          
-			      
 			      			     
-			     int aaColR = aaColR/9;
-			     int aaColG = aaColG/9;
-			     int aaColB = aaColB/9;
+			     aaColR = aaColR/9*85;
+			     aaColG = aaColG/9*85;
+			     aaColB = aaColB/9*85;
 			     
 			     colorToSet = GColorFromRGB(aaColR, aaColG, aaColB);
 			     
 			     aaColR = 0;
 		      aaColG = 0;
 		      aaColB = 0;
-			  
-			  
-			  
+  
 			  // Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 			  }
