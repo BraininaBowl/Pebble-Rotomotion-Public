@@ -102,9 +102,6 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
   return GColorClear;
 }
 // Shader stuff goes here
-
-	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start Shader. Mem %d", heap_bytes_used());
-
 void layer_update_proc(Layer *layer, GContext *ctx) {
   // Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
@@ -335,16 +332,16 @@ static void prv_update_display() {
 
   // Foreground Colors
 
-	  	text_layer_set_background_color(s_time_layer_h, settings.BackgroundColor);
-  		text_layer_set_text_color(s_time_layer_h, settings.ForegroundColor);
+	  	text_layer_set_background_color(s_time_layer_h, settings.HourBgColor);
+  		text_layer_set_text_color(s_time_layer_h, settings.HourColor);
 
-	  	text_layer_set_background_color(s_time_layer_m, settings.BackgroundColor);
-  		text_layer_set_text_color(s_time_layer_m, settings.ForegroundColor);
+	  	text_layer_set_background_color(s_time_layer_m, settings.MinBgColor);
+  		text_layer_set_text_color(s_time_layer_m, settings.MinColor);
 	
 		text_layer_set_background_color(s_date_container_m, settings.BackgroundColor);
-  		text_layer_set_text_color(s_date_container_m, settings.ForegroundColor);
-		text_layer_set_background_color(s_date_container_d, settings.BackgroundColor);
-  		text_layer_set_text_color(s_date_container_d, settings.ForegroundColor);
+  		text_layer_set_text_color(s_date_container_m, settings.HourColor);
+		text_layer_set_background_color(s_date_container_d, settings.HourBgColor);
+  		text_layer_set_text_color(s_date_container_d, settings.HourColor);
 	
   
   if (settings.twelveHour)
@@ -367,13 +364,30 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
     settings.BackgroundColor = GColorFromHEX(bg_color_t->value->int32);
   }
 
-  // Foreground Color  
-	Tuple *fg_color_t = dict_find(iter, MESSAGE_KEY_ForegroundColor);
-  if (fg_color_t) {
-    settings.ForegroundColor = GColorFromHEX(fg_color_t->value->int32);
+  // Hours Color  
+	Tuple *HourColor_t = dict_find(iter, MESSAGE_KEY_HourColor);
+  if (HourColor_t) {
+    settings.HourColor = GColorFromHEX(HourColor_t->value->int32);
+  }
+	
+  // Minutes Color  
+	Tuple *MinColor_t = dict_find(iter, MESSAGE_KEY_MinColor);
+  if (MinColor_t) {
+    settings.MinColor = GColorFromHEX(MinColor_t->value->int32);
   }
 	
 	
+  // Hours Bg Color  
+	Tuple *HourBgColor_t = dict_find(iter, MESSAGE_KEY_HourBgColor);
+  if (HourBgColor_t) {
+    settings.HourBgColor = GColorFromHEX(HourBgColor_t->value->int32);
+  }
+	
+  // Minutes Bg Color  
+	Tuple *MinBgColor_t = dict_find(iter, MESSAGE_KEY_MinBgColor);
+  if (MinBgColor_t) {
+    settings.MinBgColor = GColorFromHEX(MinBgColor_t->value->int32);
+  }
 	
 	// Arrow Color
   Tuple *ar_color_t = dict_find(iter, MESSAGE_KEY_ArrowColor);

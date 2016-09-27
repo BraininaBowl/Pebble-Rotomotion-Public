@@ -57,32 +57,38 @@ module.exports = [
       "type": "color",
       "messageKey": "BackgroundColor",
       "defaultValue": "0x000000",
-      "label": "Background Color"
+      "label": "Background color"
     },
     {
       "type": "color",
-      "messageKey": "ForegroundColor",
+      "messageKey": "HourColor",
       "defaultValue": "0xFFFFFF",
-      "label": "Text Color"
+      "label": "Hours"
+    },
+    {
+      "type": "color",
+      "messageKey": "MinColor",
+      "defaultValue": "0xFFFFFF",
+      "label": "Minutes"
+    },
+    {
+      "type": "color",
+      "messageKey": "HourBgColor",
+      "defaultValue": "0x000000",
+      "label": "Hours background"
+    },
+    {
+      "type": "color",
+      "messageKey": "MinBgColor",
+      "defaultValue": "0x000000",
+      "label": "Minutes background"
     },
 	  {
       "type": "color",
       "messageKey": "ArrowColor",
       "defaultValue": "0xFF0000",
-      "label": "Arrows Color"
-    },
-    { 
-      "type": "toggle",
-      "messageKey": "invHour", 
-      "label": "Invert Hours", 
-   		 "defaultValue": false 
-   		 },
-     { 
-      "type": "toggle",
-      "messageKey": "invMin", 
-      "label": "Invert Minutes", 
-   		 "defaultValue": false 
-   		 }
+      "label": "Arrows"
+    }
   ]
   
 },

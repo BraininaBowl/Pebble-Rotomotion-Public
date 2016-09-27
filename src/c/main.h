@@ -6,7 +6,10 @@
 // A structure containing our settings
 typedef struct ClaySettings {
   GColor BackgroundColor;
-  GColor ForegroundColor;
+  GColor HourColor;
+  GColor MinColor;
+  GColor HourBgColor;
+  GColor MinBgColor;
   //GColor GradColor1;
   //GColor GradColor2;
   GColor ArrowColor;
