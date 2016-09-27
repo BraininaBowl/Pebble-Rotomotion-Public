@@ -842,9 +842,9 @@ static void prv_window_load(Window *window) {
 	// create shader layer
 	drawShader(window_layer);
 	// create dropShadow
-	drawShadow(window_layer);
+//	drawShadow(window_layer);
 	// create border to hide shader noise
-	drawBorder(window_layer);
+//	drawBorder(window_layer);
 	// create arrows
 	drawArrows(window_layer);
 
