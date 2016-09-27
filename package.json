@@ -36,17 +36,6 @@
                         "diorite"
                     ],
                     "type": "bitmap"
-                },
-                {
-                    "file": "images/DROP_WHITE",
-                    "name": "DROP_WHITE",
-                    "targetPlatforms": [
-                        "aplite",
-                        "basalt",
-                        "chalk",
-                        "diorite"
-                    ],
-                    "type": "bitmap"
                 }
             ]
         },
