@@ -332,9 +332,9 @@ if (settings.shaderMode > 0) {
 for(int y = 0; y < colFull; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
-		      int AAcolR = "";
-		      int AAcolG = "";
-		      int AAcolB = "";
+		      int aaColR = "";
+		      int aaColG = "";
+		      int aaColB = "";
 	
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
         
@@ -348,19 +348,19 @@ for(int y = 0; y < colFull; y++) {
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }
 			         
-			         AAcolR += colorToSet.r;
-			         AAcolG += colorToSet.g;
-			         AAcolB += colorToSet.b;			         
+			         aaColR += colorToSet.r;
+			         aaColG += colorToSet.g;
+			         aaColB += colorToSet.b;			         
 			     }
 			    
 			     //Process colors
-			     AAcolR = AAcolR/9;
-			     AAcolG = AAcolG/9;
-			     AAcolB = AAcolB/9;
+			     aaColR = aaColR/9;
+			     aaColG = aaColG/9;
+			     aaColB = aaColB/9;
 			     
-			     colorToSet.r = AAcolR;
-			     colorToSet.g = AAcolg;
-			     colorToSet.b = AAcolB;
+			     colorToSet.r = aaColR;
+			     colorToSet.g = aaColG;
+			     colorToSet.b = aaColB;
 			    
 			    }
 			  
