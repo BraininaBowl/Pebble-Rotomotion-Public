@@ -36,7 +36,10 @@ ClaySettings settings;
 // Initialize the default settings
 static void prv_default_settings() {
   settings.BackgroundColor = GColorBlack;
-  settings.ForegroundColor = GColorWhite;
+  settings.HourColor = GColorWhite;
+  settings.MinColor = GColorWhite;
+  settings.HourBgColor = GColorBlack;
+  settings.MinBgColor = GColorBlack; 
   //settings.GradColor1 = GColorFromRGB(170,170,170);
   //settings.GradColor2 = GColorFromRGB(85,85,85);
   settings.ArrowColor = GColorRed;
