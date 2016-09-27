@@ -337,13 +337,13 @@ for(int y = 0; y < colFull; y++) {
        int aaColB = 0;
 
 	      
-	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
+	      for(int yToGet = y-1; yToGet < y+2; yToGet++) {
 	      
-	      APP_LOG(APP_LOG_LEVEL_DEBUG, "y %d", y);
-	      APP_LOG(APP_LOG_LEVEL_DEBUG, "yToGet %d", yToGet);
+	      //APP_LOG(APP_LOG_LEVEL_DEBUG, "y %d", y);
+	     // APP_LOG(APP_LOG_LEVEL_DEBUG, "yToGet %d", yToGet);
 	      
         
-        for(int xToGet = x-1; xToGet < x+1; xToGet++) {
+        for(int xToGet = x-1; xToGet < x+2; xToGet++) {
             // is the target pixel inside the area?
             if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet >= colFull ){
                 // No, so we'll use the background color
