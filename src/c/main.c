@@ -369,7 +369,7 @@ for(int y = 0; y < colFull; y++) {
 			     aaColG = aaColG/9;
 			     aaColB = aaColB/9;
 			     
-			     colorToSet = GColorFromRGB(aaColR, aaColG, aaColB):
+			     colorToSet = GColorFromRGB(aaColR, aaColG, aaColB);
 			    
 			    }
 			  
