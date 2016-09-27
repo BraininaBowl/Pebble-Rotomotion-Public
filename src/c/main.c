@@ -323,12 +323,14 @@ if (settings.shaderMode > 0) {
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
 	GBitmapFormat fb_format = gbitmap_get_format(fb);
 
-	
-	
+GColor currentColor;	
+GColor nextColor;	
+GColor colorToSet;
+
 // Iterate over all rows
 
 	  	
-for(int y = 1; y < colFull-1; y++) {	  	
+for(int y = 1; y < colFull; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
 		    GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
