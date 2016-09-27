@@ -309,7 +309,96 @@ yToGet = yToSet + (colHalf/(yToUse));
   // Finally, release the framebuffer
   graphics_release_frame_buffer(ctx, fb);
 
-	 APP_LOG(APP_LOG_LEVEL_DEBUG, "End Shader. Mem %d", heap_bytes_used());
+
+
+
+
+
+
+
+// ANTIALIAS
+
+if (settings.shaderMode > 0) {
+
+int AAcolR;
+int AAcolG;
+int AAcolB;
+
+// Get the framebuffer
+	GBitmap *fb = graphics_capture_frame_buffer(ctx);
+	GBitmapFormat fb_format = gbitmap_get_format(fb);
+
+	
+	
+// Iterate over all rows
+
+	  	
+for(int y = 0; y < colFull; y++) {	  	
+	  // Iterate over all visible columns
+		  for(int x = 0; x < rowFull; x++) {
+		      AAcolR ="";
+		      AAcolG ="";
+		      AAcolB ="";
+	
+	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
+        
+        for(int xToGet = x-1; xToGet < x+1; xToGet++) {
+            // is the target pixel inside the area?
+            if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
+                // No, so we'll use the background color
+                colorToSet = settings.BackgroundColor;
+			         } else {
+			             // Yes, so get the target pixel color
+			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			         }
+			         
+			         AAcolR += colorToSet.color.r;
+			         AAcolG += colorToSet.color.g;
+			         AAcolB += colorToSet.color.b;			         
+			     }
+			    
+			     //Process colors
+			     AAcolR = AAcolR/9;
+			     AAcolG = AAcolG/9;
+			     AAcolB = AAcolB/9;
+			     
+			     colorToSet.color.r = AAcolR;
+			     colorToSet.color.g = AAcolg;
+			     colorToSet.color.b = AAcolB;
+			    
+			    }
+			  
+			  
+			  
+			  // Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
+			  }
+	  	
+}
+
+  // Finally, release the framebuffer
+  graphics_release_frame_buffer(ctx, fb);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 //APP_LOG(APP_LOG_LEVEL_DEBUG, "End Shader. Mem %d", heap_bytes_used());
 }
 
 
