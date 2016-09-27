@@ -335,7 +335,6 @@ for(int y = 0; y < colFull; y++) {
 	      int aaColR = 0;
        int aaColG = 0;
        int aaColB = 0;
-       colorToSet;
 
 	      
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
