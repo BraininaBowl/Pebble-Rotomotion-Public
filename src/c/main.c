@@ -29,6 +29,10 @@ static int s_month;
 static int s_day;
 static int firstrun;
 
+static int aaColR;
+static int aaColG;
+static int aaColB;
+
 // A struct for our specific settings (see main.h)
 ClaySettings settings;
 
@@ -334,9 +338,6 @@ for(int y = 0; y < colFull; y++) {
 		  
 		     GColor colorToSet;
 		     GColor colorToGet;
-		     int aaColR;
-		     int aaColG;
-		     int aaColB;
 		     
 	
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
