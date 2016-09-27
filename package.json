@@ -17,7 +17,9 @@
             "ArrowColor",
             "twelveHour",
             "shaderMode",
-            "dropShadow"
+            "dropShadow",
+            "invHour",
+            "invMin"
         ],
         "projectType": "native",
         "resources": {
