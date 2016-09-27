@@ -306,7 +306,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 }
 	 }
   // Finally, release the framebuffer
-//  graphics_release_frame_buffer(ctx, fb);
+  graphics_release_frame_buffer(ctx, fb);
 
 
 
@@ -320,15 +320,15 @@ yToGet = yToSet + (colHalf/(yToUse));
 if (settings.shaderMode > 0) {
 
 // Get the framebuffer
-//	GBitmap *fb = graphics_capture_frame_buffer(ctx);
-//	GBitmapFormat fb_format = gbitmap_get_format(fb);
+	GBitmap *fb = graphics_capture_frame_buffer(ctx);
+	GBitmapFormat fb_format = gbitmap_get_format(fb);
 
 	
 	
 // Iterate over all rows
 
 	  	
-for(int y = 0; y < colFull; y++) {	  	
+for(int y = 1; y < colFull-1; y++) {	  	
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
 		     
@@ -371,12 +371,9 @@ for(int y = 0; y < colFull; y++) {
 }
 
   // Finally, release the framebuffer
- // graphics_release_frame_buffer(ctx, fb);
+  graphics_release_frame_buffer(ctx, fb);
 
 }
-
-graphics_release_frame_buffer(ctx, fb);
-
 
 
 
