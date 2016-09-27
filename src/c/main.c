@@ -348,9 +348,13 @@ for(int y = 0; y < colFull; y++) {
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }
 			         
-			         int aaColR = aaColR + colorToSet.r;
-			         int aaColG = aaColG + colorToSet.g;
-			         int aaColB = aaColB + colorToSet.b;
+			         int tempR = colorToSet.r *85;
+			         int tempG = colorToSet.g *85;
+			         int tempB = colorToSet.b *85;
+			         
+			         int aaColR = aaColR + tempR;
+			         int aaColG = aaColG + tempG;
+			         int aaColB = aaColB + tempB;
 
 			     }
 			    
@@ -363,9 +367,9 @@ for(int y = 0; y < colFull; y++) {
 			          
 			      
 			      			     
-			     aaColR = (aaColR/9)*85;
-			     aaColG = (aaColG/9)*85;
-			     aaColB = (aaColB/9)*85;
+			     int aaColR = aaColR/9;
+			     int aaColG = aaColG/9;
+			     int aaColB = aaColB/9;
 			     
 			     colorToSet = GColorFromRGB(aaColR, aaColG, aaColB);
 			    
