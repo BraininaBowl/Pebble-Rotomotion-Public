@@ -344,14 +344,9 @@ for(int y = 0; y < colFull; y++) {
 	      
         
         for(int xToGet = x-1; xToGet < x+2; xToGet++) {
-            // is the target pixel inside the area?
-            if (xToGet < 0 || xToGet > rowFull || yToGet < 0 || yToGet > colFull ){
-                // No, so we'll use the background color
-                GColor colorToSet = settings.BackgroundColor;
-			         } else {
-			             // Yes, so get the target pixel color
-			             GColor colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
-			         }         
+
+			         GColor colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			                  
 			         aaColR = aaColR + colorToSet.r;
 			         aaColG = aaColG + colorToSet.g;
 			         aaColB = aaColB + colorToSet.b;
@@ -360,7 +355,11 @@ for(int y = 0; y < colFull; y++) {
 			    
 			     //Process colors
 			     
-			   //  APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc R %d", aaColR);
+		//	     if(aaColR > 0){
+			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "X %d", x);
+			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "Y %d", y);			     
+			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc R %d", aaColR);
+			     }
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc G %d", aaColG);
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc B %d", aaColB);
 			      			     
