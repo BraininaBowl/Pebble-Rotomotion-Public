@@ -337,9 +337,9 @@ for(int y = 0; y < colFull; y++) {
        int aaColB = 0;
 	      
         
-        for(int xToGet = x-1; xToGet < x+2; xToGet++) {
+        for(int yToGet = y-1; yToGet < y+2; yToGet++) {
 
-			         GColor colorToGet = get_bitmap_pixel_color(fb, fb_format, y, xToGet);
+			         GColor colorToGet = get_bitmap_pixel_color(fb, fb_format, yToGet, x);
 			                  
 			         aaColR = aaColR + colorToGet.r;
 			         aaColG = aaColG + colorToGet.g;
