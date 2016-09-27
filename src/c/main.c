@@ -335,8 +335,7 @@ for(int y = 0; y < colFull; y++) {
 	      int aaColR = 0;
        int aaColG = 0;
        int aaColB = 0;
-       GColor colorToSet;
-       GColor colorToGet;
+       colorToSet;
 
 	      
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
@@ -345,14 +344,14 @@ for(int y = 0; y < colFull; y++) {
             // is the target pixel inside the area?
             if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet >= colFull ){
                 // No, so we'll use the background color
-                GColor colorToGet = settings.BackgroundColor;
+                GColor colorToSet = settings.BackgroundColor;
 			         } else {
 			             // Yes, so get the target pixel color
-			             GColor colorToGet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			             GColor colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }         
-			         aaColR = aaColR + colorToGet.r;
-			         aaColG = aaColG + colorToGet.g;
-			         aaColB = aaColB + colorToGet.b;
+			         aaColR = aaColR + colorToSet.r;
+			         aaColG = aaColG + colorToSet.g;
+			         aaColB = aaColB + colorToSet.b;
 			         }
 			     }
 			    
