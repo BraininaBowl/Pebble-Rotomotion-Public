@@ -335,9 +335,9 @@ for(int y = 0; y < colFull; y++) {
 		     GColor colorToSet;
 		     GColor colorToGet;
 	
-	      for(int yToGet = y-1; yToGet =< y+1; yToGet++) {
+	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
         
-        for(int xToGet = x-1; xToGet =< x+1; xToGet++) {
+        for(int xToGet = x-1; xToGet < x+1; xToGet++) {
             // is the target pixel inside the area?
             if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet >= colFull ){
                 // No, so we'll use the background color
