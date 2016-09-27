@@ -339,7 +339,7 @@ for(int y = 0; y < colFull; y++) {
 	      
 	      for(int yToGet = y-1; yToGet < y+1; yToGet++) {
 	      
-	      
+	      APP_LOG(APP_LOG_LEVEL_DEBUG, "y %d", y);
 	      APP_LOG(APP_LOG_LEVEL_DEBUG, "yToGet %d", yToGet);
 	      
         
