@@ -348,9 +348,9 @@ for(int y = 0; y < colFull; y++) {
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }
 			         
-			         int aaColR += colorToSet.r;
-			         int aaColG += colorToSet.g;
-			         int aaColB += colorToSet.b;
+			         int aaColR = aaColR + colorToSet.r;
+			         int aaColG = aaColG + colorToSet.g;
+			         int aaColB = aaColB + colorToSet.b;
 
 			     }
 			    
