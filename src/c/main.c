@@ -348,9 +348,9 @@ for(int y = 0; y < colFull; y++) {
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }
 			         
-			         aaColR += colorToSet.color.r;
-			         aaColG += colorToSet.color.g;
-			         aaColB += colorToSet.color.b;			         
+			         aaColR = aaColR + colorToSet.r;
+			         aaColG = aaColG + colorToSet.g;
+			         aaColB = aaColB + colorToSet.b;			         
 			     }
 			    
 			     //Process colors
@@ -366,9 +366,9 @@ for(int y = 0; y < colFull; y++) {
 			     aaColG = aaColG/9;
 			     aaColB = aaColB/9;
 			     
-			     colorToSet.color.r = aaColR;
-			     colorToSet.color.g = aaColG;
-			     colorToSet.color.b = aaColB;
+			     colorToSet.r = aaColR;
+			     colorToSet.g = aaColG;
+			     colorToSet.b = aaColB;
 			    
 			    }
 			  
