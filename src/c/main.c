@@ -449,7 +449,7 @@ static void prv_update_display() {
 		}
 	
 	
-  int tempR = HourColor.r;
+  int tempR = HourColor.color.r;
 //  int tempG = HourColor.g;		         
 //		int tempB = HourColor.b;	 
 		
