@@ -345,11 +345,11 @@ for(int y = 0; y < colFull; y++) {
         
         for(int xToGet = x-1; xToGet < x+2; xToGet++) {
 
-			         GColor colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			         GColor colorToGet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			                  
-			         aaColR = aaColR + colorToSet.r;
-			         aaColG = aaColG + colorToSet.g;
-			         aaColB = aaColB + colorToSet.b;
+			         aaColR = aaColR + colorToGet.r;
+			         aaColG = aaColG + colorToGet.g;
+			         aaColB = aaColB + colorToGet.b;
 			         }
 			     }
 			    
