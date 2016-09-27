@@ -348,9 +348,12 @@ for(int y = 0; y < colFull; y++) {
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }
 			         
-			         aaColR = aaColR + colorToSet.r;
-			         aaColG = aaColG + colorToSet.g;
-			         aaColB = aaColB + colorToSet.b;			         
+			         int tempR = colorToSet.r;
+			         int tempG = colorToSet.g;		         
+			         int tempB = colorToSet.b;	         
+			         int aaColR = aaColR + tempR;
+			         int aaColG = aaColG + tempG;
+			         int aaColB = aaColB + tempB;			         
 			     }
 			    
 			     //Process colors
@@ -366,9 +369,7 @@ for(int y = 0; y < colFull; y++) {
 			     aaColG = aaColG/9;
 			     aaColB = aaColB/9;
 			     
-			     colorToSet.r = aaColR;
-			     colorToSet.g = aaColG;
-			     colorToSet.b = aaColB;
+			     colorToSet = GColorFromRGB(aaColR, aaColG, aaColB):
 			    
 			    }
 			  
