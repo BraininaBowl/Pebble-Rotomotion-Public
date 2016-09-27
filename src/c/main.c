@@ -340,11 +340,12 @@ for(int y = 1; y < colFull; y++) {
 		     } else {
 		         GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
 		     }
-		         
-		     GColor colorToSet = GColorFromRGB(
-		        (currentColor.r + nextColor.r)*85/2,
-		        (currentColor.g + nextColor.g)*85/2,
-		        (currentColor.b + nextColor.b)*85/2);
+		     int tempR = (currentColor.r + nextColor.r)*85/2;
+		     int tempG = (currentColor.g + nextColor.g)*85/2;
+		     int tempB = (currentColor.b + nextColor.b)*85/2;
+		     
+		     
+		     GColor colorToSet = GColorFromRGB(tempR, tempG, tempB);
 			     
   
 			  // Now we set the pixel to the right color
