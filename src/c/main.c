@@ -409,6 +409,9 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
   if (shaderMode_t) {
     settings.shaderMode = (shaderMode_t->value->uint16)-48;
   } 
+  
+  
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Shader %d", settings.shaderMode);
 	
   // Save the new settings to persistent storage
   prv_save_settings();
