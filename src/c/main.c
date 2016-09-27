@@ -32,6 +32,8 @@ static int firstrun;
 static int aaColR = 0;
 static int aaColG = 0;
 static int aaColB = 0;
+GColor colorToSet;
+GColor colorToGet;
 
 // A struct for our specific settings (see main.h)
 ClaySettings settings;
