@@ -318,7 +318,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 
 // ANTIALIAS
 
-if (settings.shaderMode > 0) {
+if (settings.shaderMode > 5) {
 
 // Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
