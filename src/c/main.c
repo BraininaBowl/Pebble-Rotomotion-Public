@@ -318,7 +318,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 
 // ANTIALIAS
 
-if (settings.shaderMode > 5) {
+if (settings.shaderMode > 0) {
 
 // Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
@@ -348,12 +348,10 @@ for(int y = 0; y < colFull; y++) {
 			             colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			         }
 			         
-			         int tempR = colorToSet.r;
-			         int tempG = colorToSet.g;		         
-			         int tempB = colorToSet.b;	         
-			         int aaColR = aaColR + tempR;
-			         int aaColG = aaColG + tempG;
-			         int aaColB = aaColB + tempB;			         
+			         int aaColR += colorToSet.r;
+			         int aaColG += colorToSet.g;
+			         int aaColB += colorToSet.b;
+
 			     }
 			    
 			     //Process colors
@@ -365,9 +363,9 @@ for(int y = 0; y < colFull; y++) {
 			          
 			      
 			      			     
-			     aaColR = aaColR/9;
-			     aaColG = aaColG/9;
-			     aaColB = aaColB/9;
+			     aaColR = (aaColR/9)*85;
+			     aaColG = (aaColG/9)*85;
+			     aaColB = (aaColB/9)*85;
 			     
 			     colorToSet = GColorFromRGB(aaColR, aaColG, aaColB);
 			    
@@ -448,12 +446,6 @@ static void prv_update_display() {
 			text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
 		}
 	
-  int tempR = settings.HourColor.r;
-//  int tempG = HourColor.g;		         
-//		int tempB = HourColor.b;	 
-		
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "R %d", tempR);
-		
   //settings.dropShadow = true;
 	
 }
