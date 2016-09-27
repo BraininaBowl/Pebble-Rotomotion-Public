@@ -318,7 +318,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 
 // ANTIALIAS
 
-if (settings.shaderMode > 0) {
+if (settings.shaderMode > 5) {
 
 // Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
@@ -448,6 +448,13 @@ static void prv_update_display() {
 			text_layer_set_text(s_time_layer_h, "21\n22\n23\n00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n00\n01\n02\n03\n04");
 		}
 	
+	
+  int tempR = HourColor.r;
+//  int tempG = HourColor.g;		         
+//		int tempB = HourColor.b;	 
+		
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "R %d", tempR);
+		
 
   //settings.dropShadow = true;
 	
