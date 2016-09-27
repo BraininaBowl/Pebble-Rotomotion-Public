@@ -334,17 +334,12 @@ for(int y = 1; y < colFull; y++) {
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
 		    GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
-		    if(x > rowHalf){
-		         // Left half
-		         GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x-1);
-		     } else {
-		         GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
-		     }
+		
+		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
+		     
 		     int tempR = (currentColor.r + nextColor.r)*85/2;
 		     int tempG = (currentColor.g + nextColor.g)*85/2;
 		     int tempB = (currentColor.b + nextColor.b)*85/2;
-		     
-		     
 		     GColor colorToSet = GColorFromRGB(tempR, tempG, tempB);
 			     
   
