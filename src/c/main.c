@@ -341,8 +341,7 @@ for(int y = 1; y < colFull; y++) {
 		         GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
 		     }
 		         
-		     if (currentColor = nextColor) {
-		     } else {
+		     if (currentColor != nextColor) {
 		         GColor colorToSet = GColorFromRGB(
 		         (currentColor.r + nextColor.r)*85/2,
 		         (currentColor.g + nextColor.g)*85/2,
