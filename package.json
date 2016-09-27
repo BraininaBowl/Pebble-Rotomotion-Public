@@ -18,8 +18,10 @@
             "twelveHour",
             "shaderMode",
             "dropShadow",
-            "invHour",
-            "invMin"
+            "HourColor",
+            "MinColor",
+            "HourBgColor",
+            "MinBgColor"
         ],
         "projectType": "native",
         "resources": {
