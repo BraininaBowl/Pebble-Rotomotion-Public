@@ -29,6 +29,9 @@ static int s_month;
 static int s_day;
 static int firstrun;
 
+static int aaColR;
+static int aaColG;
+static int aaColB;
 
 // A struct for our specific settings (see main.h)
 ClaySettings settings;
