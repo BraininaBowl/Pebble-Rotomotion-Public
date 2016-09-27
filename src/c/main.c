@@ -359,7 +359,7 @@ for(int y = 0; y < colFull; y++) {
 			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "X %d", x);
 			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "Y %d", y);			     
 			 //    APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc R %d", aaColR);
-			     }
+			  //   }
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc G %d", aaColG);
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc B %d", aaColB);
 			      			     
