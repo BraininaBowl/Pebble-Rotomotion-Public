@@ -335,23 +335,17 @@ for(int y = 0; y < colFull; y++) {
 	      int aaColR = 0;
        int aaColG = 0;
        int aaColB = 0;
-
-	      
-	      for(int yToGet = y-1; yToGet < y+2; yToGet++) {
-	      
-	      //APP_LOG(APP_LOG_LEVEL_DEBUG, "y %d", y);
-	     // APP_LOG(APP_LOG_LEVEL_DEBUG, "yToGet %d", yToGet);
 	      
         
         for(int xToGet = x-1; xToGet < x+2; xToGet++) {
 
-			         GColor colorToGet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+			         GColor colorToGet = get_bitmap_pixel_color(fb, fb_format, y, xToGet);
 			                  
 			         aaColR = aaColR + colorToGet.r;
 			         aaColG = aaColG + colorToGet.g;
 			         aaColB = aaColB + colorToGet.b;
 			         }
-			     }
+			     
 			    
 			     //Process colors
 			     
@@ -363,9 +357,9 @@ for(int y = 0; y < colFull; y++) {
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc G %d", aaColG);
 			   //   APP_LOG(APP_LOG_LEVEL_DEBUG, "precalc B %d", aaColB);
 			      			     
-			     aaColR = aaColR/9*85;
-			     aaColG = aaColG/9*85;
-			     aaColB = aaColB/9*85;
+			     aaColR = aaColR/3*85;
+			     aaColG = aaColG/3*85;
+			     aaColB = aaColB/3*85;
 			     
 			     GColor colorToSet = GColorFromRGB(aaColR, aaColG, aaColB);
 			     
