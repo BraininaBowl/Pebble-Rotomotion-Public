@@ -334,7 +334,7 @@ for(int y = 0; y < colFull; y++) {
 	  // Iterate over all visible columns
 		  for(int x = 0; x < rowFull; x++) {
 		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
-		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y+1, x+1);
+		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y+1, x);
 		     
 		     int tempR = (currentColor.r + nextColor.r)*85/2;
 		     int tempG = (currentColor.g + nextColor.g)*85/2;
