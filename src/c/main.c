@@ -502,7 +502,7 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
   } 
   
   
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Shader %d", settings.shaderMode);
+//  APP_LOG(APP_LOG_LEVEL_DEBUG, "Shader %d", settings.shaderMode);
 	
   // Save the new settings to persistent storage
   prv_save_settings();
