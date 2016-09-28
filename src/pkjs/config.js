@@ -56,40 +56,47 @@ module.exports = [
       "type": "color",
       "messageKey": "BackgroundColor",
       "defaultValue": "0x000000",
+      "sunlight": false,
       "label": "Background color"
     },
     {
       "type": "color",
       "messageKey": "HourColor",
       "defaultValue": "0xFFFFFF",
+      "sunlight": false,
       "label": "Hours"
     },
     {
       "type": "color",
       "messageKey": "MinColor",
       "defaultValue": "0xFFFFFF",
+      "sunlight": false,
       "label": "Minutes"
     },
     {
       "type": "color",
       "messageKey": "HourBgColor",
       "defaultValue": "0x000000",
+      "sunlight": false,    
       "label": "Hours background"
     },
     {
       "type": "color",
       "messageKey": "MinBgColor",
       "defaultValue": "0x000000",
+      "sunlight": false,
       "label": "Minutes background"
     },
 	  {
       "type": "color",
       "messageKey": "ArrowColor",
       "defaultValue": "0xFF0000",
+      "sunlight": false,
       "label": "Arrows"
     },
 	  {
       "type": "toggle",
+      "capabilities": ["COLOR"],
       "messageKey": "dropShadow",
       "label": "Edge shadows",
 		"defaultValue": true
