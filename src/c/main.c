@@ -315,12 +315,12 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     
 		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);     
 			  if(settings.dropShadow) {
-					if( y < 10 || y > rowFull - 0 ) {
+					if( y < 10 || y > colFull - 10 ) {
 						int rTemp = (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3;
 						int gTemp = (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3;
 						int bTemp = (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3;
 						colorToSet = GColorFromRGB(rTemp, gTemp, bTemp);
-					} else if( y < 20 || y > rowFull - 10 ) {
+					} else if( y < 20 || y > colFull - 20 ) {
 						int rTemp = (colorToSet.r + colorToSet.r + settings.BackgroundColor.r)*85/3;
 						int gTemp = (colorToSet.g + colorToSet.g + settings.BackgroundColor.g)*85/3;
 						int bTemp = (colorToSet.b + colorToSet.b + settings.BackgroundColor.b)*85/3;
