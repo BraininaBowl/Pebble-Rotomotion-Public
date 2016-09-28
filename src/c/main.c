@@ -196,7 +196,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = x - (((xToUse - rowHalf)*3)/yToUse)-1;
+				  xToGet = x - (((xToUse - rowHalf)*3)/yToUse)+1;
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
