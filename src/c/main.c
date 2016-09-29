@@ -312,12 +312,12 @@ yToGet = yToSet + (colHalf/(yToUse));
 		for(int x = 0; x < rowFull; x++) {
 		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
-		     if(gcolor_equal(GColor8 currentColor, GColor8 nextColor)){
+		     if(gcolor_equal(currentColor, nextColor)){
 		     GColor colorToSet = currentColor;
 		     } else {
 		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);
 		     }     
-			  if(settings.dropShadow=true && gcolor_equal(GColor8 colorToSet, GColor8 settings.BackgroundColor)=false) {
+			  if(settings.dropShadow==true && gcolor_equal(colorToSet, settings.BackgroundColor)==false) {
 					if( y < 10 || y > colFull - 10 ) {
 						int rTemp = (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3;
 						int gTemp = (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3;
@@ -332,7 +332,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 				}  				
 			
 			  // Now we set the pixel to the right color
-		 	  if(gcolor_equal(GColor8 currentColor, GColor8 colorToSet)=false{
+		 	  if(gcolor_equal(currentColor, colorToSet)==false){
 		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet); }
 			  }
 		#endif
