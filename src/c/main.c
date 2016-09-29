@@ -332,8 +332,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 				}  				
 			
 			  // Now we set the pixel to the right color
-		 	  if(gcolor_equal(currentColor, colorToSet)==false){
-		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet); }
+		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 			  }
 		#endif
 	 }
