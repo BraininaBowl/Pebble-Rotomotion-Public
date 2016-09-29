@@ -312,11 +312,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		for(int x = 0; x < rowFull; x++) {
 		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
-		     if(gcolor_equal(currentColor, nextColor)){
-		     GColor colorToSet = currentColor;
-		     } else {
-		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);
-		     }     
+		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);  
 			  if(settings.dropShadow) {
 					if( y < 10 || y > colFull - 10 ) {
 						int rTemp = (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3;
