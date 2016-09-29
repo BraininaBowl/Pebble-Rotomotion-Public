@@ -317,7 +317,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     } else {
 		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);
 		     }     
-			  if(settings.dropShadow==true && gcolor_equal(colorToSet, settings.BackgroundColor)==false) {
+			  if(settings.dropShadow) {
 					if( y < 10 || y > colFull - 10 ) {
 						int rTemp = (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3;
 						int gTemp = (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3;
