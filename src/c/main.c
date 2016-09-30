@@ -288,21 +288,21 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  xToUse = x;
 			  }
 		     
-		     GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, xToUse-2);
-		     GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, xToUse-1);
+		    // GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, xToUse-2);
+		    // GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, xToUse-1);
 		     GColor color3 = get_bitmap_pixel_color(fb, fb_format, y, xToUse);
 		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+1);	
 		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+2);
-		     GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse-1);
+		    // GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse-1);
 		     GColor color7 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse);
 		     GColor color8 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse+1);
 		     GColor color9 = get_bitmap_pixel_color(fb, fb_format, y+2, xToUse);	
 		     	
 		     	  
 		     GColor colorToSet = GColorFromRGB(
-		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r + color7.r + color8.r + color9.r)*85/9, 
-		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g + color7.g + color8.g + color9.g)*85/9,		     
-			    (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b + color7.b + color8.b + color9.b)*85/9);  
+		     (color3.r + color4.r + color5.r + color7.r + color8.r + color9.r)*85/6, 
+		     (color3.g + color4.g + color5.g + color7.g + color8.g + color9.g)*85/6,		     
+			    (color3.b + color4.b + color5.b + color7.b + color8.b + color9.b)*85/6);  
 			  
 		     
 		      // Now we set the pixel to the right color
@@ -488,8 +488,8 @@ static void drawText(Layer *window_layer) {
 // Draw date container
 static void drawDate(Layer *window_layer){
 	s_date_container = layer_create(GRect(0, -90, rowFull, 80));
- 	s_date_container_m = text_layer_create(GRect(rowHalf-59+12, 0, 57, 80));
-  	s_date_container_d = text_layer_create(GRect(rowHalf+12, 0, 37, 80));
+ 	s_date_container_m = text_layer_create(GRect(rowHalf-59+10, 0, 61, 80));
+  	s_date_container_d = text_layer_create(GRect(rowHalf+10, 0, 41, 80));
 
 	text_layer_set_text(s_date_container_m, "\n\nMONTH");
   	text_layer_set_text_alignment(s_date_container_m, GTextAlignmentCenter);
