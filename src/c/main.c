@@ -142,7 +142,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 	if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 
 	  // Iterate over all visible columns
-		  for(int x = rowHalf - 40; x < rowHalf + 40; x++) {
+		  for(int x = (rowHalf - 40); x < (rowHalf + 40); x++) {
 			  // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
