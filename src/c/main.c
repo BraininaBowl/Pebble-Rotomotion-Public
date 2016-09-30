@@ -271,7 +271,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	// draw as Frosted
 	  	   
 	   // filter only edge pixels, to improve readability and performance
-	   if (y < (colHalf - 26) || y > (colHalf + 26)){
+	   if (y < (colHalf - 24) || y > (colHalf + 26)){
 	      
 	    // Iterate over all visible columns
 		   for(int x = 0; x < (rowHalf + 45); x++) {
@@ -283,9 +283,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, x+1);
 		     GColor color3 = get_bitmap_pixel_color(fb, fb_format, y, x+2);
 		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y, x+3);
-		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y, x+4);	
-		     GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+1, x);
-		     GColor color7 = get_bitmap_pixel_color(fb, fb_format, y+2, x);	
+		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y+1, x);	
+		     GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+2, x);
+		     GColor color7 = get_bitmap_pixel_color(fb, fb_format, y+3, x);	
 		     	
 		     	  
 		     GColor colorToSet = GColorFromRGB(
@@ -299,14 +299,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 		   }	   
 	   }  	
 	   
-	   if (y == (colHalf - 26) || y == (colHalf + 25)){
+	   if (y == (colHalf - 24) || y == (colHalf + 25)){
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r + 3)*85/2, (currentColor.g + 3)*85/2, (currentColor.b + 3)*85/2);
 		       // Now we set the pixel to the right color
 		 	     set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);     
 		     }
-		   } else if (y == (colHalf - 25) || y == (colHalf + 26)){
+		   } else if (y == (colHalf - 23) || y == (colHalf + 26)){
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r)*85/2, (currentColor.g)*85/2, (currentColor.b)*85/2);
