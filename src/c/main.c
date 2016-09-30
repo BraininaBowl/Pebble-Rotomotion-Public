@@ -288,21 +288,37 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  xToUse = x;
 			  }
 		     
-		    // GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, xToUse-2);
-		    // GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, xToUse-1);
-		     GColor color3 = get_bitmap_pixel_color(fb, fb_format, y, xToUse);
-		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+1);	
-		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+2);
-		    // GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse-1);
-		     GColor color7 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse);
-		     GColor color8 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse+1);
-		     GColor color9 = get_bitmap_pixel_color(fb, fb_format, y+2, xToUse);	
+		    
+		     GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, xToUse);
+		     GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+1);	
+		     GColor color3 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+2);
+		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+3);
+		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse);
+		     GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse+1);
+		     GColor color7 = get_bitmap_pixel_color(fb, fb_format, y+2, xToUse);	
 		     	
 		     	  
 		     GColor colorToSet = GColorFromRGB(
-		     (color3.r + color4.r + color5.r + color7.r + color8.r + color9.r)*85/6, 
-		     (color3.g + color4.g + color5.g + color7.g + color8.g + color9.g)*85/6,		     
-			    (color3.b + color4.b + color5.b + color7.b + color8.b + color9.b)*85/6);  
+		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r + color7.r)*85/7, 
+		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g + color7.g)*85/7,		     
+		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b + color7.b)*85/7);  
+			    
+			    
+			    
+			    		  // Apply shadows
+		  if(settings.dropShadow) {
+					if( y < 10 || y > colFull - 10 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
+					} else if( y < 20 || y > colFull - 20 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r + colorToSet.r + settings.BackgroundColor.r)*85/3, 
+						  (colorToSet.g + colorToSet.g + settings.BackgroundColor.g)*85/3, 
+						  (colorToSet.b + colorToSet.b + settings.BackgroundColor.b)*85/3);
+					}				
+				}  	
 			  
 		     
 		      // Now we set the pixel to the right color
@@ -314,6 +330,11 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r + 3)*85/2, (currentColor.g + 3)*85/2, (currentColor.b + 3)*85/2);
+		       
+		       
+			
+		       
+		       
 		       // Now we set the pixel to the right color
 		 	     set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);     
 		     }
@@ -336,15 +357,15 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);  
 			  if(settings.dropShadow) {
 					if( y < 10 || y > colFull - 10 ) {
-						int rTemp = (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3;
-						int gTemp = (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3;
-						int bTemp = (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3;
-						colorToSet = GColorFromRGB(rTemp, gTemp, bTemp);
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
 					} else if( y < 20 || y > colFull - 20 ) {
-						int rTemp = (colorToSet.r + colorToSet.r + settings.BackgroundColor.r)*85/3;
-						int gTemp = (colorToSet.g + colorToSet.g + settings.BackgroundColor.g)*85/3;
-						int bTemp = (colorToSet.b + colorToSet.b + settings.BackgroundColor.b)*85/3;
-						colorToSet = GColorFromRGB(rTemp, gTemp, bTemp);
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r + colorToSet.r + settings.BackgroundColor.r)*85/3, 
+						  (colorToSet.g + colorToSet.g + settings.BackgroundColor.g)*85/3, 
+						  (colorToSet.b + colorToSet.b + settings.BackgroundColor.b)*85/3);
 					}				
 				}  				
 			
