@@ -271,7 +271,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	// draw as Frosted
 	  	
 	   // filter only edge pixels, to improve readability and performance
-	   if (y < (colHalf - 40) || y > (colHalf + 40)){
+	   if (y < (colHalf - 30) || y > (colHalf + 30)){
 	      
 	    // Iterate over all visible columns
 		   for(int x = 0; x < (rowHalf + 45); x++) {
@@ -282,15 +282,16 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, x);
 		     GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, x+1);
 		     GColor color3 = get_bitmap_pixel_color(fb, fb_format, y, x+2);
-		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y+1, x);	
-		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y+1, x+1);
-		     GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+2, x);	
+		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y, x+2);
+		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y+1, x);	
+		     GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+1, x+1);
+		     GColor color7 = get_bitmap_pixel_color(fb, fb_format, y+2, x);	
 		     	
 		     	  
 		     GColor colorToSet = GColorFromRGB(
-		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r)*85/6, 
-		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g)*85/6,		     
-			    (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);  
+		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r + color7.r)*85/7, 
+		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g + color7.g)*85/7,		     
+			    (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b + color7.b)*85/7);  
 			  
 		     
 		      // Now we set the pixel to the right color
