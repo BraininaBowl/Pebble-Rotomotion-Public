@@ -142,8 +142,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 	if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
 
 	  // Iterate over all visible columns
-		  for(int x = 0; x < (rowHalf + 45); x++) {
-		   if (x == 45){
+		  for(int x = 0; x < (rowHalf + 40); x++) {
+		   if (x == 40){
 		     x = rowHalf;
 		   }
 			  // Split in left and right halves
@@ -190,8 +190,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 	if (yToSet < (colHalf - 28) || yToSet > (colHalf + 28)){
 
 	  // Iterate over all visible columns
-		  for(int x = 0; x < (rowHalf + 45); x++) {
-		   if (x == 45){
+		  for(int x = 0; x < (rowHalf + 40); x++) {
+		   if (x == 40){
 		     x = rowHalf;
 		   }			  // Split in left and right halves
 			  if (x < rowHalf) {
@@ -240,8 +240,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 	if (yToSet < (colHalf - 32) || yToSet > (colHalf + 32)){
 
 	  // Iterate over all visible columns
-		  for(int x = 0; x < (rowHalf + 45); x++) {
-		   if (x == 45){
+		  for(int x = 0; x < (rowHalf + 40); x++) {
+		   if (x == 40){
 		     x = rowHalf;
 		   }			  
 		   // Split in left and right halves
@@ -289,8 +289,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 	if (yToSet < (colHalf - 14) || yToSet > (colHalf + 11)){
 
 	  // Iterate over all visible columns
-		  	for(int x = 0; x < (rowHalf + 45); x++) {
-		   if (x == 45){
+		  	for(int x = 0; x < (rowHalf + 40); x++) {
+		   if (x == 40){
 		     x = rowHalf;
 		   }
 			  // Split in left and right halves
@@ -725,10 +725,10 @@ static void prv_window_load(Window *window) {
 
 	// create textlayer
 	drawText(window_layer);
-	// create date layer
-	drawDate(window_layer);
 	// create shader layer
 	drawShader(window_layer);
+		// create date layer
+	drawDate(window_layer);
 	// create arrows
 	drawArrows(window_layer);
 
