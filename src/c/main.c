@@ -293,7 +293,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 			  // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
-				  xToUse = rowHalf - x;
+				  //xToUse = rowHalf - x;
+				  xToUse = x;
 				  xToGet = xToUse - ((colHalf-y)/3);
 			  } else {
 				  // right half: Work from left to right
