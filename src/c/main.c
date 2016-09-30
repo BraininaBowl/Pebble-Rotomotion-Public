@@ -289,9 +289,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     	
 		     	  
 		     GColor colorToSet = GColorFromRGB(
-		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r + color7.r + (settings.BackgroundColor.r * 6))*85/13, 
-		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g + color7.g + (settings.BackgroundColor.g * 6))*85/13,		     
-			    (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b + color7.b + (settings.BackgroundColor.b * 6))*85/13);  
+		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r + color7.r + (settings.BackgroundColor.r * 7))*85/14, 
+		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g + color7.g + (settings.BackgroundColor.g * 7))*85/14,		     
+			    (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b + color7.b + (settings.BackgroundColor.b * 7))*85/14);  
 			  
 		     
 		      // Now we set the pixel to the right color
