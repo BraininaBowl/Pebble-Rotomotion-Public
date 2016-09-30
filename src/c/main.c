@@ -270,20 +270,6 @@ yToGet = yToSet + (colHalf/(yToUse));
 }   else if (settings.shaderMode == 4) {
 	  	// draw as Plane
 	  	
-	  	
-	  		
-		if (y < colHalf) {
-			// top half
-			yToUse = -1*(colHalf - y);
-			yToSet = colHalf - y;
-yToGet = yToSet - (colHalf/(yToSet));
-		} else {
-			// bottom half
-			yToUse = colFull - y;
-			yToSet = y;
-yToGet = yToSet + (colHalf/(yToUse));
-			
-		} 
 
 	  // Iterate over all visible columns
 		  	for(int x = 0; x < (rowHalf + 40); x++) {
@@ -302,15 +288,15 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  xToGet = xToUse + ((colHalf-y)/3);
 			  }
 			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
+			  if (xToGet < 0 || xToGet >= rowFull || y < 0 || y > colFull ){
 				  // No, so we'll use the background color
 				  colorToSet = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
-				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
+				  colorToSet = get_bitmap_pixel_color(fb, fb_format, y, xToGet);
 			  }
 			  // Now we set the pixel to the right color
-		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
+		 		set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);
 			  }
 	  	
 	  	
