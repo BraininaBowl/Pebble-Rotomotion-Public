@@ -271,7 +271,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	// draw as Frosted
 	  	
 	   // filter only edge pixels, to improve readability and performance
-	   if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
+	   if (y < (colHalf - 40) || y > (colHalf + 40)){
 	      
 	    // Iterate over all visible columns
 		   for(int x = 0; x < (rowHalf + 45); x++) {
