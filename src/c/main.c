@@ -271,7 +271,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	// draw as Frosted
 	  	   
 	   // filter only edge pixels, to improve readability and performance
-	   if (y < (colHalf - 24) || y > (colHalf + 26)){
+	   if (y < (colHalf - 28) || y > (colHalf + 26)){
 	      
 	    // Iterate over all visible columns
 		   for(int x = 0; x < (rowHalf + 45); x++) {
@@ -279,40 +279,45 @@ yToGet = yToSet + (colHalf/(yToUse));
 		       x = rowHalf;
 		     }
 		     
-		     GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, x-3);
-		     GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, x-2);
-		     GColor color3 = get_bitmap_pixel_color(fb, fb_format, y, x-1);
-		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y, x);
-		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y, x+1);	
-		     GColor color6 = get_bitmap_pixel_color(fb, fb_format, y, x+2);
-		     GColor color7 = get_bitmap_pixel_color(fb, fb_format, y, x+3);
-		     GColor color8 = get_bitmap_pixel_color(fb, fb_format, y+1, x-2);
-		     GColor color9 = get_bitmap_pixel_color(fb, fb_format, y+1, x-1);
-		     GColor color10 = get_bitmap_pixel_color(fb, fb_format, y+1, x);
-		     GColor color11 = get_bitmap_pixel_color(fb, fb_format, y+1, x+1);	
-		     GColor color12 = get_bitmap_pixel_color(fb, fb_format, y+1, x+2);
-		     GColor color13 = get_bitmap_pixel_color(fb, fb_format, y+2, x);	
+		   // Split in left and right halves
+			  if (x < rowHalf) {
+				  // left half: Work from right to left
+				  xToUse = rowHalf - x;
+			  } else {
+				  // right half: Work from left to right
+				  xToUse = x;
+			  }
+		     
+		     GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, xToUse-2);
+		     GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, xToUse-1);
+		     GColor color3 = get_bitmap_pixel_color(fb, fb_format, y, xToUse);
+		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+1);	
+		     GColor color5 = get_bitmap_pixel_color(fb, fb_format, y, xToUse+2);
+		     GColor color6 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse-1);
+		     GColor color7 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse);
+		     GColor color8 = get_bitmap_pixel_color(fb, fb_format, y+1, xToUse+1);
+		     GColor color9 = get_bitmap_pixel_color(fb, fb_format, y+2, xToUse);	
 		     	
 		     	  
 		     GColor colorToSet = GColorFromRGB(
-		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r + color7.r + color8.r + color9.r + color10.r + color11.r + color12.r + color13.r)*85/13, 
-		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g + color7.g + color8.g + color9.g + color10.g + color11.g + color12.g + color13.g)*85/13,		     
-			    (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b + color7.b + color8.b + color9.b + color10.b + color11.b + color12.b + color13.b)*85/13);  
+		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r + color7.r + color8.r + color9.r)*85/9, 
+		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g + color7.g + color8.g + color9.g)*85/9,		     
+			    (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b + color7.b + color8.b + color9.b)*85/9);  
 			  
 		     
 		      // Now we set the pixel to the right color
-		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);   
+		 	  set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);   
 		   }	   
 	   }  	
 	   
-	   if (y == (colHalf - 24) || y == (colHalf + 25)){
+	   if (y == (colHalf - 28) || y == (colHalf + 25)){
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r + 3)*85/2, (currentColor.g + 3)*85/2, (currentColor.b + 3)*85/2);
 		       // Now we set the pixel to the right color
 		 	     set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);     
 		     }
-		   } else if (y == (colHalf - 23) || y == (colHalf + 26)){
+		   } else if (y == (colHalf - 27) || y == (colHalf + 26)){
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r)*85/2, (currentColor.g)*85/2, (currentColor.b)*85/2);
