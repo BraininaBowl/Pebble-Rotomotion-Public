@@ -269,13 +269,13 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	
 }   else if (settings.shaderMode == 4) {
 	  	// draw as Frosted
-	  	
+	  	   
 	   // filter only edge pixels, to improve readability and performance
-	   if (y < (colHalf - 30) || y > (colHalf + 30)){
+	   if (y < (colHalf - 26) || y > (colHalf + 26)){
 	      
 	    // Iterate over all visible columns
-		   for(int x = 0; x < (rowHalf + 45); x++) {
-		     if (x == 45){
+		   for(int x = 0; x < (rowHalf + 40); x++) {
+		     if (x == 40){
 		       x = rowHalf;
 		     }
 		     
@@ -297,7 +297,23 @@ yToGet = yToSet + (colHalf/(yToUse));
 		      // Now we set the pixel to the right color
 		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);   
 		   }	   
-	   }  	 	
+	   }  	
+	   
+	   if (y == (colhalf - 26) || y == (colHalf + 25)){
+	  	   for(int x = 0; x < rowFull; x++) {
+		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
+		       GColor colorToSet = GColorFromRGB((currentColor.r + 3)*85/2, (currentColor.g + 3)*85/2, (currentColor.b + 3)*85/2);
+		       // Now we set the pixel to the right color
+		 	     set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);     
+		     }
+		   } else if (y == (colhalf - 25) || y == (colHalf + 26)){
+	  	   for(int x = 0; x < rowFull; x++) {
+		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
+		       GColor colorToSet = GColorFromRGB((currentColor.r)*85/2, (currentColor.g)*85/2, (currentColor.b)*85/2);
+		       // Now we set the pixel to the right color
+		 	     set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);     
+		     }
+		   } 	
 }
 		
 		// ANTIALIAS
