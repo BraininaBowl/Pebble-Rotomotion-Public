@@ -274,8 +274,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   if (y < (colHalf - 28) || y > (colHalf + 26)){
 	      
 	    // Iterate over all visible columns
-		   for(int x = 0; x < (rowHalf + 45); x++) {
-		     if (x == 45){
+		   for(int x = 0; x < (rowHalf + 40); x++) {
+		     if (x == 40){
 		       x = rowHalf;
 		     }
 		     

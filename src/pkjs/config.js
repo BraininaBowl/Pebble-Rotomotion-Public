@@ -36,6 +36,7 @@ module.exports = [
           },
           { 
             "label": "Frosted", 
+            "capabilities": ["COLOR"],
             "value": 4
           },
           { 
