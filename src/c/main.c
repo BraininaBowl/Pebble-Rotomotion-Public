@@ -272,17 +272,16 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	
 
 	  // Iterate over all visible columns
-		  	for(int x = 40; x < rowFull; x++) {
+		  	for(int x = 00; x < rowFull; x++) {
 			  // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
-				  //xToUse = rowHalf - x;
-				  xToUse = x;
-				  xToGet = xToUse - ((colHalf-y)/3);
+				  xToUse = rowHalf - x;
+				  xToGet = xToUse + ((x*3)/yToUse);
 			  } else {
 				  // right half: Work from left to right
-				  xToUse = rowFull - x;
-				  xToGet = xToUse - ((colHalf-y)/3);
+				  xToUse = x;
+				  xToGet = x - (((xToUse - rowHalf)*3)/yToUse);
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet >= rowFull || y < 0 || y > colFull ){
