@@ -299,14 +299,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 		   }	   
 	   }  	
 	   
-	   if (y == (colhalf - 26) || y == (colHalf + 25)){
+	   if (y == (colHalf - 26) || y == (colHalf + 25)){
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r + 3)*85/2, (currentColor.g + 3)*85/2, (currentColor.b + 3)*85/2);
 		       // Now we set the pixel to the right color
 		 	     set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);     
 		     }
-		   } else if (y == (colhalf - 25) || y == (colHalf + 26)){
+		   } else if (y == (colHalf - 25) || y == (colHalf + 26)){
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r)*85/2, (currentColor.g)*85/2, (currentColor.b)*85/2);
