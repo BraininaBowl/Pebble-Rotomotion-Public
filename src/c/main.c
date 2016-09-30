@@ -374,10 +374,10 @@ static void prv_update_display() {
 	text_layer_set_text_color(s_time_layer_h, settings.HourColor);
 	text_layer_set_background_color(s_time_layer_m, settings.MinBgColor);
 	text_layer_set_text_color(s_time_layer_m, settings.MinColor);
-	text_layer_set_background_color(s_date_container_m, settings.HourBgColor);
-  	text_layer_set_text_color(s_date_container_m, settings.HourColor);
-	text_layer_set_background_color(s_date_container_d, settings.HourBgColor);
-  	text_layer_set_text_color(s_date_container_d, settings.HourColor);
+	text_layer_set_background_color(s_date_container_m, settings.BackgroundColor);
+  	text_layer_set_text_color(s_date_container_m, settings.ArrowColor);
+	text_layer_set_background_color(s_date_container_d, settings.BackgroundColor);
+  	text_layer_set_text_color(s_date_container_d, settings.ArrowColor);
 	
   
   if (settings.twelveHour)
