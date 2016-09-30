@@ -268,37 +268,35 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	}
 	  	
 }   else if (settings.shaderMode == 4) {
-	  	// draw as Plane
+	  	// draw as Frosted
 	  	
-
-	  // Iterate over all visible columns
-		  	for(int x = 0; x < rowFull; x++) {
-			  // Split in left and right halves
-			  if (x < rowHalf) {
-				  // left half: Work from right to left
-				  xToUse = rowHalf - x;
-				  xToGet = xToUse * (colHalf-y);
-			  } else {
-				  // right half: Work from left to right
-				  xToUse = x;
-				  xToGet = xToUse * (colHalf-y);
-			  }
-			  // is the target pixel inside the area?
-			  if (xToGet < 0 || xToGet >= rowFull || y < 0 || y > colFull ){
-				  // No, so we'll use the background color
-				  colorToSet = settings.BackgroundColor;
-			  } else {
-				  // Yes, so get the target pixel color
-				  colorToSet = get_bitmap_pixel_color(fb, fb_format, y, xToGet);
-			  }
-			  // Now we set the pixel to the right color
-		 		set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);
-			  }
-	  	
-	  	
+	   // filter only edge pixels, to improve readability and performance
+	   if (yToSet < (colHalf - 40) || yToSet > (colHalf + 40)){
+	      
+	    // Iterate over all visible columns
+		   for(int x = 0; x < (rowHalf + 45); x++) {
+		     if (x == 45){
+		       x = rowHalf;
+		     }
+		     
+		     GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, x);
+		     GColor color2 = get_bitmap_pixel_color(fb, fb_format, y, x+1);
+		     GColor color3 = get_bitmap_pixel_color(fb, fb_format, y+1, x);
+		     GColor color4 = get_bitmap_pixel_color(fb, fb_format, y+1, x+1);		  
+		     GColor colorToSet = GColorFromRGB(
+		     (color1.r + color2.r + color3.r + color4.r)*85/4, 
+		     (color1.g + color2.g + color3.g + color4.g)*85/4,		     
+			     (color1.b + color2.b + color3.b + color4.b)*85/4);  
+			  
+		     
+		      // Now we set the pixel to the right color
+		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);   
+		   }	   
+	   }  	 	
 }
 		
 		// ANTIALIAS
+		if(settings.shaderMode != 4){
 		#if defined(PBL_COLOR)
 		for(int x = 0; x < rowFull; x++) {
 		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
@@ -322,6 +320,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 			  }
 		#endif
+		}
 	 }
 
 	graphics_release_frame_buffer(ctx, fb);

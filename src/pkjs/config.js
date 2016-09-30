@@ -35,7 +35,7 @@ module.exports = [
             "value": 3
           },
           { 
-            "label": "Perspective", 
+            "label": "Frosted", 
             "value": 4
           },
           { 
