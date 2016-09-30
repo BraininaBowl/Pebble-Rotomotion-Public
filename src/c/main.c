@@ -268,7 +268,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	}
 	  	
 }   else if (settings.shaderMode == 4) {
-	  	// draw as Zoom
+	  	// draw as Plane
 	  	
 	  	
 	  		
@@ -284,9 +284,6 @@ yToGet = yToSet - (colHalf/(yToSet));
 yToGet = yToSet + (colHalf/(yToUse));
 			
 		} 
-		
-	// filter only edge pixels, to improve readability and performance
-	if (yToSet < (colHalf - 14) || yToSet > (colHalf + 11)){
 
 	  // Iterate over all visible columns
 		  	for(int x = 0; x < (rowHalf + 40); x++) {
@@ -297,11 +294,11 @@ yToGet = yToSet + (colHalf/(yToUse));
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
 				  xToUse = rowHalf - x;
-				  xToGet = xToUse - (x/2);
+				  xToGet = xToUse + ((x*2)-yToUse);
 			  } else {
 				  // right half: Work from left to right
 				  xToUse = x;
-				  xToGet = xToUse + ((x-rowHalf)/2);
+				  xToGet = xToUse + (((xToUse - rowHalf)*2)-yToUse);
 			  }
 			  // is the target pixel inside the area?
 			  if (xToGet < 0 || xToGet >= rowFull || yToGet < 0 || yToGet > colFull ){
@@ -314,7 +311,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 			  // Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
-	  	}
+	  	
 	  	
 }
 		
