@@ -341,10 +341,10 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     
 		     
 			  if(settings.dropShadow) {
-					if( y < 24 || y > colFull - 24 ) {
-					 int yTemp = y/4;
+					if( y < 40 || y > colFull - 40 ) {
+					 int yTemp = y/5;
 					 if ( y > colHalf ) {
-					   int yTemp = (colFull - y)/4;
+					   int yTemp = (colFull - y)/5;
 					 }
 						GColor colorToSet = GColorFromRGB(
 						  ((colorToSet.r*3) + (settings.BackgroundColor.r * yTemp))*85/(3+yTemp), 
