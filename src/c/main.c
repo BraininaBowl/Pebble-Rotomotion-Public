@@ -273,8 +273,6 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   // filter only edge pixels, to improve readability and performance
 	   if (y < (colHalf - 28) || y > (colHalf + 26)){
 	      
-	    // Iterate over all visible columns
-//		   for(int x = 0; x < rowFull; x++) {
 		   for(int x = 0; x < (rowHalf + 40); x++) {
 		     if (x == 40){
 		       x = rowHalf;
@@ -325,7 +323,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		      // Now we set the pixel to the right color
 		 	  set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);   
 		   }	   
-	   }  	
+	   	
 	   
 	   
 	   
@@ -347,6 +345,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		   
 		   set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 		 }	
+}
 }
 		
 		// ANTIALIAS
