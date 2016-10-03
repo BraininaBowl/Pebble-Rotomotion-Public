@@ -304,9 +304,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     
 		     
 		     colorToSet = GColorFromRGB(
-		     colorToSet.r*85/2, 
-		     colorToSet.g*85/2, 
-		     colorToSet.b*85/2);
+		     (colorToSet.r * 2 + settings.BackgroundColor.r)*85/3, 
+		     (colorToSet.g * 2 + settings.BackgroundColor.g)*85/3, 
+		     (colorToSet.b * 2 + settings.BackgroundColor.b)*85/3);
 		      
 			  
 		     
