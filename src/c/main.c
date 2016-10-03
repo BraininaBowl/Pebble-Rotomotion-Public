@@ -327,6 +327,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		         (colorToSet.b + 3)*85/2);
 	       
 	       }
+	       set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 	   }
 	   
 	   
