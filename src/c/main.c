@@ -308,18 +308,16 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     if ((x+y) % 2) { 
 	        // x+y is odd 
 	        GColor colorToSet = GColorFromRGB(
-		         (GColorWhite.r + currentColor.r)*85/2,
-		         (GColorWhite.g + currentColor.g)*85/2,
-		         (GColorWhite.b + currentColor.b)*85/2);
+		         (GColorWhite.r + colorToSet.r)*85/2,
+		         (GColorWhite.g + colorToSet.g)*85/2,
+		         (GColorWhite.b + colorToSet.b)*85/2);
 	       } else {
 	       GColor colorToSet = GColorFromRGB(
-		         (GColorBlack.r + currentColor.r)*85/2,
-		         (GColorBlack.g + currentColor.g)*85/2,
-		         (GColorBlack.b + currentColor.b)*85/2);
+		         (GColorBlack.r + colorToSet.r)*85/2,
+		         (GColorBlack.g + colorToSet.g)*85/2,
+		         (GColorBlack.b + colorToSet.b)*85/2);
 	       }
-		      
-			  
-		     
+		        
 		      // Now we set the pixel to the right color
 		 	  set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);   
 		   }	   
