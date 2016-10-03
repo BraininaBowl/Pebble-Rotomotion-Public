@@ -333,10 +333,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   
 	   for(int x = 0; x < rowFull; x++) {
 	     
+	     GColor cModifier = GColorWhite;
 	     if(colorToSet.r + colorToSet.g + colorToSet.b < 4) {
 	       GColor cModifier = GColorBlack;
-	     } else { 
-	       GColor cModifier = GColorWhite;
 	     }
 	   
 	     colorToSet = GColorFromRGB(
