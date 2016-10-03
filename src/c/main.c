@@ -331,7 +331,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		   }	   
 	   }  	
 	   
-	   if (y == (colHalf - 28) || y == (colHalf + 25)){
+	   if (y == (colHalf - 30) || y == (colHalf + 27)){
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r + 3)*85/2, (currentColor.g + 3)*85/2, (currentColor.b + 3)*85/2);
@@ -343,7 +343,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		       // Now we set the pixel to the right color
 		 	     set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);     
 		     }
-		   } else if (y == (colHalf - 27) || y == (colHalf + 26)){
+		   } else if (y == (colHalf - 29) || y == (colHalf + 28)){
 	  	   for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		       GColor colorToSet = GColorFromRGB((currentColor.r)*85/2, (currentColor.g)*85/2, (currentColor.b)*85/2);
