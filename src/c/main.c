@@ -304,8 +304,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g)*85/6,		     
 		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
 		     
-		     
-		     if ((xToUse+y) % 2) { 
+		     int divider = xToUse+y;
+		     if (divider % 2) { 
 	        // x+y is odd 
 	        GColor colorToSet = GColorFromRGB((colorToSet.r + 3)*85/2, (colorToSet.g + 3)*85/2, (colorToSet.b + 3)*85/2);
 	       } else {
