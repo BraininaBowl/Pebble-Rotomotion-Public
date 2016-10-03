@@ -274,11 +274,11 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   if (y < (colHalf - 28) || y > (colHalf + 26)){
 	      
 	    // Iterate over all visible columns
-		   for(int x = 0; x < rowFull; x++) {
-//		   for(int x = 0; x < (rowHalf + 40); x++) {
-//		     if (x == 40){
-//		       x = rowHalf;
-//		     }
+//		   for(int x = 0; x < rowFull; x++) {
+		   for(int x = 0; x < (rowHalf + 40); x++) {
+		     if (x == 40){
+		       x = rowHalf;
+	     }
 		     
 		   // Split in left and right halves
 			  if (x < rowHalf) {
@@ -299,9 +299,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     	
 		     	  
 		     GColor colorToSet = GColorFromRGB(
-		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r - 1)*85/6, 
-		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g - 1)*85/6,		     
-		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b - 1)*85/6);  
+		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r)*85/6, 
+		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g)*85/6,		     
+		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
+		     
+		     colorToSet = GColorFromRGB(
+						  (colorToSet.r + settings.BackgroundColor.r)*85/2, 
+						  (colorToSet.g + settings.BackgroundColor.g)*85/2,
+						  (colorToSet.b + settings.BackgroundColor.b)*85/2);  
 			    
 			    
 			    
