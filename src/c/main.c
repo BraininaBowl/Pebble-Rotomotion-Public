@@ -308,16 +308,25 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     
 		     	
 		     	  
-		     GColor colorToSet = GColorFromRGB(
-		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r)*85/6, 
-		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g)*85/6,		     
-		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
+		     
 		     
 		     if (xGrid == 1) {
-	        GColor colorToSet = GColorFromRGB((colorToSet.r + 6)*85/3, (colorToSet.g + 6)*85/3, (colorToSet.b + 6)*85/3);
+		     
+		        GColor colorToSet = GColorFromRGB(
+		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r + 18)*85/12, 
+		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g + 18)*85/12,		     
+		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b + 18)*85/12);
+		     
+
 	         xGrid = 0;
 	       } else {
-	         GColor colorToSet = GColorFromRGB((colorToSet.r)*85/3, (colorToSet.g)*85/3, (colorToSet.b)*85/3);
+	       
+	         GColor colorToSet = GColorFromRGB(
+		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r)*85/12, 
+		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g)*85/12,		     
+		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/12);
+	         
+	         
 	         xGrid = 1;
 	       }
 		        
