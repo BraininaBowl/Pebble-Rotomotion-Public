@@ -332,16 +332,6 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   // full width overlay
 	   
 	   for(int x = 0; x < rowFull; x++) {
-	     
-	     GColor cModifier = GColorBlack;
-	     if(colorToSet.r + colorToSet.g + colorToSet.b < 4) {
-	       GColor cModifier = GColorWhite;
-	     }
-	   
-	     colorToSet = GColorFromRGB(
-						  (colorToSet.r)*85, 
-						  (colorToSet.g)*85, 
-						  (colorToSet.b)*85); 
 	   
 	   
 	     if (y == (colHalf - 30) || y == (colHalf + 27)){
