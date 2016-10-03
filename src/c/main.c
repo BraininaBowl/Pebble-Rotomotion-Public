@@ -117,7 +117,8 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 		int yToUse;
 		int yToGet;
 		int yToSet;
-		int yTemp;
+		int xGrid;
+		int yGrid;
 		GColor colorToSet;
 	
 // Iterate over all rows
@@ -270,6 +271,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	
 }   else if (settings.shaderMode == 4) {
 	  	// draw as Frosted
+	  	if(yGrid==1){
+	  	  yGrid = 0;
+	  	  xGrid = 0;
+	  	} else {
+	  	  yGrid = 1;
+	  	  xGrid = 1;
+	  	}
+	  	
 	  	   
 	   // filter only edge pixels, to improve readability and performance
 	   if (y < (colHalf - 28) || y > (colHalf + 26)){
@@ -304,12 +313,12 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g)*85/6,		     
 		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
 		     
-		     int divider = xToUse+y;
-		     if (divider % 2) { 
-	        // x+y is odd 
-	        GColor colorToSet = GColorFromRGB((colorToSet.r + 6)*85/3, (colorToSet.g + 6)*85/3, (colorToSet.b + 6)*85/3);
+		     if (xGrid == 1) {
+	        GColor colorToSet = GColorFromRGB((colorToSet.r + 3)*85/2, (colorToSet.g + 3)*85/2, (colorToSet.b + 3)*85/2);
+	         xGrid = 0;
 	       } else {
-	       GColor colorToSet = GColorFromRGB((colorToSet.r)*85/3, (colorToSet.g)*85/3, (colorToSet.b)*85/3);
+	       GColor colorToSet = GColorFromRGB((colorToSet.r)*85/2, (colorToSet.g)*85/2, (colorToSet.b)*85/2);
+	         xGrid = 1;
 	       }
 		        
 		      // Now we set the pixel to the right color
