@@ -117,6 +117,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 		int yToUse;
 		int yToGet;
 		int yToSet;
+		int yTemp;
 		GColor colorToSet;
 	
 // Iterate over all rows
@@ -345,7 +346,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 					 if ( y > colHalf ) {
 					   int yTemp = (colFull - y)/4;
 					 }
-						colorToSet = GColorFromRGB(
+						GColor colorToSet = GColorFromRGB(
 						  ((colorToSet.r*3) + (settings.BackgroundColor.r * yTemp))*85/(3+yTemp), 
 						  ((colorToSet.g*3) + (settings.BackgroundColor.g * yTemp))*85/(3+yTemp),
 						  ((colorToSet.b*3) + (settings.BackgroundColor.b * yTemp))*85/(3+yTemp));
