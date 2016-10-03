@@ -274,10 +274,11 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   // filter only edge pixels, to improve readability and performance
 	   if (y < (colHalf - 28) || y > (colHalf + 26)){
 	      
-		   for(int x = 0; x < (rowHalf + 40); x++) {
-		      if (x == 40){
-		        x = rowHalf;
-	       }
+		   for(int x = 0; x < rowFull; x++) {
+//		   for(int x = 0; x < (rowHalf + 40); x++) {
+//		      if (x == 40){
+//		        x = rowHalf;
+//	       }
 		     
 		   // Split in left and right halves
 			  if (x < rowHalf) {
@@ -302,18 +303,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     (color1.r + color2.r + color3.r + color4.r + color5.r + color6.r)*85/6, 
 		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g)*85/6,		     
 		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
-		      
-			  
 		     
-		      // Now we set the pixel to the right color
-		 	  set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);   
-		   }	   
-		   }
-	   	
-	   
-	   for(int x = 0; x < rowFull; x++) {
-	      GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
-	      if ((x+y) % 2) { 
+		     
+		     if ((x+y) % 2) { 
 	        // x+y is odd 
 	        GColor colorToSet = GColorFromRGB(
 		         (GColorWhite.r + currentColor.r)*85/2,
@@ -324,10 +316,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 		         (GColorBlack.r + currentColor.r)*85/2,
 		         (GColorBlack.g + currentColor.g)*85/2,
 		         (GColorBlack.b + currentColor.b)*85/2);
-	       
 	       }
-	       set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
-	   }
+		      
+			  
+		     
+		      // Now we set the pixel to the right color
+		 	  set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);   
+		   }	   
+		   }
 	   
 	   
 	   
