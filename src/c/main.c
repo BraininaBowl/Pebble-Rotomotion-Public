@@ -274,9 +274,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   if (y < (colHalf - 28) || y > (colHalf + 26)){
 	      
 		   for(int x = 0; x < (rowHalf + 40); x++) {
-		     if (x == 40){
-		       x = rowHalf;
-	     }
+		      if (x == 40){
+		        x = rowHalf;
+	       }
 		     
 		   // Split in left and right halves
 			  if (x < rowHalf) {
@@ -301,36 +301,33 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     (color1.g + color2.g + color3.g + color4.g + color5.g + color6.g)*85/6,		     
 		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
 		      
-			    
-			    
-			    
-
 			  
 		     
 		      // Now we set the pixel to the right color
 		 	  set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);   
 		   }	   
+		   }
 	   	
 	   
 	   
 	   
 	   // full width overlay
-	   
-	   for(int x = 0; x < rowFull; x++) {
-	   
-	   
-	     if (y == (colHalf - 30) || y == (colHalf + 27)){
-	     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
-	     GColor colorToSet = GColorFromRGB((currentColor.r + 3)*85/2, (currentColor.g + 3)*85/2, (currentColor.b + 3)*85/2);
+	   if (y == (colHalf - 30) || y == (colHalf + 27)){
+	     for(int x = 0; x < rowFull; x++) {
+	       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
+	       GColor colorToSet = GColorFromRGB((currentColor.r + 3)*85/2, (currentColor.g + 3)*85/2, (currentColor.b + 3)*85/2);
+	     
+	       set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
+	     }
 		   } else if (y == (colHalf - 29) || y == (colHalf + 28)){
+		     for(int x = 0; x < rowFull; x++) {
 		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
-		       GColor colorToSet = GColorFromRGB((currentColor.r)*85/2, (currentColor.g)*85/2, (currentColor.b)*85/2);  
+		       GColor colorToSet = GColorFromRGB((currentColor.r)*85/2, (currentColor.g)*85/2, (currentColor.b)*85/2);
+		       
+		       set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 		   } 
-		   
-		   
-		   set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 		 }	
-}
+
 }
 		
 		// ANTIALIAS
