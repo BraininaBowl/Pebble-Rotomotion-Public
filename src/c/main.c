@@ -313,14 +313,13 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   
 	   for(int x = 0; x < rowFull; x++) {
 	      GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
-	      if (x+y % 2) { 
+	      if ((x+y) % 2) { 
 	        // x+y is odd 
 	        GColor colorToSet = GColorFromRGB(
-		         (colorToSet.r)*85/2,
-		         (colorToSet.g)*85/2,
-		         (colorToSet.b)*85/2);
+		         colorToSet.r*85/2,
+		         colorToSet.g*85/2,
+		         colorToSet.b*85/2);
 	       } else {
-	       
 	       GColor colorToSet = GColorFromRGB(
 		         (colorToSet.r + 3)*85/2,
 		         (colorToSet.g + 3)*85/2,
