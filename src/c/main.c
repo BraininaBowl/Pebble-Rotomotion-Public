@@ -339,9 +339,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 	     }
 	   
 	     colorToSet = GColorFromRGB(
-						  (colorToSet.r + colorToSet.r)*85/2, 
-						  (colorToSet.g + colorToSet.g)*85/2, 
-						  (colorToSet.b + colorToSet.b)*85/2); 
+						  (colorToSet.r)*85, 
+						  (colorToSet.g)*85, 
+						  (colorToSet.b)*85); 
 	   
 	   
 	     if (y == (colHalf - 30) || y == (colHalf + 27)){
