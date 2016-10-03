@@ -305,17 +305,11 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
 		     
 		     
-		     if ((x+y) % 2) { 
+		     if ((xToUse+y) % 2) { 
 	        // x+y is odd 
-	        GColor colorToSet = GColorFromRGB(
-		         (3 + colorToSet.r)*85/2,
-		         (3 + colorToSet.g)*85/2,
-		         (3 + colorToSet.b)*85/2);
+	        GColor colorToSet = GColorFromRGB((colorToSet.r + 3)*85/2, (colorToSet.g + 3)*85/2, (colorToSet.b + 3)*85/2);
 	       } else {
-	       GColor colorToSet = GColorFromRGB(
-		         (colorToSet.r)*85/2,
-		         (colorToSet.g)*85/2,
-		         (colorToSet.b)*85/2);
+	       GColor colorToSet = GColorFromRGB((colorToSet.r)*85/2, (colorToSet.g)*85/2, (colorToSet.b)*85/2);
 	       }
 		        
 		      // Now we set the pixel to the right color
