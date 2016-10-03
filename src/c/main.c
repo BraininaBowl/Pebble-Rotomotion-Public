@@ -311,6 +311,24 @@ yToGet = yToSet + (colHalf/(yToUse));
 		   }
 	   	
 	   
+	   for(int x = 0; x < rowFull; x++) {
+	      GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
+	      if (x+y % 2) { 
+	        // x+y is odd 
+	        GColor colorToSet = GColorFromRGB(
+		         (colorToSet.r)*85/2,
+		         (colorToSet.g)*85/2,
+		         (colorToSet.b)*85/2);
+	       } else {
+	       
+	       GColor colorToSet = GColorFromRGB(
+		         (colorToSet.r + 3)*85/2,
+		         (colorToSet.g + 3)*85/2,
+		         (colorToSet.b + 3)*85/2);
+	       
+	       }
+	   }
+	   
 	   
 	   
 	   // full width overlay
@@ -333,7 +351,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 }
 		
 		// ANTIALIAS
-//		if(settings.shaderMode != 4){
+		if(settings.shaderMode != 4){
 		#if defined(PBL_COLOR)
 		for(int x = 0; x < rowFull; x++) {
 		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
@@ -360,7 +378,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 			  }
 		#endif
-	//	}
+		}
 	 }
 
 	graphics_release_frame_buffer(ctx, fb);
