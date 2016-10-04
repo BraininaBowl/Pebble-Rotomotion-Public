@@ -313,7 +313,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     if (xGrid == 1) {
 	       // GColor colorToSet = GColorFromRGB((colorToSet.r + 3)*85/2, (colorToSet.g + 3)*85/2, (colorToSet.b + 3)*85/2);
 	         xGrid = 0;
-	         GColor colorToSet = GColorBlack;
+	         colorToSet = GColorBlack;
 	       } else {
 	       //  GColor colorToSet = GColorFromRGB((colorToSet.r)*85/2, (colorToSet.g)*85/2, (colorToSet.b)*85/2);
 	         xGrid = 1;
