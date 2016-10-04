@@ -359,51 +359,55 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  xToUse = x;
 			  }
 		     
-		    
+		    GColor color1;
+		    GColor color2;
+		    GColor color3;
+		    GColor color4;
+		    GColor color5;
 		    
 		   // is the target pixel inside the area?
 			  if (xToUse < 0 || xToUse >= rowFull || y < 0 || y > colFull ){
 				  // No, so we'll use the background color
-				  GColor color1 = settings.BackgroundColor;
+				  color1 = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
-				  GColor color1 = get_bitmap_pixel_color(fb, fb_format, y, xToUse);
+				  color1 = get_bitmap_pixel_color(fb, fb_format, y, xToUse);
 			  }
 		    
 		   // is the target pixel inside the area?
 			  if (xToUse < 0 || xToUse >= rowFull || y - 2 < 0 || y - 2 > colFull ){
 				  // No, so we'll use the background color
-				  GColor color2 = settings.BackgroundColor;
+				  color2 = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
-				  GColor color2 = get_bitmap_pixel_color(fb, fb_format, y - 2, xToUse);
+				  color2 = get_bitmap_pixel_color(fb, fb_format, y - 2, xToUse);
 			  }
 		    
 		   // is the target pixel inside the area?
 			  if (xToUse - 2 < 0 || xToUse - 2 >= rowFull || y < 0 || y > colFull ){
 				  // No, so we'll use the background color
-				  GColor color3 = settings.BackgroundColor;
+				  color3 = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
-				  GColor color3 = get_bitmap_pixel_color(fb, fb_format, y, xToUse - 2);
+				  color3 = get_bitmap_pixel_color(fb, fb_format, y, xToUse - 2);
 			  }
 		    
 		   // is the target pixel inside the area?
 			  if (xToUse < 0 || xToUse >= rowFull || y + 2 < 0 || y + 2 > colFull ){
 				  // No, so we'll use the background color
-				  GColor color4 = settings.BackgroundColor;
+				  color4 = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
-				  GColor color4 = get_bitmap_pixel_color(fb, fb_format, y + 2, xToUse);
+				  color4 = get_bitmap_pixel_color(fb, fb_format, y + 2, xToUse);
 			  }
 		    
 		   // is the target pixel inside the area?
 			  if (xToUse + 2 < 0 || xToUse + 2 >= rowFull || y < 0 || y > colFull ){
 				  // No, so we'll use the background color
-				  GColor color5 = settings.BackgroundColor;
+				  color5 = settings.BackgroundColor;
 			  } else {
 				  // Yes, so get the target pixel color
-				  GColor color5 = get_bitmap_pixel_color(fb, fb_format, y, xToUse + 2);
+				  color5 = get_bitmap_pixel_color(fb, fb_format, y, xToUse + 2);
 			  }
 		    
 		     
