@@ -375,7 +375,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
 		     
 		     if (xGrid == 1) {
-	         colorToSet = GColorFromRGB((colorToSet.r + settings.BackgroundColor.r)*85/2, (colorToSet.g + settings.BackgroundColor.g)*85/2, (colorToSet.b + settings.BackgroundColor.b)*85/2);
+	         colorToSet = GColorFromRGB((colorToSet.r + settings.BackgroundColor.r)*85/3, (colorToSet.g + settings.BackgroundColor.g)*85/3, (colorToSet.b + settings.BackgroundColor.b)*85/3);
 	         xGrid = 0;
 	       //  colorToSet = GColorBlack;
 	       } else {
