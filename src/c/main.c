@@ -108,6 +108,10 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
   }
   return GColorClear;
 }
+
+
+
+
 // Shader stuff goes here
 void layer_update_proc(Layer *layer, GContext *ctx) {
   // Get the framebuffer
@@ -168,6 +172,24 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			  }
 			  // Now we set the pixel to the right color
+		 		
+		 		
+		 					  // Apply shadows
+		  if(settings.dropShadow) {
+					if( y < 10 || y > colFull - 10 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
+					} else if( y < 20 || y > colFull - 20 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
+						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
+						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
+					}				
+				}  	 				
+		 		
+		 		
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
 	  	}
@@ -214,6 +236,25 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			  }
+			  
+			  
+			  
+			  			  // Apply shadows
+		  if(settings.dropShadow) {
+					if( y < 10 || y > colFull - 10 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
+					} else if( y < 20 || y > colFull - 20 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
+						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
+						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
+					}				
+				}  	 				
+			  
+			  
 			  // Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
@@ -265,6 +306,24 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			  }
+			  
+			  			  // Apply shadows
+		  if(settings.dropShadow) {
+					if( y < 10 || y > colFull - 10 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
+					} else if( y < 20 || y > colFull - 20 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
+						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
+						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
+					}				
+				}  	 				
+			  
+			  
+			  
 			  // Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
@@ -323,6 +382,24 @@ yToGet = yToSet + (colHalf/(yToUse));
 	        // colorToSet = GColorFromRGB((colorToSet.r)*85/2, (colorToSet.g)*85/2, (colorToSet.b)*85/2);
 	         xGrid = 1;
 	       }
+		       
+		       
+		      			  // Apply shadows
+		  if(settings.dropShadow) {
+					if( y < 10 || y > colFull - 10 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
+					} else if( y < 20 || y > colFull - 20 ) {
+						colorToSet = GColorFromRGB(
+						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
+						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
+						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
+					}				
+				}  	 				 
+		       
+		       
 		        
 		      // Now we set the pixel to the right color
 		 	  set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);   
@@ -380,20 +457,6 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);  
 		     
 		     
-			  // Apply shadows
-		  if(settings.dropShadow) {
-					if( y < 10 || y > colFull - 10 ) {
-						colorToSet = GColorFromRGB(
-						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
-						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
-						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
-					} else if( y < 20 || y > colFull - 20 ) {
-						colorToSet = GColorFromRGB(
-						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
-						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
-						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
-					}				
-				}  	 				
 			
 			  // Now we set the pixel to the right color
 		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
