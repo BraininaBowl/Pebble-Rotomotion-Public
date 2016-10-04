@@ -117,8 +117,6 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 		int yToUse;
 		int yToGet;
 		int yToSet;
-		int xGrid;
-		int yGrid;
 		GColor colorToSet;
 	
 // Iterate over all rows
