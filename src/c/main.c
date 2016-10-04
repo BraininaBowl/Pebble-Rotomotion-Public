@@ -346,6 +346,20 @@ yToGet = yToSet + (colHalf/(yToUse));
 		       
 		       set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 		   } 
+		 }	else if (y == (colHalf - 28)){
+		     for(int x = 0; x < rowFull; x++) {
+		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
+		       GColor colorToSet = GColorFromRGB((currentColor.r*2)*85/3, (currentColor.g*2)*85/3, (currentColor.b*2)*85/3);
+		       
+		       set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
+		   } 
+		 }	else if (y == (colHalf - 27)){
+		     for(int x = 0; x < rowFull; x++) {
+		       GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
+		       GColor colorToSet = GColorFromRGB((currentColor.r*3)*85/4, (currentColor.g*3)*85/4, (currentColor.b*3)*85/4);
+		       
+		       set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
+		   } 
 		 }	
 
 }
