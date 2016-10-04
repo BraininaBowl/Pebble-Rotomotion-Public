@@ -286,6 +286,10 @@ yToGet = yToSet + (colHalf/(yToUse));
 	      
 		   for(int x = 0; x < rowFull; x++) {
 
+//		   for(int x = 0; x < (rowHalf + 40); x++) {
+//		      if (x == 40){
+//		        x = rowHalf;
+//	       }
 		     
 		   // Split in left and right halves
 			  if (x < rowHalf) {
@@ -312,11 +316,11 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     (color1.b + color2.b + color3.b + color4.b + color5.b + color6.b)*85/6);
 		     
 		     if (xGrid == 1) {
-	       // GColor colorToSet = GColorFromRGB((colorToSet.r + 3)*85/2, (colorToSet.g + 3)*85/2, (colorToSet.b + 3)*85/2);
+	         GColor colorToSet = GColorFromRGB((colorToSet.r + 3)*85/2, (colorToSet.g + 3)*85/2, (colorToSet.b + 3)*85/2);
 	         xGrid = 0;
-	         colorToSet = GColorBlack;
+	       //  colorToSet = GColorBlack;
 	       } else {
-	       //  GColor colorToSet = GColorFromRGB((colorToSet.r)*85/2, (colorToSet.g)*85/2, (colorToSet.b)*85/2);
+	         GColor colorToSet = GColorFromRGB((colorToSet.r)*85/2, (colorToSet.g)*85/2, (colorToSet.b)*85/2);
 	         xGrid = 1;
 	       }
 		        
