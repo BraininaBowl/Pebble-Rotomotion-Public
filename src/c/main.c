@@ -419,7 +419,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     (color1.g + color2.g + color3.g + color4.g + color5.g)*85/5,		     
 		     (color1.b + color2.b + color3.b + color4.b + color5.b)*85/5);
 		     
-		     
+		     if (xGrid == 1) {
+	         colorToSet = GColorFromRGB((colorToSet.r + settings.BackgroundColor.r)*85/2, (colorToSet.g + settings.BackgroundColor.g)*85/2, (colorToSet.b + settings.BackgroundColor.b)*85/2);
+	         xGrid = 0;
+	       //  colorToSet = GColorBlack;
+	       } else {
+	        // colorToSet = GColorFromRGB((colorToSet.r)*85/2, (colorToSet.g)*85/2, (colorToSet.b)*85/2);
+	         xGrid = 1;
+	       }
 		       
 		       
 		      			  // Apply shadows
