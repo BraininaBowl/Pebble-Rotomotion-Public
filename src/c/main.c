@@ -29,6 +29,9 @@ static int s_month;
 static int s_day;
 static int firstrun;
 
+int xGrid;
+int yGrid;
+
 // A struct for our specific settings (see main.h)
 ClaySettings settings;
 
