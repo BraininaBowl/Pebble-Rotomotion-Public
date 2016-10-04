@@ -284,10 +284,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 	   if (y < (colHalf - 28) || y > (colHalf + 26)){
 	      
 		   for(int x = 0; x < rowFull; x++) {
-//		   for(int x = 0; x < (rowHalf + 40); x++) {
-//		      if (x == 40){
-//		        x = rowHalf;
-//	       }
+
 		     
 		   // Split in left and right halves
 			  if (x < rowHalf) {
