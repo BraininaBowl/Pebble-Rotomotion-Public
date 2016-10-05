@@ -342,14 +342,15 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	   
 	   // filter only edge pixels, to improve readability and performance
 	   if (y < (colHalf - 28) || y > (colHalf + 26)){
-	      
-//		   for(int x = 0; x < rowFull; x++) {
 
+			
+			
+		#if defined(PBL_COLOR)
 	   for(int x = 0; x < (rowHalf + 40); x++) {
 	      if (x == 40){
           x = rowHalf;
 	      }
-		     
+		
 		   // Split in left and right halves
 			  if (x < rowHalf) {
 				  // left half: Work from right to left
@@ -409,10 +410,6 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  // Yes, so get the target pixel color
 				  color5 = get_bitmap_pixel_color(fb, fb_format, y, xToUse + 2);
 			  }
-		    
-		     
-		     
-		     	
 		     	  
 		     GColor colorToSet = GColorFromRGB(
 		     (color1.r + color2.r + color3.r + color4.r + color5.r)*85/5, 
@@ -422,14 +419,12 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     if (xGrid == 1) {
 	         colorToSet = GColorFromRGB((colorToSet.r + settings.BackgroundColor.r)*85/2, (colorToSet.g + settings.BackgroundColor.g)*85/2, (colorToSet.b + settings.BackgroundColor.b)*85/2);
 	         xGrid = 0;
-	       //  colorToSet = GColorBlack;
 	       } else {
-	        // colorToSet = GColorFromRGB((colorToSet.r)*85/2, (colorToSet.g)*85/2, (colorToSet.b)*85/2);
 	         xGrid = 1;
 	       }
 		       
 		       
-		      			  // Apply shadows
+		  // Apply shadows
 		  if(settings.dropShadow) {
 					if( y < 10 || y > colFull - 10 ) {
 						colorToSet = GColorFromRGB(
@@ -442,17 +437,37 @@ yToGet = yToSet + (colHalf/(yToUse));
 						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
 						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
 					}				
-				}  	 				 
-		       
-		       
-		        
-		      // Now we set the pixel to the right color
-		 	  set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet);   
-		   }	   
+				} 
+			
+				// Now we set the pixel to the right color
+				set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet); 
+		           
+		   }
+			
+			 #elif defined(PBL_BW)
+			
+			for(int x = 0; x < rowFull; x++) {
+				
+				if (xGrid == 1) {
+	         	colorToSet = settings.BackgroundColor;
+					
+					// Now we set the pixel to the right color
+					set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
+
+					xGrid = 0;
+	       	} else {
+	         	xGrid = 1;
+	       	}
+				 
+			}
+			
+			#endif
+			
 		   }
 	   
 	   
-	   
+	#if defined(PBL_COLOR)
+	
 	   // full width overlay
 	   if (y == (colHalf - 30) || y == (colHalf + 27)){
 	     for(int x = 0; x < rowFull; x++) {
@@ -490,6 +505,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		       set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 		   } 
 		 }	
+	#endif
 
 }
 		
