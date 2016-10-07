@@ -24,7 +24,8 @@ module.exports = [
         [
           { 
             "label": "Cylinder", 
-            "value": 1
+            "value": 1,
+            "defaultValue": true
           },
           { 
             "label": "Inverted cylinder", 

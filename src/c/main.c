@@ -450,9 +450,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 						  (colorToSet.b + settings.BackgroundColor.b * 2)*85/3);
 					} else if( y < 25 || y > (colFull - 25)) {
 						colorToSet = GColorFromRGB(
-						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
-						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
-						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
+						  (colorToSet.r + settings.BackgroundColor.r)*85/2, 
+						  (colorToSet.g + settings.BackgroundColor.g)*85/2, 
+						  (colorToSet.b + settings.BackgroundColor.b)*85/2);
 					}				
 				}   
 			
