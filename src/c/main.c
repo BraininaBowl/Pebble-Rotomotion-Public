@@ -32,6 +32,8 @@ static int firstrun;
 int xGrid;
 int yGrid;
 
+
+
 // A struct for our specific settings (see main.h)
 ClaySettings settings;
 
@@ -109,9 +111,6 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
   return GColorClear;
 }
 
-
-
-
 // Shader stuff goes here
 void layer_update_proc(Layer *layer, GContext *ctx) {
   // Get the framebuffer
@@ -137,12 +136,12 @@ if (settings.shaderMode == 1) {
 			// top half
 			yToUse = colHalf - y;
 			yToSet = colHalf - y;
-yToGet = yToSet - (colHalf/(yToUse));
+			yToGet = yToSet - (colHalf/(yToUse));
 		} else {
 			// bottom half
 			yToUse = colFull - y;
 			yToSet = y;
-yToGet = yToSet + (colHalf/(yToUse));
+			yToGet = yToSet + (colHalf/(yToUse));
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
@@ -171,17 +170,15 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  // Yes, so get the target pixel color
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			  }
-			  // Now we set the pixel to the right color
 		 		
-		 		
-		 					  // Apply shadows
+		 	// Apply shadows
 		  if(settings.dropShadow) {
-					if( y < 10 || y > colFull - 10 ) {
+					if( yToSet < 19 || yToSet > (colFull - 19)) {
 						colorToSet = GColorFromRGB(
-						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
-						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
-						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
-					} else if( y < 20 || y > colFull - 20 ) {
+						  (colorToSet.r + settings.BackgroundColor.r * 2)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g * 2)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b * 2)*85/3);
+					} else if( yToSet < 25 || yToSet > (colFull - 25)) {
 						colorToSet = GColorFromRGB(
 						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
 						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
@@ -189,12 +186,19 @@ yToGet = yToSet + (colHalf/(yToUse));
 					}				
 				}  	 				
 		 		
-		 		
+			  
+		 		// Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
-	  	}
-	  	
-	  	
+	  	}	
+	
+		// zwarte balk	
+	  	if (yToSet < 14 || yToSet > (colFull - 13)){
+			for(int x = 0; x < rowFull; x++) {
+				// Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, yToSet, x, settings.BackgroundColor);
+			}
+		}
 	  	
 	  	} else if (settings.shaderMode == 2) {
 // draw as inverted cylinder	  	
@@ -237,22 +241,21 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			  }
 			  
-			  
-			  
-			  			  // Apply shadows
-		  if(settings.dropShadow) {
-					if( y < 10 || y > colFull - 10 ) {
+
+			// Apply shadows
+		  	if(settings.dropShadow) {
+					if( yToSet < 19 || yToSet > (colFull - 19)) {
 						colorToSet = GColorFromRGB(
-						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
-						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
-						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
-					} else if( y < 20 || y > colFull - 20 ) {
+						  (colorToSet.r + settings.BackgroundColor.r * 2)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g * 2)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b * 2)*85/3);
+					} else if( yToSet < 25 || yToSet > (colFull - 25)) {
 						colorToSet = GColorFromRGB(
 						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
 						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
 						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
 					}				
-				}  	 				
+				}   				
 			  
 			  
 			  // Now we set the pixel to the right color
@@ -260,7 +263,13 @@ yToGet = yToSet + (colHalf/(yToUse));
 			  }
 	  	}
 	  	
-	  	
+		// zwarte balk	
+	  	if (yToSet < 14 || yToSet > (colFull - 13)){
+			for(int x = 0; x < rowFull; x++) {
+				// Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, yToSet, x, settings.BackgroundColor);
+			}
+		}
 	  	
 	  	} 	else if (settings.shaderMode == 3) {
 	  	// draw as banner
@@ -307,14 +316,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			  }
 			  
-			  			  // Apply shadows
-		  if(settings.dropShadow) {
-					if( y < 10 || y > colFull - 10 ) {
+			// Apply shadows
+		  	if(settings.dropShadow) {
+					if( yToSet < 19 || yToSet > (colFull - 19)) {
 						colorToSet = GColorFromRGB(
-						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
-						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
-						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
-					} else if( y < 20 || y > colFull - 20 ) {
+						  (colorToSet.r + settings.BackgroundColor.r * 2)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g * 2)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b * 2)*85/3);
+					} else if( yToSet < 25 || yToSet > (colFull - 25)) {
 						colorToSet = GColorFromRGB(
 						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
 						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
@@ -328,7 +337,15 @@ yToGet = yToSet + (colHalf/(yToUse));
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
 	  	}
-	  	
+
+		// zwarte balk	
+	  	if (yToSet < 14 || yToSet > (colFull - 13)){
+			for(int x = 0; x < rowFull; x++) {
+				// Now we set the pixel to the right color
+		 		set_bitmap_pixel_color(fb, fb_format, yToSet, x, settings.BackgroundColor);
+			}
+		}
+	
 }   else if (settings.shaderMode == 4) {
 	  	// draw as Frosted
 	  	if(yGrid==1){
@@ -426,18 +443,18 @@ yToGet = yToSet + (colHalf/(yToUse));
 		       
 		  // Apply shadows
 		  if(settings.dropShadow) {
-					if( y < 10 || y > colFull - 10 ) {
+					if( y < 19 || y > (colFull - 19)) {
 						colorToSet = GColorFromRGB(
-						  (colorToSet.r + settings.BackgroundColor.r + settings.BackgroundColor.r)*85/3, 
-						  (colorToSet.g + settings.BackgroundColor.g + settings.BackgroundColor.g)*85/3,
-						  (colorToSet.b + settings.BackgroundColor.b + settings.BackgroundColor.b)*85/3);
-					} else if( y < 20 || y > colFull - 20 ) {
+						  (colorToSet.r + settings.BackgroundColor.r * 2)*85/3, 
+						  (colorToSet.g + settings.BackgroundColor.g * 2)*85/3,
+						  (colorToSet.b + settings.BackgroundColor.b * 2)*85/3);
+					} else if( y < 25 || y > (colFull - 25)) {
 						colorToSet = GColorFromRGB(
 						  (colorToSet.r * 3 + settings.BackgroundColor.r)*85/4, 
 						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
 						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
 					}				
-				} 
+				}   
 			
 				// Now we set the pixel to the right color
 				set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet); 
@@ -516,9 +533,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		     GColor currentColor = get_bitmap_pixel_color(fb, fb_format, y, x);
 		     GColor nextColor = get_bitmap_pixel_color(fb, fb_format, y, x+1);
 		     GColor colorToSet = GColorFromRGB((currentColor.r + nextColor.r)*85/2, (currentColor.g + nextColor.g)*85/2, (currentColor.b + nextColor.b)*85/2);  
-		     
-		     
-			
+
 			  // Now we set the pixel to the right color
 		 	  set_bitmap_pixel_color(fb, fb_format, y, x, colorToSet);
 			  }
@@ -529,7 +544,6 @@ yToGet = yToSet + (colHalf/(yToUse));
 	graphics_release_frame_buffer(ctx, fb);
 	 //APP_LOG(APP_LOG_LEVEL_DEBUG, "End Shader. Mem %d", heap_bytes_used());
 }
-
 
 // Read settings from persistent storage
 static void prv_load_settings() {
@@ -635,10 +649,7 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
 static void drawText(Layer *window_layer) {
 //	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start drawText. Mem %d", heap_bytes_used());
 	 
-	 
-	 
-	   // Create the TextLayer with specific bounds
-	   
+   // Create the TextLayer with specific bounds
 	s_time_layer_h = text_layer_create(GRect(rowHalf-49+12, colHalf-84, 47, 1216));
   	s_time_layer_m = text_layer_create(GRect(rowHalf+12, colHalf-84, 27, 1488));
 
@@ -892,9 +903,7 @@ static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
 
 // Window Load event
 static void prv_window_load(Window *window) {
-	
 	firstrun = 1;
-	
 	
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -909,7 +918,7 @@ static void prv_window_load(Window *window) {
 	drawText(window_layer);
 	// create shader layer
 	drawShader(window_layer);
-		// create date layer
+	// create date layer
 	drawDate(window_layer);
 	// create arrows
 	drawArrows(window_layer);
@@ -945,6 +954,9 @@ static void prv_window_unload(Window *window) {
 	
 	// Unsubscribe from tap events
 	accel_tap_service_unsubscribe();
+	
+	// Unsubscribe from TickTimerService
+  	tick_timer_service_unsubscribe();
 }
 
 static void prv_init(void) {
