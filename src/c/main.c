@@ -851,10 +851,6 @@ static void prv_init(void) {
   // Register with TickTimerService
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 	
-	// Subscribe to tap events
-	accel_tap_service_subscribe(accel_tap_handler);
-	
-	
 }
 
 static void prv_deinit(void) {
