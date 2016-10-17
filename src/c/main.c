@@ -671,7 +671,8 @@ void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 		static GPath *s_arrow_right_path = NULL;
 
 		// Fill the path:
-		graphics_context_set_fill_color(ctx, settings.ArrowColor);
+		graphics_context_set_stroke_color(ctx, settings.ArrowColor);
+		// graphics_context_set_fill_color(ctx, settings.ArrowColor);
 
 		gpath_draw_filled(ctx, s_arrow_left_path);
 		gpath_draw_filled(ctx, s_arrow_right_path);
