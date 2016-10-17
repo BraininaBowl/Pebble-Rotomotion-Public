@@ -174,9 +174,13 @@ if (settings.shaderMode == 1) {
 						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
 						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
 					}				
-				}  	 				
-		 		
-			  
+				}  	
+				
+				// fix top edge
+				if( y = 0) {
+						colorToSet = settings.BackgroundColor;
+					} 				
+		 		  
 		 		// Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, xToUse, colorToSet);
 			  }
