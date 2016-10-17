@@ -560,10 +560,6 @@ static void prv_update_display() {
 	text_layer_set_text_color(s_time_layer_h, settings.HourColor);
 	text_layer_set_background_color(s_time_layer_m, settings.MinBgColor);
 	text_layer_set_text_color(s_time_layer_m, settings.MinColor);
-	text_layer_set_background_color(s_date_container_m, settings.BackgroundColor);
-  	text_layer_set_text_color(s_date_container_m, settings.ArrowColor);
-	text_layer_set_background_color(s_date_container_d, settings.BackgroundColor);
-  	text_layer_set_text_color(s_date_container_d, settings.ArrowColor);
 	
   
   if (settings.twelveHour)
@@ -803,12 +799,6 @@ static void prv_window_unload(Window *window) {
   // Destroy TextLayer
   text_layer_destroy(s_time_layer_h);
   text_layer_destroy(s_time_layer_m);
-
-  // Destroy GBitmap
-  gbitmap_destroy(s_background_bitmap);
-
-  // Destroy BitmapLayer
-  bitmap_layer_destroy(s_background_layer);
 
 	// Destroy Canvas
 	layer_destroy(s_canvas);
