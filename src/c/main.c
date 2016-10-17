@@ -177,7 +177,7 @@ if (settings.shaderMode == 1) {
 				}  	
 				
 				// fix top edge
-				if(y == 0) {
+				if(y == 1) {
 						colorToSet = settings.BackgroundColor;
 					} 				
 		 		  
