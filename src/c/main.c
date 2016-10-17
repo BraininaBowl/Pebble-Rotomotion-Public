@@ -16,12 +16,22 @@ static int colFull;
 
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
+int delay_ms_h = 0;
+int duration_ms_h = 500;
+int delay_ms_m = 0;
+int duration_ms_m = 300;
 static int s_hour;
 static int s_minute;
 static int firstrun;
 
 int xGrid;
 int yGrid;
+int xToUse;
+int xToGet;
+int yToUse;
+int yToGet;
+int yToSet;
+GColor colorToSet;
 
 
 // A struct for our specific settings (see main.h)
@@ -108,12 +118,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 	GBitmapFormat fb_format = gbitmap_get_format(fb);
 
 	//set variables for calculations
-		int xToUse;
-		int xToGet;
-		int yToUse;
-		int yToGet;
-		int yToSet;
-		GColor colorToSet;
+
 	
 // Iterate over all rows
 	for(int y = 0; y < colFull; y++) {
@@ -161,7 +166,8 @@ if (settings.shaderMode == 1) {
 				  colorToSet = get_bitmap_pixel_color(fb, fb_format, yToGet, xToGet);
 			  }
 		 		
-		 	// Apply shadows
+		#if defined(PBL_COLOR)
+			  // Apply shadows
 		  if(settings.dropShadow) {
 					if( yToSet < 19 || yToSet > (colFull - 19)) {
 						colorToSet = GColorFromRGB(
@@ -175,6 +181,7 @@ if (settings.shaderMode == 1) {
 						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
 					}				
 				}  	
+			  #endif
 						
 		 		  
 		 		// Now we set the pixel to the right color
@@ -183,12 +190,14 @@ if (settings.shaderMode == 1) {
 	  	}	
 	
 		// zwarte balk	
+			#if defined(PBL_COLOR)
 	  	if (yToSet < 14 || yToSet > (colFull - 13)){
 			for(int x = 0; x < rowFull; x++) {
 				// Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, x, settings.BackgroundColor);
 			}
 		}
+	#endif
 	  	
 	  	} else if (settings.shaderMode == 2) {
 // draw as inverted cylinder	  	
@@ -233,6 +242,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 			  
 
 			// Apply shadows
+			  		#if defined(PBL_COLOR)
 		  	if(settings.dropShadow) {
 					if( yToSet < 19 || yToSet > (colFull - 19)) {
 						colorToSet = GColorFromRGB(
@@ -245,7 +255,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
 						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
 					}				
-				}   				
+				}  
+			  #endif
 			  
 			  
 			  // Now we set the pixel to the right color
@@ -254,12 +265,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	}
 	  	
 		// zwarte balk	
+				#if defined(PBL_COLOR)
 	  	if (yToSet < 14 || yToSet > (colFull - 13)){
 			for(int x = 0; x < rowFull; x++) {
 				// Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, x, settings.BackgroundColor);
 			}
 		}
+		#endif
 	  	
 	  	} 	else if (settings.shaderMode == 3) {
 	  	// draw as banner
@@ -307,6 +320,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 			  }
 			  
 			// Apply shadows
+			  		#if defined(PBL_COLOR)
 		  	if(settings.dropShadow) {
 					if( yToSet < 19 || yToSet > (colFull - 19)) {
 						colorToSet = GColorFromRGB(
@@ -319,7 +333,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 						  (colorToSet.g * 3 + settings.BackgroundColor.g)*85/4, 
 						  (colorToSet.b * 3 + settings.BackgroundColor.b)*85/4);
 					}				
-				}  	 				
+				}  	
+			  #endif
 			  
 			  
 			  
@@ -329,12 +344,14 @@ yToGet = yToSet + (colHalf/(yToUse));
 	  	}
 
 		// zwarte balk	
+			#if defined(PBL_COLOR)
 	  	if (yToSet < 14 || yToSet > (colFull - 13)){
 			for(int x = 0; x < rowFull; x++) {
 				// Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, x, settings.BackgroundColor);
 			}
 		}
+		#endif
 	
 }   else if (settings.shaderMode == 4) {
 	  	// draw as Frosted
@@ -432,6 +449,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		       
 		       
 		  // Apply shadows
+					#if defined(PBL_COLOR)
 		  if(settings.dropShadow) {
 					if( y < 19 || y > (colFull - 19)) {
 						colorToSet = GColorFromRGB(
@@ -445,6 +463,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 						  (colorToSet.b + settings.BackgroundColor.b)*85/2);
 					}				
 				}   
+			#endif
 			
 				// Now we set the pixel to the right color
 				set_bitmap_pixel_color(fb, fb_format, y, xToUse, colorToSet); 
@@ -532,7 +551,8 @@ yToGet = yToSet + (colHalf/(yToUse));
 	 }
 
 	graphics_release_frame_buffer(ctx, fb);
-	 //APP_LOG(APP_LOG_LEVEL_DEBUG, "End Shader. Mem %d", heap_bytes_used());
+	//APP_LOG(APP_LOG_LEVEL_DEBUG, "End Shader. Mem %d", heap_bytes_free());
+	
 }
 
 // Read settings from persistent storage
@@ -671,13 +691,7 @@ void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 		static GPath *s_arrow_right_path = NULL;
 
 		// Fill the path:
-	//	graphics_context_set_stroke_color(ctx, settings.ArrowColor);
-	//	graphics_context_set_stroke_width(ctx, 2);
-		
-	//			gpath_draw_outline(ctx, s_arrow_left_path);
-//		gpath_draw_outline(ctx, s_arrow_right_path);
-		 graphics_context_set_fill_color(ctx, settings.ArrowColor);
-
+		graphics_context_set_fill_color(ctx, settings.ArrowColor);
 		gpath_draw_filled(ctx, s_arrow_left_path);
 		gpath_draw_filled(ctx, s_arrow_right_path);
 
@@ -703,8 +717,23 @@ static void drawShader(Layer * window_layer){
 }
 
 // *** ANIMATE ***
+
+	// Clear animation memory
+	void on_animation_stopped_h(Animation *anim_h, bool finished, void *context)
+	{
+    //Free the memory used by the Animation
+    	property_animation_destroy((PropertyAnimation*) anim_h);
+	}
+	void on_animation_stopped_m(Animation *anim_m, bool finished, void *context)
+	{
+    //Free the memory used by the Animation
+		property_animation_destroy((PropertyAnimation*) anim_m);
+	}
+
+
 // animate time change
 static void update_time() {
+	
   // Get a tm structure
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
@@ -721,6 +750,7 @@ static void update_time() {
   	strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
    s_minute = ((s_buffer_m[0] - '0')*10)+s_buffer_m[1] - '0';
 
+	
    // Setup animation layer
 	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
 	Layer *layer_m = text_layer_get_layer(s_time_layer_m);
@@ -746,22 +776,27 @@ static void update_time() {
 	Animation *anim_h = property_animation_get_animation(prop_anim_h);
 	Animation *anim_m = property_animation_get_animation(prop_anim_m);
 
-	
-	// Choose parameters
-	const int delay_ms_h = 0;
-	const int duration_ms_h = 500;
-	const int delay_ms_m = 0;
-	const int duration_ms_m = 300;
-
-	
 	// Configure the Animation's curve, delay, and duration
 	animation_set_curve(anim_h, AnimationCurveLinear);
 	animation_set_delay(anim_h, delay_ms_h);
 	animation_set_duration(anim_h, duration_ms_h);
+		//Set stopped handler to free memory
+    AnimationHandlers handlers_h = {
+        //The reference to the stopped handler is the only one in the array
+        .stopped = (AnimationStoppedHandler) on_animation_stopped_h
+    };
+	animation_set_handlers((Animation*) anim_h, handlers_h, NULL);
+	
 
 	animation_set_curve(anim_m, AnimationCurveLinear);
 	animation_set_delay(anim_m, delay_ms_m);
 	animation_set_duration(anim_m, duration_ms_m);
+		//Set stopped handler to free memory
+    AnimationHandlers handlers_m = {
+        //The reference to the stopped handler is the only one in the array
+        .stopped = (AnimationStoppedHandler) on_animation_stopped_m
+    };
+   animation_set_handlers((Animation*) anim_m, handlers_m, NULL);
 	
 
 	// Play the animation
@@ -770,6 +805,7 @@ static void update_time() {
 	
 
 }
+
 
 // *** EVENTS ***
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {

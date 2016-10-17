@@ -20,28 +20,28 @@ module.exports = [
       "type": "radiogroup",
       "messageKey": "shaderMode",
       "label": "3D effect",
+		"defaultValue": "1",
       "options": 
         [
           { 
             "label": "Cylinder", 
-            "value": 1,
-            "defaultValue": true
+            "value": "1"
           },
           { 
             "label": "Inverted cylinder", 
-            "value": 2
+            "value": "2"
           },
           { 
             "label": "Banner", 
-            "value": 3
+            "value": "3"
           },
           { 
             "label": "Frosted glass", 
-            "value": 4
+            "value": "4"
           },
           { 
             "label": "Flat", 
-            "value": 0
+            "value": "0"
           }
         ]
    }
