@@ -196,7 +196,7 @@ if (settings.shaderMode == 1) {
 		if (y < colHalf) {
 			// top half
 			yToUse = colHalf - y;
-			yToSet = colHalf - y;
+			yToSet = colHalf - y - 1;
 yToGet = yToSet - (colHalf/(yToUse));
 		} else {
 			// bottom half
