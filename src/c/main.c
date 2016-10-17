@@ -21,12 +21,8 @@ static int colFull;
 
 static char s_buffer_hour[3];
 static char s_buffer_m[3];
-static char s_buffer_month[3];
-static char s_buffer_day[3];
 static int s_hour;
 static int s_minute;
-static int s_month;
-static int s_day;
 static int firstrun;
 
 int xGrid;
@@ -667,25 +663,7 @@ static void drawText(Layer *window_layer) {
   	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 	
 }
-// Draw date container
-static void drawDate(Layer *window_layer){
-	s_date_container = layer_create(GRect(0, -90, rowFull, 80));
- 	s_date_container_m = text_layer_create(GRect(rowHalf-59+10, 0, 61, 80));
-  	s_date_container_d = text_layer_create(GRect(rowHalf+10, 0, 41, 80));
 
-	text_layer_set_text(s_date_container_m, "\n\nMONTH");
-  	text_layer_set_text_alignment(s_date_container_m, GTextAlignmentCenter);
-
-	text_layer_set_text(s_date_container_d, "\n\nDAY");
-  	text_layer_set_text_alignment(s_date_container_d, GTextAlignmentCenter);
-	
-	text_layer_set_font(s_date_container_d, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-	text_layer_set_font(s_date_container_m, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-	
-	layer_add_child(window_layer, s_date_container);
-	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_d));
-	layer_add_child(s_date_container, text_layer_get_layer(s_date_container_m));
-}
 // Draw arrows
 void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 	GPathInfo ARROW_LEFT_PATH_POINTS = {
@@ -797,108 +775,10 @@ static void update_time() {
 	
 
 }
-// animate date display
-static void update_date() {
-	time_t temp = time(NULL); 
-  struct tm *tick_time = localtime(&temp);
-
-	
-	//*****************
-	//**   ANIMATE   ** 
-	//*****************
-
-	// Write the current month into a buffer
-  	strftime(s_buffer_month, sizeof(s_buffer_month), "%m", tick_time);
-   s_month = ((s_buffer_month[0] - '0')*10)+s_buffer_month[1] - '0';
-	
-	// Write the current day into a buffer
-  	strftime(s_buffer_day, sizeof(s_buffer_day), "%d", tick_time);
-   s_day = ((s_buffer_day[0] - '0')*10)+s_buffer_day[1] - '0';
-	
-   // Setup animation layer
-	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
-	Layer *layer_m = text_layer_get_layer(s_time_layer_m);
-	Layer *layer_container = s_date_container;
-	
-   // The start and end frames
-  	GRect start_container = GRect(0, -90, rowFull, 80);	
-	#if defined(PBL_ROUND)
-  	GRect finish_container = GRect(0, -4, rowFull, 80);
-	#elif defined(PBL_RECT)
-  	GRect finish_container = GRect(0, -10, rowFull, 80);
-	#endif	
-	
-	GRect start_h = GRect(rowHalf-49+12,colHalf-132-(s_hour*36), 47, 1400);
-	GRect finish_h = GRect(rowHalf-49+12,colHalf-132-(s_month*36), 47, 1400);
-	GRect start_m = GRect(rowHalf+12,colHalf-114-(s_minute*20), 27, 1888);
-	GRect finish_m = GRect(rowHalf+12,colHalf-114-(s_day*20), 27, 1888);
-
-	// Animate the Layer
-	PropertyAnimation *prop_anim_h = property_animation_create_layer_frame(layer_h, &start_h, &finish_h);
-	PropertyAnimation *prop_anim_m = property_animation_create_layer_frame(layer_m, &start_m, &finish_m);
-	PropertyAnimation *prop_anim_container = property_animation_create_layer_frame(layer_container, &start_container, &finish_container);
-
-	PropertyAnimation *prop_anim_h_back = property_animation_create_layer_frame(layer_h, &finish_h, &start_h);
-	PropertyAnimation *prop_anim_m_back = property_animation_create_layer_frame(layer_m, &finish_m, &start_m);
-	PropertyAnimation *prop_anim_container_back = property_animation_create_layer_frame(layer_container, &finish_container, &start_container);
-	
-	// Get the Animation
-	Animation *anim_h = property_animation_get_animation(prop_anim_h);
-	Animation *anim_m = property_animation_get_animation(prop_anim_m);
-	Animation *anim_container = property_animation_get_animation(prop_anim_container);
-	
-	Animation *anim_h_back = property_animation_get_animation(prop_anim_h_back);
-	Animation *anim_m_back = property_animation_get_animation(prop_anim_m_back);
-	Animation *anim_container_back = property_animation_get_animation(prop_anim_container_back);
-	
-	// Choose parameters
-	const int delay_ms = 0;
-	const int delay_ms_back = 2500;
-	const int duration_ms = 500;
-	
-	// Configure the Animation's curve, delay, and duration
-	animation_set_curve(anim_h, AnimationCurveLinear);
-	animation_set_delay(anim_h, delay_ms);
-	animation_set_duration(anim_h, duration_ms);
-
-	animation_set_curve(anim_m, AnimationCurveLinear);
-	animation_set_delay(anim_m, delay_ms);
-	animation_set_duration(anim_m, duration_ms);
-
-	animation_set_curve(anim_container, AnimationCurveLinear);
-	animation_set_delay(anim_container, delay_ms);
-	animation_set_duration(anim_container, duration_ms);
-	
-	animation_set_curve(anim_h_back, AnimationCurveLinear);
-	animation_set_delay(anim_h_back, delay_ms_back);
-	animation_set_duration(anim_h_back, duration_ms);
-
-	animation_set_curve(anim_m_back, AnimationCurveLinear);
-	animation_set_delay(anim_m_back, delay_ms_back);
-	animation_set_duration(anim_m_back, duration_ms);
-
-	animation_set_curve(anim_container_back, AnimationCurveLinear);
-	animation_set_delay(anim_container_back, delay_ms_back);
-	animation_set_duration(anim_container_back, duration_ms);
-
-	// Play the animation
-	animation_schedule(anim_h);
-	animation_schedule(anim_m);
-	animation_schedule(anim_container);
-
-	animation_schedule(anim_h_back);
-	animation_schedule(anim_m_back);
-	animation_schedule(anim_container_back);
-
-	}
 
 // *** EVENTS ***
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
-}
-static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
-  // A tap event occured
-	update_date();
 }
 
 // Window Load event
@@ -919,8 +799,6 @@ static void prv_window_load(Window *window) {
 	// create shader layer
 	drawShader(window_layer);
 	// create date layer
-	drawDate(window_layer);
-	// create arrows
 	drawArrows(window_layer);
 
 	prv_update_display();
@@ -944,19 +822,11 @@ static void prv_window_unload(Window *window) {
 	// Destroy Canvas line
 	layer_destroy(s_canvas_line);
 	
-	// Destroy date container
-	layer_destroy(s_date_container);
-	text_layer_destroy(s_date_container_m);
-	text_layer_destroy(s_date_container_d);
-	
 	//destroy arrows
 	layer_destroy(s_arrows);
 	
-	// Unsubscribe from tap events
-	accel_tap_service_unsubscribe();
-	
 	// Unsubscribe from TickTimerService
-  	tick_timer_service_unsubscribe();
+ tick_timer_service_unsubscribe();
 }
 
 static void prv_init(void) {
