@@ -116,7 +116,7 @@ void layer_update_proc(Layer *layer, GContext *ctx) {
 		GColor colorToSet;
 	
 // Iterate over all rows
-	for(int y = 0; y < colFull; y++) {
+	for(int y = -1; y < colFull; y++) {
 	  
 	
 if (settings.shaderMode == 1) {
@@ -177,7 +177,7 @@ if (settings.shaderMode == 1) {
 				}  	
 				
 				// fix top edge
-				if(y == 1) {
+				if(y == 0) {
 						colorToSet = settings.BackgroundColor;
 					} 				
 		 		  
