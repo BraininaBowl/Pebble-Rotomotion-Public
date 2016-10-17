@@ -269,7 +269,7 @@ yToGet = yToSet + (colHalf/(yToUse));
 		if (y < colHalf) {
 			// top half
 			yToUse = -1*(colHalf - y);
-			yToSet = colHalf - y;
+			yToSet = colHalf - y - 1;
 yToGet = yToSet - (colHalf/(yToSet));
 		} else {
 			// bottom half
