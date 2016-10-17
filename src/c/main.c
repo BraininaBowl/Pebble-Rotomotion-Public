@@ -4,11 +4,6 @@
 static Window *s_window;
 static TextLayer *s_time_layer_h;
 static TextLayer *s_time_layer_m;
-static Layer *s_date_container;
-static TextLayer *s_date_container_d;
-static TextLayer *s_date_container_m;
-static BitmapLayer *s_background_layer;
-static GBitmap *s_background_bitmap;
 static Layer *s_canvas;
 static Layer *s_canvas_line;
 static Layer *s_arrows;
@@ -27,7 +22,6 @@ static int firstrun;
 
 int xGrid;
 int yGrid;
-
 
 
 // A struct for our specific settings (see main.h)
