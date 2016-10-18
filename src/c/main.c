@@ -192,7 +192,7 @@ if (settings.shaderMode == 1) {
 		// zwarte balk	
 			#if defined(PBL_COLOR)
 	  //	if (yToSet < 14 || yToSet > (colFull - 13)){
-	  if (yToSet < 4 || yToSet > (colFull - 5)){
+	  if (yToSet < 4 || yToSet > (colFull - 6)){
 			for(int x = 0; x < rowFull; x++) {
 				// Now we set the pixel to the right color
 		 		set_bitmap_pixel_color(fb, fb_format, yToSet, x, settings.BackgroundColor);
