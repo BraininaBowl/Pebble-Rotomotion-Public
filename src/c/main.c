@@ -140,7 +140,9 @@ if (settings.shaderMode == 1) {
 		} 
 		
 	// filter only edge pixels, to improve readability and performance
-	if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
+//	if (yToSet < (colHalf - 26) || yToSet > (colHalf + 26)){
+
+if (yToSet < (colFull)){
 
 	  // Iterate over all visible columns
 		  for(int x = 0; x < (rowHalf + 40); x++) {
