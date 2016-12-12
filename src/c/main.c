@@ -33,6 +33,20 @@ int yToGet;
 int yToSet;
 GColor colorToSet;
 
+	GPathInfo ARROW_LEFT_PATH_POINTS = {
+	3,
+	   (GPoint []) {{0, 0}, {0, 15}, {8, 7},}
+	};
+	
+	GPathInfo ARROW_RIGHT_PATH_POINTS = {
+	3,
+	   (GPoint []) {{8, 0}, {8, 15}, {0, 7},}
+	};
+	
+	
+		static GPath *s_arrow_left_path = NULL;
+		static GPath *s_arrow_right_path = NULL;
+
 
 // A struct for our specific settings (see main.h)
 ClaySettings settings;
@@ -56,7 +70,7 @@ static void prv_default_settings() {
 
 // bitmap manipulation
 void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y, int x, GColor color) {
-			// Bitmap data manipulation
+	// Bitmap data manipulation
 	// **************************************************************************
 	// **************************************************************************
 	//
@@ -65,7 +79,6 @@ void set_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int y,
 	//
 	// **************************************************************************
 	// **************************************************************************
-	
 	
 	
   GBitmapDataRowInfo row = gbitmap_get_data_row_info(bitmap, y);
@@ -113,12 +126,13 @@ GColor get_bitmap_pixel_color(GBitmap *bitmap, GBitmapFormat bitmap_format, int 
 
 // Shader stuff goes here
 void layer_update_proc(Layer *layer, GContext *ctx) {
-  // Get the framebuffer
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Start Shader. Before grab framebuffer. Mem used %d", heap_bytes_used());
+	
+	// Get the framebuffer
 	GBitmap *fb = graphics_capture_frame_buffer(ctx);
 	GBitmapFormat fb_format = gbitmap_get_format(fb);
 
-	//set variables for calculations
-
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "After grab framebuffer. Before run shader. Mem used %d", heap_bytes_used());
 	
 // Iterate over all rows
 	for(int y = 0; y < colFull; y++) {
@@ -553,8 +567,9 @@ yToGet = yToSet + (colHalf/(yToUse));
 		}
 	 }
 
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "After run shader. Before release framebuffer. Mem used %d", heap_bytes_used());
 	graphics_release_frame_buffer(ctx, fb);
-	//APP_LOG(APP_LOG_LEVEL_DEBUG, "End Shader. Mem %d", heap_bytes_free());
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Released framebuffer. End Shader. Mem used %d", heap_bytes_used());
 	
 }
 
@@ -656,7 +671,7 @@ static void prv_inbox_received_handler(DictionaryIterator *iter, void *context) 
 // *** DRAW STUFF ***
 // Draw text
 static void drawText(Layer *window_layer) {
-//	 APP_LOG(APP_LOG_LEVEL_DEBUG, "Start drawText. Mem %d", heap_bytes_used());
+	 //APP_LOG(APP_LOG_LEVEL_DEBUG, "Start drawText");
 	 
    // Create the TextLayer with specific bounds
 	s_time_layer_h = text_layer_create(GRect(rowHalf-49+12, colHalf-84, 47, 1216));
@@ -675,23 +690,13 @@ static void drawText(Layer *window_layer) {
 	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_h));
   	layer_add_child(window_layer, text_layer_get_layer(s_time_layer_m));
 	
+	 //APP_LOG(APP_LOG_LEVEL_DEBUG, "End drawText");
 }
 
 // Draw arrows
 void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
-	GPathInfo ARROW_LEFT_PATH_POINTS = {
-	3,
-	   (GPoint []) {{0, 0}, {0, 15}, {8, 7},}
-	};
-	
-	GPathInfo ARROW_RIGHT_PATH_POINTS = {
-	3,
-	   (GPoint []) {{8, 0}, {8, 15}, {0, 7},}
-	};
-	
-	
-		static GPath *s_arrow_left_path = NULL;
-		static GPath *s_arrow_right_path = NULL;
+	//APP_LOG(APP_LOG_LEVEL_DEBUG, "Start s_arrows_update_proc. Mem used %d", heap_bytes_used());
+
 
 		// Fill the path:
 		graphics_context_set_fill_color(ctx, settings.ArrowColor);
@@ -701,22 +706,28 @@ void s_arrows_update_proc(Layer *s_arrows, GContext* ctx) {
 		s_arrow_left_path = gpath_create(&ARROW_LEFT_PATH_POINTS);
 		s_arrow_right_path = gpath_create(&ARROW_RIGHT_PATH_POINTS);
 		gpath_move_to(s_arrow_right_path, GPoint(102, 0));
+	
+		//APP_LOG(APP_LOG_LEVEL_DEBUG, "End s_arrows_update_proc. Mem used %d", heap_bytes_used());
 	}
 // Draw arrows
 static void drawArrows(Layer *window_layer){
-	s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 15));
-  	layer_set_update_proc(s_arrows, s_arrows_update_proc);
-  //---add the layer to the Window layer---
-	layer_add_child(window_layer, s_arrows);
+	
+	if(s_arrows){}else{
+		s_arrows = layer_create(GRect((rowHalf-55), (colHalf-8), 110, 15));
+  		layer_set_update_proc(s_arrows, s_arrows_update_proc);
+  		//---add the layer to the Window layer---
+		layer_add_child(window_layer, s_arrows);
+	}
 }
 // Draw shader
 static void drawShader(Layer * window_layer){
-	if (settings.shaderMode > 0) {
 	// set canvas for shader
-	s_canvas = layer_create(GRect(0,0, rowFull, colFull));
-  	layer_set_update_proc(s_canvas, layer_update_proc);
-  	layer_add_child(window_layer, s_canvas);
-  	}
+	if (settings.shaderMode > 0) {
+		s_canvas = layer_create(GRect(0,0, rowFull, colFull));
+ 		layer_set_update_proc(s_canvas, layer_update_proc);
+	  	layer_add_child(window_layer, s_canvas);
+	}
+
 }
 
 // *** ANIMATE ***
@@ -725,17 +736,22 @@ static void drawShader(Layer * window_layer){
 	void on_animation_stopped_h(Animation *anim_h, bool finished, void *context)
 	{
     //Free the memory used by the Animation
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Start on_animation_stopped_h. Mem used %d", heap_bytes_used());
     	property_animation_destroy((PropertyAnimation*) anim_h);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "End on_animation_stopped_h. Mem used %d", heap_bytes_used());
 	}
 	void on_animation_stopped_m(Animation *anim_m, bool finished, void *context)
 	{
     //Free the memory used by the Animation
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Start on_animation_stopped_m. Mem used %d", heap_bytes_used());
 		property_animation_destroy((PropertyAnimation*) anim_m);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "End on_animation_stopped_m. Mem used %d", heap_bytes_used());
 	}
 
 
 // animate time change
 static void update_time() {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Start update_time. Mem used %d", heap_bytes_used());
 	
   // Get a tm structure
   time_t temp = time(NULL); 
@@ -745,6 +761,8 @@ static void update_time() {
 	//**   ANIMATE   ** 
 	//*****************
 
+	
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Start writing to buffer. Mem used %d", heap_bytes_used());
 	// Write the current hours into a buffer
    strftime(s_buffer_hour, sizeof(s_buffer_hour),"%H", tick_time);
    s_hour = ((s_buffer_hour[0] - '0')*10)+s_buffer_hour[1] - '0';
@@ -752,11 +770,13 @@ static void update_time() {
 	// Write the current minutes into a buffer
   	strftime(s_buffer_m, sizeof(s_buffer_m), "%M", tick_time);
    s_minute = ((s_buffer_m[0] - '0')*10)+s_buffer_m[1] - '0';
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "End writing to buffer. Mem used %d", heap_bytes_used());
 
 	
    // Setup animation layer
 	Layer *layer_h = text_layer_get_layer(s_time_layer_h);
 	Layer *layer_m = text_layer_get_layer(s_time_layer_m);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "End layer_h & layer_m. Mem used %d", heap_bytes_used());
 
 	GRect start_h;
 	if(s_minute == 00 || firstrun == 1) {
@@ -768,16 +788,17 @@ static void update_time() {
 	GRect finish_h = GRect(rowHalf-49+12,colHalf-132-(s_hour*36), 47, 1400);
 	GRect start_m = GRect(rowHalf+12,colHalf-114-((s_minute-1)*20), 27, 1888);
 	GRect finish_m = GRect(rowHalf+12,colHalf-114-(s_minute*20), 27, 1888);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "End GRects. Mem used %d", heap_bytes_used());
 	
-
 	// Animate the Layer
 	PropertyAnimation *prop_anim_h = property_animation_create_layer_frame(layer_h, &start_h, &finish_h);
 	PropertyAnimation *prop_anim_m = property_animation_create_layer_frame(layer_m, &start_m, &finish_m);
-	
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "End prop_anims. Mem used %d", heap_bytes_used());
 	
 	// Get the Animation
 	Animation *anim_h = property_animation_get_animation(prop_anim_h);
 	Animation *anim_m = property_animation_get_animation(prop_anim_m);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "End anims. Mem used %d", heap_bytes_used());
 
 	// Configure the Animation's curve, delay, and duration
 	animation_set_curve(anim_h, AnimationCurveLinear);
@@ -789,7 +810,6 @@ static void update_time() {
         .stopped = (AnimationStoppedHandler) on_animation_stopped_h
     };
 	animation_set_handlers((Animation*) anim_h, handlers_h, NULL);
-	
 
 	animation_set_curve(anim_m, AnimationCurveLinear);
 	animation_set_delay(anim_m, delay_ms_m);
@@ -800,13 +820,14 @@ static void update_time() {
         .stopped = (AnimationStoppedHandler) on_animation_stopped_m
     };
    animation_set_handlers((Animation*) anim_m, handlers_m, NULL);
-	
 
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Start animation schedule. Mem used %d", heap_bytes_used());
 	// Play the animation
 	animation_schedule(anim_h);
 	animation_schedule(anim_m);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "End animation schedule. Mem used %d", heap_bytes_used());
 	
-
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "End update_time. Mem used %d", heap_bytes_used());
 }
 
 
