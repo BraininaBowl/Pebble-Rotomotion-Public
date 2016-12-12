@@ -1,0 +1,44 @@
+{
+    "author": "Brain in a Bowl",
+    "dependencies": {
+        "pebble-clay": "^1.0.2"
+    },
+    "keywords": [],
+    "name": "rotomotion-osp",
+    "pebble": {
+        "capabilities": [
+            "configurable"
+        ],
+        "displayName": "Rotomotion Open Source",
+        "enableMultiJS": true,
+        "messageKeys": [
+            "BackgroundColor",
+            "ForegroundColor",
+            "ArrowColor",
+            "twelveHour",
+            "shaderMode",
+            "dropShadow",
+            "HourColor",
+            "MinColor",
+            "HourBgColor",
+            "MinBgColor"
+        ],
+        "projectType": "native",
+        "resources": {
+            "media": []
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt",
+            "chalk",
+            "diorite",
+            "emery"
+        ],
+        "uuid": "ab6bbb47-56ee-41bd-a3c9-398e7f131b1e",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.0.0"
+}
